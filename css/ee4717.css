@@ -79,6 +79,6 @@ img{display:inline-block;float: left;}
 .table {border-collapse: collapse;}
 .table td,th{border:1px solid black;text-align:left;padding:10px;}
 .table tr:nth-child(even){background-color: #b3b3b3}
-.movies {display:none;position:absolute;height:35%;width:80%;top:65%;background-color:white;opacity: 0.8;text-align:left;padding-top:10px;}
+.movies {padding:2px;display:none;position:absolute;height:35%;width:80%;top:65%;background-color:white;opacity: 0.8;text-align:left;padding-top:10px;}
 .one-fifth:hover .movies{display:block}
 .userdetails{text-align: center; width:40%;}

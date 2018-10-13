@@ -43,36 +43,95 @@
 			<input id="BOOK" type="button" class="teal-button" value="Book now" onclick="storeSend()" style="width:10%">
 		</center>
 	</div>
-
-	<div style="height:600px;">
-		<div id='accountinfo' align="center" style="height:40%; border:1px;">
-			<h3 id="welcome">WELCOME AARON</h3>
-			<table border="1px" style="width: 50%">
-				<tr>
-					<th colspan="2" style="text-align: center;">Account Details</th>
-				</tr>
-				<tr>
-					<td class="userdetails">Username: </td>
-					<td id="username" class="userdetails"></td>
-				</tr>
-				<tr>
-					<td class="userdetails">Address: </td>
-					<td id="address" class="userdetails"></td>
-				</tr>
-				<tr>
-					<td class="userdetails">Credit Card Number: </td>
-					<td id="cardno" class="userdetails"></td>
-				</tr>
-				<tr>
-					<td class="userdetails">CCV: </td>
-					<td id="ccv" class="userdetails"></td>
-				</tr>
-				<tr>
-					<td class="userdetails">Registration Date: </td>
-					<td id="regdate" class="userdetails"></td>
-				</tr>
-			</table>
+	<div style="height:600px;border:1px solid #b3b3b3">
+		<div>
+			<input id="nowShowingBtn" type="button" value="Account" class="teal-border-button" style="float:left;outline:none;border-radius:0px;width:10%" onclick="document.getElementById('nowShowing').style.visibility = 'visible';
+			 document.getElementById('comingSoon').style.visibility = 'hidden';
+			 document.getElementById('comingSoon').style.height = '0px';
+			 document.getElementById('nowShowing').style.height = '600px';
+			 this.classList.remove('grey-button');
+			 this.classList.add('teal-border-button');
+			 document.getElementById('comingSoonBtn').classList.remove('teal-border-button');
+			 document.getElementById('comingSoonBtn').classList.add('grey-button');
+			 console.log(document.getElementById('comingSoonBtn').classList);"
+			 >
+		<input id="comingSoonBtn" type="button" value="Purchases" class="grey-button" style="float:left;outline:none;border-radius:0px;width:10%;" onclick="document.getElementById('nowShowing').style.visibility = 'hidden';
+			 document.getElementById('comingSoon').style.visibility = 'visible';
+			 document.getElementById('nowShowing').style.height = '0px';
+			 document.getElementById('comingSoon').style.height = '600px';
+			 this.classList.remove('grey-button');
+			 this.classList.add('teal-border-button');
+			 document.getElementById('nowShowingBtn').classList.remove('teal-border-button');
+			 document.getElementById('nowShowingBtn').classList.add('grey-button');">
 		</div>
+		<span id="nowShowing" class="full" style="height:600px;overflow-y:none">
+			<div id='accountinfo' style="height:40%;width:50%">
+				<fieldset style="margin:0px;margin-top:10px">
+				    <legend>Personal Details</legend>
+					<label>Name</label><br>
+					<input id='name' type="text" style="height:25px;width:33.33%" class="teal-input" value=''><br>
+					<label>Email</label><br>
+					<input id='email'type="email" style="height:25px;width:33.33%" class="teal-input" value=''><br>
+					<label>Address</label><br>
+					<textarea id='address' style="height:50px;width:33.33%" class="teal-input" value=''></textarea><br>
+					<label>Postalcode</label><br>
+					<input id='postalcode'type="number" style="height:25px;width:33.33%" class="teal-input" value=''><br>
+				</fieldset>
+				<fieldset style="margin:0px;margin-top:10px">
+				    <legend>Payment Details</legend>
+					<label>Card type*</label><br>
+					<select id="cardtype" class="grey-input" style="height:25px">
+						<option value="" disabled selected>-Please Select-</option>
+						<option>Mastercard</option>
+						<option>VISA</option>
+					</select><br>
+					<label>CreditCard Number*</label><br>
+					<input id='cardno' type="number" value="" class="grey-input" style="height:25px"><br>
+				    <label>Card Verification Number*</label><br>
+				    <input id='cardverification' type="number" name="" class="grey-input" style="height:25px"><br>
+				    <input id='registerbtn' type="button" value="Register" class="teal-border-button" onclick="onRegister()" style="margin-top:10px;">
+				  </fieldset>
+				Use the above naming conventions  
+				<table border="1px" style="width: 50%">
+					<tr>
+						<th colspan="2" style="text-align: center;">Account Details</th>
+					</tr>
+					<tr>
+						<td class="userdetails">Username: </td>
+						<td id="username" class="userdetails"></td>
+					</tr>
+					<tr>
+						<td class="userdetails">Address: </td>
+						<td id="address" class="userdetails"></td>
+					</tr>
+					<tr>
+						<td class="userdetails">Credit Card Number: </td>
+						<td id="cardno" class="userdetails"></td>
+					</tr>
+					<tr>
+						<td class="userdetails">CCV: </td>
+						<td id="ccv" class="userdetails"></td>
+					</tr>
+					<tr>
+						<td class="userdetails">Registration Date: </td>
+						<td id="regdate" class="userdetails"></td>
+					</tr>
+				</table>
+			</div>
+		</span>
+		<span id="comingSoon" class="full" style="height:600px;position:relative;z-index:-2px;visibility:hidden;" >
+			<div class="one-fifth">
+				<img src="./img/smallfootsmall.jpg" style="height:100%;width:80%">
+				<div class='movies'>
+					<label style="font-size:20px">Small Foot</label><br>
+					<label style="font-size:15px">(PG)</label><br>
+					<label style="font-size:15px">95 Mins</label><br>
+					<label style="font-size:15px">English</label>
+				</div>		
+			</div>
+			
+			
+		</span>
 
 	<script type="text/javascript" src='./scripts/useraccount.js'></script>	
 	</div>
