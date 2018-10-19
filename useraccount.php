@@ -1,5 +1,29 @@
 <!DOCTYPE html>
 <html>
+<?php
+	if (!isset($_SESSION)){
+		session_start();
+	}
+	if(isset($_SESSION["useraccount"])){
+		echo "<script> 
+				const useraccount=".$_SESSION["useraccount"]."[0]
+				window.onload=function(){
+					document.getElementById('name').value=useraccount.name;
+					document.getElementById('email').value=useraccount.email;
+					document.getElementById('address').value=useraccount.address;
+					document.getElementById('postalcode').value=useraccount.postalcode;
+					document.getElementById('cardtype').value=useraccount.cardtype;
+					document.getElementById('cardno').value=useraccount.cardno;
+				}
+			  </script>";
+	}else{
+		echo "<script>const useraccount=null</script>";
+		header("Location: http://localhost:1234/ntucinematics/index.php");
+	}
+	
+
+?>
+
 <head>
 	<title>Movies</title>
 	<link rel="stylesheet" type="text/css" href="./css/ee4717.css">
@@ -11,18 +35,32 @@
 			<img src="./img/logo.jpg" style="width:80%;height:100%;">
 		</header>
 		<nav style="text-align: right">
-				<a href="./index.html" class="menu">Home</a>
-				<a href="./showtimes.html" class="menu">Show Times</a>
-				<a href="./movies.html" class="menu">Movies</a>
-				<a href="./promotions.html" class="menu">Promotions</a>
-				<a href="./cinemas" class="menu">Cinema</a>
-				<span class="account-box" style="float:right;">
-					<span id='account' class="menu" style="padding-right:0px"> 
-						Account
-					</span>
-					<span id='account-option' class="account-option" style="width:100%;text-align: center;">
-					</span>	
-			</span>
+			<a href="./index.html" class="menu">Home</a>
+			<a href="./movies.html" class="menu">Movies</a>
+			<a href="./promotions.html" class="menu">Promotions</a>
+			<a href="./cart.html" class="menu" > Cart</a>
+			<span class="account-box" style="float:right;">
+				<?php
+					if (isset($_SESSION["useraccount"])){
+						echo "	<span id='account' class='menu' style='padding-right:0px'> 
+									Account
+								</span>
+								<span id='account-option' class='account-option' style='width:100%;text-align: center;''>
+									<a>Profile</a>
+									<a href='./php/logout.php'>Logout</a>
+								</span>	";		
+					}else{
+						echo"	<span id='account' class='menu' style='padding-right:0px'> 
+									Account
+								</span>
+								<span id='account-option' class='account-option' style='width:100%;text-align: center;''>
+									<a href='./login.php'>Login</a>
+									<a href='./register.html'>Register</a>
+								</span>	";
+					}
+				?>
+			</span>			
+			<span class="dot" id="dot">0</span>
 		</nav>
 	</div>
 
@@ -86,37 +124,11 @@
 						<option>VISA</option>
 					</select><br>
 					<label>CreditCard Number*</label><br>
-					<input id='cardno' type="number" value="" class="grey-input" style="height:25px"><br>
+					<input id='cardno' type="text" value="" class="grey-input" style="height:25px"><br>
 				    <label>Card Verification Number*</label><br>
-				    <input id='cardverification' type="number" name="" class="grey-input" style="height:25px"><br>
+				    <input id='cardverification' type="text" name="" class="grey-input" style="height:25px"><br>
 				    <input id='registerbtn' type="button" value="Register" class="teal-border-button" onclick="onRegister()" style="margin-top:10px;">
 				  </fieldset>
-				Use the above naming conventions  
-				<table border="1px" style="width: 50%">
-					<tr>
-						<th colspan="2" style="text-align: center;">Account Details</th>
-					</tr>
-					<tr>
-						<td class="userdetails">Username: </td>
-						<td id="username" class="userdetails"></td>
-					</tr>
-					<tr>
-						<td class="userdetails">Address: </td>
-						<td id="address" class="userdetails"></td>
-					</tr>
-					<tr>
-						<td class="userdetails">Credit Card Number: </td>
-						<td id="cardno" class="userdetails"></td>
-					</tr>
-					<tr>
-						<td class="userdetails">CCV: </td>
-						<td id="ccv" class="userdetails"></td>
-					</tr>
-					<tr>
-						<td class="userdetails">Registration Date: </td>
-						<td id="regdate" class="userdetails"></td>
-					</tr>
-				</table>
 			</div>
 		</span>
 		<span id="comingSoon" class="full" style="height:600px;position:relative;z-index:-2px;visibility:hidden;" >
@@ -132,8 +144,6 @@
 			
 			
 		</span>
-
-	<script type="text/javascript" src='./scripts/useraccount.js'></script>	
 	</div>
 
 

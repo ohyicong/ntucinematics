@@ -1,25 +1,3 @@
-/*
-function onRegister (){
-	var name=document.getElementById('name').value;
-	var email = document.getElementById('email').value;
-	var password=document.getElementById('password').value;
-	var retypepassword= document.getElementById('retypepassword').value;
-	if(name==''||email==''||password==''||retypepassword==''){
-		alert("Please fill up all required information");
-		return;
-	}
-	if(password!=retypepassword){
-		alert("Retyped password not same");
-		document.getElementById('password').value='';
-		document.getElementById('retypepassword').value='';
-		return
-	}
-	console.log(name);
-}
-
-//onclick="onRegister()"
-*/
-
 function sendData(table_name, array){
 		var ajax = new XMLHttpRequest();
 		let datainput =  new FormData();
@@ -33,6 +11,7 @@ function sendData(table_name, array){
 		address=array[3];
 		cardno=array[4];
 		ccv=array[5];
+		cardtype=array[6];
 
 		datainput.append("table_name", table_name);
 		datainput.append("name", name);
@@ -41,6 +20,7 @@ function sendData(table_name, array){
 		datainput.append("address", address);
 		datainput.append("cardno", cardno);
 		datainput.append("ccv", ccv);
+		datainput.append("cardtype", cardtype);
 
 		//For posting
 		ajax.open(method, url, asynchronous);	
@@ -70,52 +50,59 @@ function onRegister(){
 	var address = checkaddress();
 	var cardno = checkcardno();
 	var ccv = checkccv();
+	var cardtype= checkcardtype();
+	var postalcode = checkpostalcode();
 	//Check if there are still any mistakes before sending to DB
-	var checkinput= [name, password2, email, cardno, address, ccv];
+	var checkinput= [name, password2, email, cardno, address, ccv, cardtype, postalcode];
+	console.log(checkinput);
 	if(checkinput.includes(false)){
-		alert('Try Again! Please check if your information is keyed correctly.');
+		
 	} else{
 		sendData('user_accounts', checkinput);
-		//alert('Registration Successful!');
 		window.location.href = './login.html';
 		alert('Registration Successful!');
 	}
 }
 
-
 function checkname() {
 	var regex=/^[A-Za-z]{2,}$/;
-	input=document.getElementById('name').value;
-	console.log('name: ', input);
-	if(regex.test(input)){
+	ele=document.getElementById('name');
+	console.log(ele.value);
+	if(regex.test(ele.value)){
 		//alert('succeed');
-		return input;
+		ele.style.border='1px solid #00B3B3';
+		return ele.value;
 	}else{
 		alert('Name Error! Must be more than 2 characters');
+		ele.style.border='1px solid #B91D47';
 		return false;
 	}
 }
 
 function checkemail(){
 	var regex=/^([\w.-_]+)(\@)([A-Za-z]{2,})(\.{1}[A-Za-z]{2,}){1,3}$/;
-	input=document.getElementById('email').value;
-	console.log('email: ', input);
-	if(regex.test(input)){
+	ele=document.getElementById('email');
+	console.log(ele.value);
+	if(regex.test(ele.value)){
 		//alert('succeed');
-		return input;
+		ele.style.border='1px solid #00B3B3';
+		return ele.value;
 	}else{
 		alert('Email Invalid. Please enter email again.');
+		ele.style.border='1px solid #B91D47';
 		return false;
 	}
 }
 
 function checkpassword(){
 	var regex=/^[A-Za-z0-9]{6,}$/;
-	input=document.getElementById('password').value;
-	console.log('password1: ', input);
-	if(regex.test(input)){
-		return input;
+	ele=document.getElementById('password');
+	console.log(ele.value);
+	if(regex.test(ele.value)){
+		ele.style.border='1px solid #00B3B3';
+		return ele.value;
 	}else{
+		ele.style.border='1px solid #B91D47';
 		alert('Error! Password must be at least 6 alpha-numeric characters');
 		return false;
 	}
@@ -123,17 +110,24 @@ function checkpassword(){
 
 function checkpassword2(){
 	var regex=/^[A-Za-z0-9]{6,}$/;
-	input1=document.getElementById('password').value;
-	input2=document.getElementById('retypepassword').value;
-	console.log('password2: ', input2);
-	if(regex.test(input)){
-		if(input1==input2){
-			return input1;			
+	ele1=document.getElementById('password');
+	ele2=document.getElementById('retypepassword');
+	console.log(ele1.value);
+	console.log(ele2.value);
+	if(regex.test(ele1.value)){
+		if(ele1.value==ele2.value){
+			ele1.style.border='1px solid #00B3B3';
+			ele2.style.border='1px solid #00B3B3';
+			return ele1.value;			
 		}else{
-			alert('Password mismatched!')
+			alert('Password mismatched!');
+			ele1.style.border='1px solid #B91D47';
+			ele2.style.border='1px solid #B91D47';
 			return false;
 		}
 	}else{
+		ele1.style.border='1px solid #B91D47';
+		ele2.style.border='1px solid #B91D47';
 		alert('Error! Password must be at least 6 alpha-numeric characters');
 		return false;
 	}
@@ -141,11 +135,13 @@ function checkpassword2(){
 
 function checkaddress(){
 	var regex=/^[A-Za-z0-9]{5,}$/;
-	input=document.getElementById('address').value;
-	console.log('address: ', input);
-	if(regex.test(input)){
-		return input;
+	ele=document.getElementById('address');
+	console.log(ele.value);
+	if(regex.test(ele.value)){
+		ele.style.border='1px solid #00B3B3';
+		return ele.value;
 	}else{
+		ele.style.border='1px solid #B91D47';
 		alert('Address needs to be a minimum of 5 characters');
 		return false;
 	}
@@ -153,11 +149,13 @@ function checkaddress(){
 
 function checkcardno(){
 	var regex=/^[0-9]{16}$/;
-	input=document.getElementById('cardno').value;
-	console.log('cardno: ', input);
-	if(regex.test(input)){
-		return input;
+	ele=document.getElementById('cardno');
+	console.log(ele.value);
+	if(regex.test(ele.value)){
+		ele.style.border='1px solid #b3b3b3';
+		return ele.value;
 	}else{
+		ele.style.border='1px solid #B91D47';
 		alert('Incorrect Card Number. Card Numbers must be 16 digits');
 		return false;
 	}	
@@ -165,12 +163,41 @@ function checkcardno(){
 
 function checkccv(){
 	var regex=/^[0-9]{3}$/;
-	input=document.getElementById('ccv').value;
-	console.log('ccv: ', input);
-	if(regex.test(input)){
-		return input;
+	ele=document.getElementById('ccv');
+	console.log(ele.value);
+	if(regex.test(ele.value)){
+		ele.style.border='1px solid #b3b3b3';
+		return ele.value;
 	}else{
+		ele.style.border='1px solid #B91D47';
 		alert('Incorrect CCV. CCV Numbers must be 3 digits');
 		return false;
 	}	
+}
+function checkcardtype(){
+	ele=document.getElementById('cardtype');
+	console.log(ele.value);
+	if(ele.value==""){
+		ele.style.border='1px solid #B91D47';
+		alert('Select card type');
+		return false;
+	}else {
+		ele.style.border='1px solid #b3b3b3';
+		return ele.value;
+	}
+		
+}
+
+function checkpostalcode(){
+	const regex=/^[0-9]{6}$/;
+	ele=document.getElementById('postalcode');
+	console.log(ele.value);
+	if(regex.test(ele.value)){
+		ele.style.border='1px solid #b3b3b3';
+		return ele.value;
+	}else{
+		ele.style.border='1px solid #B91D47';
+		alert('Incorrect Postalcode. Must have 6 digits');
+		return false;
+	}
 }

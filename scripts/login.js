@@ -1,5 +1,3 @@
-
-
 var loginInfo = {
 	'userid': "nth",
 	'name': "nth",
@@ -10,49 +8,6 @@ var loginInfo = {
 	'ccv': "nth",
 
 }
-
-/*
-function sendData(table_name, array){
-		var ajax = new XMLHttpRequest();
-		let datainput =  new FormData();
-		var method = "POST";
-		var url = "./php/login.php";
-		var asynchronous = true;
-		// Add data into packet
-		password=array[0];
-		email=array[1];
-
-		datainput.append("table_name", table_name);
-		datainput.append("password", password);
-		datainput.append("email", email);
-
-		//For posting
-		ajax.open(method, url, asynchronous);	
-		ajax.send(datainput);
-
-
-		ajax.onreadystatechange= function(){
-			if(this.readyState==4 && this.status ==200){
-				try{
-					var data = JSON.parse(this.responseText);
-					console.log(this.responseText);
-				}catch{
-					console.log(this.responseText);
-					alert("Account Not Found. Click register for new account or key login details again.");
-				}
-				for(let i=0;i<data.length;i++){
-					loginInfo.name=data[i].name;
-					loginInfo.password=data[i].password;
-					loginInfo.email=data[i].email;
-					loginInfo.cardno=data[i].cardno;
-					loginInfo.address=data[i].address;
-					loginInfo.ccv=data[i].ccv;
-					return true;
-				}
-		};
-	}
-}
-*/
 
 var dataIn = function (responseText){
 	localStorage.setItem("loginInfo", responseText); 
@@ -92,7 +47,7 @@ function sendData(table_name, array, dataIn) {
 						userdata=""+ data[i].userid +","+ data[i].name +","+ data[i].password +","+ data[i].email +","+ data[i].cardno +","+ data[i].address +","+ data[i].ccv +","+ data[i].registerdate;
 					}
 					resolve(JSON.stringify(userdata));
-			    //var response = JSON.stringify(this.responseText);
+			    		//var response = JSON.stringify(this.responseText);
 					}catch{
 						alert ("Data Not Found. Unknown Username/Password");
 					}
@@ -106,7 +61,6 @@ function sendData(table_name, array, dataIn) {
 
 
 function onlogin(){
-	console.log('final input check: ');
 	var email = checkemail();
 	var password= checkpassword();
 	//Check if there are still any mistakes before sending to DB
@@ -121,7 +75,7 @@ function onlogin(){
 			  console.log("Completed",value);
 			  localStorage.setItem("loginInfo", value);
 			  // expected output: "responseText"
-			  window.open('./useraccount.html');	
+			  location.href = "./useraccount.php";	
 			});
 		}
 }
@@ -133,7 +87,6 @@ function checkemail(){
 	input=document.getElementById('email').value;
 	console.log('email: ', input);
 	if(regex.test(input)){
-		//alert('succeed');
 		return input;
 	}else{
 		alert('Email Invalid. Please enter email again.');

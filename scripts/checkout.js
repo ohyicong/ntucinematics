@@ -74,7 +74,7 @@ function populateTable() {
 	total.innerText='$0.00';
 	movie.innerHTML=userSelection.movie;
 	selectedMovie.innerHTML=userSelection.movie;
-	instruction.innerHTML= "Showing on "+userSelection.date+", "+userSelection.time+"hrs at "+userSelection.cinema.toUpperCase();
+	instruction.innerHTML= "Showing on :"+userSelection.date+"<br>Time :"+userSelection.time+"hrs <br>Venue: "+userSelection.cinema.toUpperCase();
 	movieImage.src=userSelection.movieImage;
 	console.log("checkimage",userSelection.movieImage);
 
@@ -117,7 +117,7 @@ function repopulateTable() {
 	total.innerText='$0.00';
 	movie.innerHTML=userSelection.movie;
 	selectedMovie.innerHTML=userSelection.movie;
-	instruction.innerHTML= "Showing on "+userSelection.date+", "+userSelection.time+"hrs at "+userSelection.cinema.toUpperCase();
+	instruction.innerHTML= "Showing on :"+userSelection.date+"<br>Time :"+userSelection.time+"hrs <br>Venue: "+userSelection.cinema.toUpperCase();
 	movieImage.src=userSelection.movieImage;
 	console.log("checkimage",userSelection.movieImage);
 	//Remove all classlist
@@ -176,6 +176,7 @@ function onSeatClick(element){
 	console.log("Userselection",userSelection);
 	console.log("choosenseats",choosenSeats);
 	updateCart();
+	globalInit();
 }
 function onCheckOut(){
 	if(choosenSeats.length>0){
@@ -194,7 +195,27 @@ function updateCart(){
 	console.log('updated cart',userCart);
 	console.log(parseInt(userCartArray));
 	localStorage.setItem('userCart',JSON.stringify(userCart));
+	updateCartCountDisplay();
 
+}
+function updateCartCountDisplay(){
+	var userCartSize=0;
+	var userCartGlobal=localStorage.getItem('userCart');
+	if(userCartGlobal=='null'||userCartGlobal==null||userCartGlobal==''||userCartGlobal.length==0){
+		console.log('Empty cart',userCartGlobal);
+	}else{
+		try{	
+			userCartGlobal=JSON.parse(userCartGlobal);
+			for(let x=0;x<userCartGlobal.length;x++){
+				userCartSize+=userCartGlobal[x].tickets.length;
+			}
+			console.log(userCartSize)
+			console.log('Full cart',userCartGlobal);
+		}catch(e){
+			console.log("UserCart error",e);
+		}
+	}
+	document.getElementById('dot').innerHTML=userCartSize;
 }
 function clearCart(){
 	//Check if user select this
@@ -206,6 +227,7 @@ function clearCart(){
 		console.log('My updated cart',userCart);
 		repopulateTable();
 		localStorage.setItem('userCart',JSON.stringify(userCart));
+		updateCartCountDisplay();
 	}else{
 		console.log("No seats selected")
 	} 
@@ -213,40 +235,40 @@ function clearCart(){
 
 //Main Server Call - via AJAX
 function getData(table_name, condition, value, return_column=["",""]){
-		var ajax = new XMLHttpRequest();
-		let datainput =  new FormData();
-		var method = "POST";
-		var url = "./php/dataCheckout.php";
-		var asynchronous = true;
-		// Add data into packet
+	var ajax = new XMLHttpRequest();
+	let datainput =  new FormData();
+	var method = "POST";
+	var url = "./php/dataCheckout.php";
+	var asynchronous = true;
+	// Add data into packet
 
-		console.log(table_name);
-		console.log(condition);
-		console.log(value);
-		console.log(return_column);
-		value=value.slice(3,value.length-1);
+	console.log(table_name);
+	console.log(condition);
+	console.log(value);
+	console.log(return_column);
+	value=value.slice(3,value.length-1);
 
-		datainput.append("table_name", table_name);
-		datainput.append("condition", condition);
-		datainput.append("value", value); 
-		datainput.append("return_column", return_column);
-		//For posting
-		ajax.open(method, url, asynchronous);	
-		ajax.send(datainput);
-			
-		//For receiving response from data.php
-		 ajax.onreadystatechange= function(){
-			if(this.readyState==4 && this.status ==200){
-				try{
-					var data = JSON.parse(this.responseText);
-				}catch{
-					console.log(this.responseText);
-					console.log("Error occured");
-				}
-				for(let i=0;i<data.length;i++){
-					obj.seat_status.push(data[i].STATUS);
-				}
-				populateTable();
+	datainput.append("table_name", table_name);
+	datainput.append("condition", condition);
+	datainput.append("value", value); 
+	datainput.append("return_column", return_column);
+	//For posting
+	ajax.open(method, url, asynchronous);	
+	ajax.send(datainput);
+		
+	//For receiving response from data.php
+	ajax.onreadystatechange= function(){
+		if(this.readyState==4 && this.status ==200){
+			try{
+				var data = JSON.parse(this.responseText);
+			}catch{
+				console.log(this.responseText);
+				console.log("Error occured");
+			}
+			for(let i=0;i<data.length;i++){
+				obj.seat_status.push(data[i].STATUS);
+			}
+			populateTable();
 		};
 	}
 }

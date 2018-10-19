@@ -1,5 +1,15 @@
 <!DOCTYPE html>
 <html>
+<?php
+	if (!isset($_SESSION)){
+		session_start();
+	}
+	if(isset($_SESSION["useraccount"])){
+		echo "<script>const useraccount=".$_SESSION["useraccount"]."[0];console.log(useraccount)</script>";
+	}else{
+		echo "<script>const useraccount=null</script>";
+	}
+?>
 <head>
 	<title>Movies</title>
 	<link rel="stylesheet" type="text/css" href="./css/ee4717.css">
@@ -18,7 +28,7 @@
 			const tableConfirm=document.getElementById('tableConfirm');
 			const total = document.getElementById('total');
 			console.log(userCart);
-			if(userCart==''||userCart=='null'||userCart==null){
+			if(userCart==''||userCart=='null'||userCart==null||userCart.length==0){
 				alert('No items in cart.... You will be redirected');
 				location.href="./index.html"	
 			}else{
@@ -32,56 +42,66 @@
 				}
 				let row = document.createElement("tr");
 				row.innerHTML="<tr><th>Movie</th><th>Venue</th><th>Date</th><th>Time</th><th>Seats</th></tr>"
-				tableConfirm.appendChild(row);
+				tableConfirm.appendChild(row);	
 				for(let i=0;i<userCart.length;i++){
-					//Main table
-					let tr = document.createElement("tr");
-					let td0 = document.createElement("td");
-					let td1 = document.createElement("td");
-					let td2 = document.createElement("td");
-					td0.innerHTML="<label style='color:red;font-size:20px;'>x</label>";
-					td0.id=i;
-					tr.id="tr"+i
-					td0.onclick=function(td0,td1,td2,tr){
-						console.log(td0);
-						console.log('tr'+td0.path[1].id);
-						let tempTr = document.getElementById('tr'+td0.path[1].id);
-						console.log(tempTr);
-						console.log('scream my name',td0.path[1].id,tempTr);
-						console.log(userCart.splice(parseInt(td0.path[1].id),1));
-						localStorage.setItem('userCart',JSON.stringify(userCart));
-						while(table.hasChildNodes()){
-							table.removeChild(table.firstChild);
+					if(userCart[i].tickets==null||userCart[i].tickets==[]){
+						//do nothing
+					}else{
+						//Main table
+						let tr = document.createElement("tr");
+						let td0 = document.createElement("td");
+						let td1 = document.createElement("td");
+						let td2 = document.createElement("td");
+						td0.innerHTML="<label style='color:red;font-size:20px;'>x</label>";
+						td0.id=i;
+						tr.id="tr"+i
+						td0.onclick=function(td0,td1,td2,tr){
+							console.log(td0);
+							console.log('tr'+td0.path[1].id);
+							let tempTr = document.getElementById('tr'+td0.path[1].id);
+							console.log(tempTr);
+							console.log('scream my name',td0.path[1].id,tempTr);
+							console.log(userCart.splice(parseInt(td0.path[1].id),1));
+							if(userCart.length==0){
+								localStorage.setItem('userCart',null);
+							}else{
+								localStorage.setItem('userCart',JSON.stringify(userCart));
+							}
+							localStorage.setItem('userCart',JSON.stringify(userCart));
+							while(table.hasChildNodes()){
+								table.removeChild(table.firstChild);
+							}
+							onInit();
 						}
-						onInit();
-					}
-					td1.innerHTML="<label style='font-size:15px'>"+userCart[i].movie+"<label><br/>"+userCart[i].cinema.toUpperCase()+", "+userCart[i].date+", "+userCart[i].time+", Seats: "+userCart[i].tickets;
-					td2.innerHTML="x "+userCart[i].tickets.length;
-					totalTickets+=userCart[i].tickets.length;
-					tr.appendChild(td0);
-					tr.appendChild(td1);
-					tr.appendChild(td2);
-					table.appendChild(tr);
-					console.log(table);
+						td1.innerHTML="<label style='font-size:15px'>"+userCart[i].movie+"<label><br/>"+userCart[i].cinema.toUpperCase()+", "+userCart[i].date+", "+userCart[i].time+", Seats: "+userCart[i].tickets;
+						td2.innerHTML="x "+userCart[i].tickets.length;
+						totalTickets+=userCart[i].tickets.length;
+						tr.appendChild(td0);
+						tr.appendChild(td1);
+						tr.appendChild(td2);
+						table.appendChild(tr);
+						console.log(table);
 
-					//Confirmation table
-					let trConfirm = document.createElement("tr");
-					let tdConfirm0 = document.createElement("td");
-					let tdConfirm1 = document.createElement("td");
-					let tdConfirm2 = document.createElement("td");
-					let tdConfirm3 = document.createElement("td");
-					let tdConfirm4 = document.createElement("td");
-					tdConfirm0.innerHTML= userCart[i].movie+'';
-					tdConfirm1.innerHTML= userCart[i].cinema.toUpperCase()+'';
-					tdConfirm2.innerHTML= userCart[i].date+'';
-					tdConfirm3.innerHTML= userCart[i].time+'';
-					tdConfirm4.innerHTML= userCart[i].tickets+'';
-					trConfirm.appendChild(tdConfirm0);
-					trConfirm.appendChild(tdConfirm1);
-					trConfirm.appendChild(tdConfirm2);
-					trConfirm.appendChild(tdConfirm3);
-					trConfirm.appendChild(tdConfirm4);
-					tableConfirm.appendChild(trConfirm);
+						//Confirmation table
+						let trConfirm = document.createElement("tr");
+						let tdConfirm0 = document.createElement("td");
+						let tdConfirm1 = document.createElement("td");
+						let tdConfirm2 = document.createElement("td");
+						let tdConfirm3 = document.createElement("td");
+						let tdConfirm4 = document.createElement("td");
+						tdConfirm0.innerHTML= userCart[i].movie+'';
+						tdConfirm1.innerHTML= userCart[i].cinema.toUpperCase()+'';
+						tdConfirm2.innerHTML= userCart[i].date+'';
+						tdConfirm3.innerHTML= userCart[i].time+'';
+						tdConfirm4.innerHTML= userCart[i].tickets+'';
+						trConfirm.appendChild(tdConfirm0);
+						trConfirm.appendChild(tdConfirm1);
+						trConfirm.appendChild(tdConfirm2);
+						trConfirm.appendChild(tdConfirm3);
+						trConfirm.appendChild(tdConfirm4);
+						tableConfirm.appendChild(trConfirm);
+					}
+					
 				}
 				total.innerHTML="$"+totalTickets*12+".00";
 				row= document.createElement("tr");
@@ -152,7 +172,7 @@
 				}
 				return regex.test(ele.value);
 			}
-			if(checkName(document.getElementById('name'))&&checkEmail(document.getElementById('email'))&&checkAddress(document.getElementById('address'))&&checkPostal(document.getElementById('postalcode'))&&checkCardNumber(document.getElementById('cardnumber'))&&checkCardVerification(document.getElementById('cardverification'))){
+			if(checkName(document.getElementById('name'))&&checkEmail(document.getElementById('email'))&&checkAddress(document.getElementById('address'))&&checkPostal(document.getElementById('postalcode'))&&checkCardNumber(document.getElementById('cardno'))&&checkCardVerification(document.getElementById('cardverification'))){
 				document.getElementById('confirmPage').style.display='block';
 			}else{
 				alert('Please check your inputs');
@@ -190,19 +210,18 @@
 		},3000)
 
 		function autofill(){
-			const loginCredentials=login();
-			if(loginCredentials==null||loginCredentials==''){
+			if(useraccount==null||useraccount==''){
 				console.log("No login details");
 				return;
 			}
 			// ARRAY FORMAT [userID, Name, Password, Email, Address, CardNo, CCV]
-			document.getElementById('name').value=loginCredentials[1];
-			document.getElementById('email').value=loginCredentials[3];
-			document.getElementById('address').value=loginCredentials[4];
+			document.getElementById('name').value=useraccount.name;
+			document.getElementById('email').value=useraccount.email;
+			document.getElementById('address').value=useraccount.address;
 			//[TODO] postal code
 			//[TODO] card type
-			document.getElementById('cardnumber').value=loginCredentials[5];
-			document.getElementById('cardverification').value=loginCredentials[6];
+			document.getElementById('cardno').value=useraccount.cardno;
+			document.getElementById('ccv').value=useraccount.ccv;
 		}
 
 		// WHERE return_column= [UNIQUE_ID, SeatNumber]
@@ -299,9 +318,9 @@
 				<option>VISA</option>
 			</select><br>
 			<label>CreditCard Number*</label><br>
-			<input id='cardnumber' type="number" value="" class="grey-input" style="height:25px"><br>
+			<input id='cardno' type="text" value="" class="grey-input" style="height:25px"><br>
 		    <label>Card Verification Number*</label><br>
-		    <input id='cardverification' type="number" name="" class="grey-input" style="height:25px"><br>
+		    <input id='ccv' type="number" name="" class="grey-input" style="height:25px"><br>
 
 		  </fieldset>
 		</form>
@@ -348,18 +367,18 @@
 		</center>
 	</footer>
 </body>
-<div id='confirmPage' style="z-index:2;margin:auto;width:100%;height:100%;padding:0px;top:0px;position:absolute;background-color: white;opacity:0.9;display: none;">
-	<center style="margin-top:15%;">
+<div id='confirmPage' style="z-index:2;margin:auto;width:100%;height:100%;padding:0px;top:0px;right:0;position:absolute;background-color: white;opacity:0.9;display: none;">
+	<center style="margin-top:10%">
 		<h2  style="margin-bottom:15px">Tickets Confirmation</h2>
 		<table id='tableConfirm' class="table" style="margin-bottom:15px">
 			
 		</table>
-		<input type="" name="" value="Confirm" class="teal-border-button" style="width:100px;" onclick="onConfirm()">
-		<input type="" name="" value="Cancel" class="red-border-button" style="width:100px" onclick="document.getElementById('confirmPage').style.display='none'; ">
+		<input type="" name="" value="Confirm" class="teal-button" style="width:100px;" onclick="onConfirm()">
+		<input type="" name="" value="Cancel" class="red-button" style="width:100px" onclick="document.getElementById('confirmPage').style.display='none'; ">
 	</center>
 </div>
 <div id='spinner' style="z-index:2;margin:auto;width:65%;height:100%;padding:0px;top:0px;position:absolute;background-color: white;opacity:0.9;display: none;">
-	<center  style="margin-top:15%">
+	<center style="margin-top:20%">
 		<h1 style="color:#008080;display:inline;">NTU|</h1>
 		<h1 style="display:inline;">Cinematics</h1><br><br>
 		<div class="spinner"></div><br>

@@ -1,5 +1,16 @@
 <!DOCTYPE html>
 <html>
+<?php 
+	if (!isset($_SESSION)){
+		session_start();
+	}
+	if(isset($_SESSION["useraccount"])){
+		echo "<script>const useraccount=".$_SESSION['useraccount']."[0];console.log(useraccount)</script>";
+	}else{
+		echo "<script>const useraccount=null</script>";
+	}
+	
+?>
 <head>
 	<title>Movies</title>
 	<link rel="stylesheet" type="text/css" href="./css/ee4717.css">
@@ -17,11 +28,26 @@
 			<a href="./promotions.html" class="menu">Promotions</a>
 			<a href="./cart.html" class="menu" > Cart</a>
 			<span class="account-box" style="float:right;">
-				<span id='account' class="menu" style="padding-right:0px"> 
-					Account
-				</span>
-				<span id="account-option" class="account-option" style="width:100%;text-align: center;">
-				</span>	
+				<?php
+					if (isset($_SESSION["useraccount"])){
+						echo "	<span id='account' class='menu' style='padding-right:0px'> 
+									Account
+								</span>
+								<span id='account-option' class='account-option' style='width:100%;text-align: center;''>
+									<a>Profile</a>
+									<a>Logout</a>
+								</span>	";		
+					}else{
+						echo"	<span id='account' class='menu' style='padding-right:0px'> 
+									Account
+								</span>
+								<span id='account-option' class='account-option' style='width:100%;text-align: center;''>
+									<a>Login</a>
+									<a>Register</a>
+								</span>	";
+					}
+				?>
+				
 			</span>			
 			<span class="dot" id="dot">0</span>
 		</nav>

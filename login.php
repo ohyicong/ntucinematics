@@ -1,5 +1,17 @@
 <!DOCTYPE html>
 <html>
+<?php 
+	if (!isset($_SESSION)){
+		session_start();
+	}
+	if(isset($_SESSION["useraccount"])){
+		echo "<script>const useraccount=".$_SESSION["useraccount"]."[0];console.log(useraccount)</script>";
+		header("Location: http://localhost:1234/ntucinematics/useraccount.php");
+	}else{
+		echo "<script>const useraccount=null</script>";
+	}
+	
+?>
 <head>
 	<title>Movies</title>
 	<link rel="stylesheet" type="text/css" href="./css/ee4717.css">

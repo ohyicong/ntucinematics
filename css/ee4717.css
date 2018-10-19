@@ -43,13 +43,15 @@ img{display:inline-block;float: left;}
 .teal-border-button:hover{box-shadow:0 0 0 0.5pt #00b3b3;border:solid #00b3b3 0.5px;color:#00b3b3;box-sizing: border-box;}
 .red-border-button{border:solid #B91D47 0.5px; background-color:white; color:#B91D47; border-radius:5px;padding:10px;box-sizing: border-box;text-align:center;}
 .red-border-button:hover{box-shadow:0 0 0 0.5pt #D57790;border:solid #D57790 0.5px;color:#D57790;box-sizing: border-box;}
-
 .teal-input{border:none;border:solid;border-width:thin;border-color:#00b3b3;box-sizing: border-box;border-radius:5px;}
 .teal-input:focus{box-shadow:0 0 0 0.5pt #00b3b3;border:none;border-bottom:solid;border-width:thin;border-color:pink;box-sizing: border-box; }
 .grey-input{border:none;border:solid;border-width:thin;border-color:#b3b3b3;box-sizing: border-box;border-radius:5px;}
 .grey-input:focus{box-shadow:0 0 0 0.5pt black;border:none;border-bottom:solid;border-width:thin;border-color:pink;box-sizing: border-box; }
 .grey-button{text-align:center;border:solid #b3b3b3 0.5px; background-color:#ffffff; color:#b3b3b3; border-radius:5px;padding:10px;box-sizing: border-box;}
-.grey-button:hover{box-shadow:0 0 0 0.5pt #b3b3b3;border:solid #008080 0.5px; background-color:#008080; color:white; border-radius:5px;padding:10px;box-sizing: border-box;}
+.grey-button:hover{box-shadow:0 0 0 0.5pt #b3b3b3;border:solid #b3b3b3 0.5px; background-color:#008080; color:white; border-radius:5px;padding:10px;box-sizing: border-box;}
+.red-button{text-align:center;border:solid #B91D47 0.5px; background-color:#B91D47; color:white; border-radius:5px;padding:10px;box-sizing: border-box;}
+.red-button:hover{box-shadow:0 0 0 0.5pt #941738;border:solid #941738 0.5px; background-color:#941738; color:white; border-radius:5px;padding:10px;box-sizing: border-box;}
+
 .margin{margin:10px;}
 .margin-bottom{margin:10px;}
 .margin-right{margin-right:10px;}

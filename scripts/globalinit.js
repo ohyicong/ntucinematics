@@ -29,16 +29,17 @@ var obj = { 'seat_status': [],
 				this.seat_status["S"+index]=status;
 			} 
 		};
+
 function globalInit(){
-	console.log("executed",executed);
+	//Check if first time init()
 	if(executed==false){
-		loginStatus();
+		//loginStatus();
 		onClick(0,"current_movies","","",["MOVIE_ID","MOVIE_NAME"],'OPTION',"SelectMovie");
 		executed=true;
 	}
 	userCartSize=0;
 	userCartGlobal=localStorage.getItem('userCart');
-	if(userCartGlobal=='null'||userCartGlobal==null||userCartGlobal==''){
+	if(userCartGlobal=='null'||userCartGlobal==null||userCartGlobal==''||userCartGlobal.length==0){
 		console.log('Empty cart',userCartGlobal);
 	}else{
 		try{	
@@ -46,66 +47,14 @@ function globalInit(){
 			for(let x=0;x<userCartGlobal.length;x++){
 				userCartSize+=userCartGlobal[x].tickets.length;
 			}
-		console.log(userCartSize)
-		console.log('Full cart',userCartGlobal);
+			console.log(userCartSize)
+			console.log('Full cart',userCartGlobal);
 		}catch(e){
 			console.log("UserCart error",e);
 		}
 	}
 	document.getElementById('dot').innerHTML=userCartSize;
 
-}
-
-
-
-//Check login status
-function loginStatus(){
-	// ARRAY FORMAT [userID, Name, Password, Email, Address, CardNo, CCV]
-	try{	
-		loginbox=login();
-		if (loginbox[0]!=null){
-			userlogin=loginbox[1];
-			//document.getElementById('account').innerText=userlogin;
-			var option=document.createElement('A');
-			option.href = "./useraccount.html";
-			option.innerText="Yo " + userlogin + "!";
-			document.getElementById('account-option').appendChild(option);
-			//ADD LOGOUT FUNCTION HERE
-			//REMOVE LOCAL STORAGE
-			var option=document.createElement('A');
-			option.href = "./login.html";
-			option.innerText="Log Out";
-			document.getElementById('account-option').appendChild(option);
-			option.onclick=removeAccount;
-		}else{
-			var option=document.createElement('A');
-			option.href = "./login.html";
-			option.innerText="Login";
-			document.getElementById('account-option').appendChild(option);
-		}
-	}catch{
-			console.log("No account")
-			var option=document.createElement('A');
-			option.href = "./login.html";
-			option.innerText="Login";
-			document.getElementById('account-option').appendChild(option);
-	}
-}
-
-//GET LOGIN ARRAY
-function login(){
-	//console.log("TEST");
-	var userobject=JSON.parse(localStorage.getItem("loginInfo"));
-	var userbox = userobject.split(',');
-	//document.getElementById('accountinfo').innerHTML=userbox[0];
-	//document.getElementById('accountinfo');
-	return userbox;
-}
-
-var removeAccount = function (){
-	//window.onbeforeunload = function() { localStorage.removeItem(key); return ''; };
-	localStorage.removeItem("loginInfo");
-	return null;
 }
 
 
@@ -128,13 +77,6 @@ function onClick(index,table_name, condition, element,return_column,element_tag,
 	}
 }
 
-/*
-function getDataAsync(index, table_name, condition, element, return_column, element_tag ,output_container){
-	return new Promise(function(resolve,reject){
-		resolve(getData(index,table_name, condition,element,return_column,element_tag,output_container));
-	});
-}
-*/
 
 //Main Server Call - via AJAX
 function getData(index, table_name, condition, value, return_column=["",""], element_tag, output_container){
@@ -162,8 +104,8 @@ function getData(index, table_name, condition, value, return_column=["",""], ele
 			data = this.responseText
 			console.log(this.responseText);
 			}
-	// -----  END OF CALL & RESPONSE -----			
-	// case handling - SEND UNIQUE ID TO DB, GET SEAT STATUS, ALL OTHER CASES
+			// -----  END OF CALL & RESPONSE -----			
+			// case handling - SEND UNIQUE ID TO DB, GET SEAT STATUS, ALL OTHER CASES
 			key_list=Object.keys(data[0]);
 			var temp_value=[];
 			var indexNum=0;
