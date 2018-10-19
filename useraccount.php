@@ -34,11 +34,11 @@
 		<header>
 			<img src="./img/logo.jpg" style="width:80%;height:100%;">
 		</header>
-		<nav style="text-align: right">
-			<a href="./index.html" class="menu">Home</a>
+		<nav style="text-align:right;padding-right:0px">
+			<a href="./index.php" class="menu">Home</a>
 			<a href="./movies.html" class="menu">Movies</a>
 			<a href="./promotions.html" class="menu">Promotions</a>
-			<a href="./cart.html" class="menu" > Cart</a>
+			<a href="./cart.php" class="menu" > Cart</a>
 			<span class="account-box" style="float:right;">
 				<?php
 					if (isset($_SESSION["useraccount"])){
@@ -47,18 +47,19 @@
 								</span>
 								<span id='account-option' class='account-option' style='width:100%;text-align: center;''>
 									<a>Profile</a>
-									<a href='./php/logout.php'>Logout</a>
+									<a>Logout</a>
 								</span>	";		
 					}else{
 						echo"	<span id='account' class='menu' style='padding-right:0px'> 
 									Account
 								</span>
 								<span id='account-option' class='account-option' style='width:100%;text-align: center;''>
-									<a href='./login.php'>Login</a>
-									<a href='./register.html'>Register</a>
+									<a>Login</a>
+									<a>Register</a>
 								</span>	";
 					}
 				?>
+				
 			</span>			
 			<span class="dot" id="dot">0</span>
 		</nav>
