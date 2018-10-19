@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 13, 2018 at 04:03 PM
+-- Generation Time: Oct 19, 2018 at 07:20 PM
 -- Server version: 10.1.34-MariaDB
 -- PHP Version: 7.2.8
 
@@ -1103,17 +1103,23 @@ CREATE TABLE `user_accounts` (
   `cardno` text NOT NULL,
   `address` text NOT NULL,
   `ccv` text NOT NULL,
-  `registerdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `registerdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `cardtype` varchar(10) DEFAULT NULL,
+  `postalcode` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `user_accounts`
 --
 
-INSERT INTO `user_accounts` (`userid`, `name`, `password`, `email`, `cardno`, `address`, `ccv`, `registerdate`) VALUES
-('ar2or', 'Aaron', '123456', 'arop999@hotmail.com', 'NTUHALL10', '1234567890123456', '111', '2018-10-02 16:31:00'),
-('aa2ii', 'Kai', '123456', 'kai@yen.com', 'crescent', '1234567890123456', '123', '2018-10-03 10:57:24'),
-('ii2@c', 'yicongfaggy', '123456', 'yi@cong.com', 'tanjonghall', '1234567890123456', '123', '2018-10-03 13:18:36');
+INSERT INTO `user_accounts` (`userid`, `name`, `password`, `email`, `cardno`, `address`, `ccv`, `registerdate`, `cardtype`, `postalcode`) VALUES
+('ar2or', 'Aaron', '123456', 'arop999@hotmail.com', 'NTUHALL10', '1234567890123456', '111', '2018-10-02 16:31:00', NULL, NULL),
+('aa2ii', 'Kai', '123456', 'kai@yen.com', 'crescent', '1234567890123456', '123', '2018-10-03 10:57:24', NULL, NULL),
+('ii2@c', 'yicongfaggy', '123456', 'yi@cong.com', 'tanjonghall', '1234567890123456', '123', '2018-10-03 13:18:36', NULL, NULL),
+('0aa73acded4fe0b62e573718e5f57d0a88bca0b8', 'yicong', '123123', 'ohyicong123@hotmail.com', 'asdasd', '1234512345123451', '123', '2018-10-19 11:11:57', '', NULL),
+('1231123123123', 'yicong', 'asdasd', 'asdjkjk@hotmail.com', '123123123', 'asdasdsdaasd', '123', '2018-10-19 11:11:57', 'mastercard', NULL),
+('84bd79cf88d070964dc8b955357ff6352299a55a', 'yicong', '123123', 'ohyicong1123@hotmail.com', 'asdasdasd', '1234512345123451', '123', '2018-10-19 11:21:38', 'Mastercard', NULL),
+('0aa73acded4fe0b62e573718e5f57d0a88bca0b8', 'yicong', '123123', 'ohyicong123@hotmail.com', 'asdasd', '1234512345123451', '123', '2018-10-19 11:22:43', '', NULL);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

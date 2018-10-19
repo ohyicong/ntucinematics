@@ -7,5 +7,11 @@ Client and Server technologies used:
 3.PHP
 4.MySQL
 
+*UPDATES 1*
+PHP added into index,cart,login,useraccount
+useraccount holds all customer's information after logging in!
+
+
+
 (PS: Framework like Angular, React, Boostrap were not allowed to be used for this project. Everything is built from scratch.)
 
