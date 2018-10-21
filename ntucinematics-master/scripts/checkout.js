@@ -35,7 +35,7 @@ var isExist=false;//if the user select this timing and movie before
 onInit();
 function onInit(){
 	isExist=false;
-	getData("unique_seats",userSelection.time, ID, 'SEAT_NO');
+	getData("unique_seats", "UNIQUE_ID", ID, ['SEAT_NO', 'STATUS']);
 	if(userCart=='null'||userCart==null||userCart==''){
 		userCart=[];
 		console.log('Empty cart',userCart);
@@ -181,7 +181,6 @@ function onSeatClick(element){
 function onCheckOut(){
 	if(choosenSeats.length>0){
 		updateCart();
-		window.location.href="./cart.php"
 	}else{
 		alert("You must choose at least 1 seat to checkout!");
 	}
@@ -234,22 +233,25 @@ function clearCart(){
 	} 
 }
 
-//getData("unique_seats",['UNIQUE_ID','TIMESTAMP'], ID, 'SEAT_NO')
 //Main Server Call - via AJAX
-function getData(table_name, timestamp, value, condition){
+function getData(table_name, condition, value, return_column=["",""]){
 	var ajax = new XMLHttpRequest();
 	let datainput =  new FormData();
 	var method = "POST";
 	var url = "./php/dataCheckout.php";
 	var asynchronous = true;
+	// Add data into packet
 
-	//value=value.slice(3,value.length-1);
+	console.log(table_name);
+	console.log(condition);
+	console.log(value);
+	console.log(return_column);
+	value=value.slice(3,value.length-1);
 
 	datainput.append("table_name", table_name);
-	datainput.append("TIMESTAMP", timestamp);
 	datainput.append("condition", condition);
-	datainput.append("ID", value); 
-	
+	datainput.append("value", value); 
+	datainput.append("return_column", return_column);
 	//For posting
 	ajax.open(method, url, asynchronous);	
 	ajax.send(datainput);
@@ -263,21 +265,10 @@ function getData(table_name, timestamp, value, condition){
 				console.log(this.responseText);
 				console.log("Error occured");
 			}
-			if(data){
-				for(let i=0;i<30;i++){
-					if(data.includes(""+i)){
-						obj.seat_status.push(0);
-					}else{
-						obj.seat_status.push(1);
-					}
-				}
-				console.log("SEAT STATUS", obj.seat_status);
-			}else{
-				for(let i=0;i<30;i++){
-					obj.seat_status.push(1);
-				}
+			for(let i=0;i<data.length;i++){
+				obj.seat_status.push(data[i].STATUS);
 			}
-				populateTable();
+			populateTable();
 		};
 	}
 }

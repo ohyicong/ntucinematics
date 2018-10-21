@@ -172,7 +172,7 @@
 				}
 				return regex.test(ele.value);
 			}
-			if(checkName(document.getElementById('name'))&&checkEmail(document.getElementById('email'))&&checkAddress(document.getElementById('address'))&&checkPostal(document.getElementById('postalcode'))&&checkCardNumber(document.getElementById('cardno'))&&checkCardVerification(document.getElementById('ccv'))){
+			if(checkName(document.getElementById('name'))&&checkEmail(document.getElementById('email'))&&checkAddress(document.getElementById('address'))&&checkPostal(document.getElementById('postalcode'))&&checkCardNumber(document.getElementById('cardno'))&&checkCardVerification(document.getElementById('cardverification'))){
 				document.getElementById('confirmPage').style.display='block';
 			}else{
 				alert('Please check your inputs');
@@ -192,10 +192,7 @@
 						console.log('Updating server')
 						console.log(userCart[i].uniqueID);
 						console.log(userCart[i].tickets);
-						console.log(userCart[i].time);
-						for(let seat=0; seat<userCart[i].tickets.length; seat++){
-							sendData("unique_seats", "updateSeats", "0", userCart[i].uniqueID, userCart[i].tickets[seat]);
-						}
+						sendData("unique_seats", "updateSeats", "0", userCart[i].uniqueID,userCart[i].tickets);
 					}
 					localStorage.setItem('userCart',null);
 					localStorage.setItem('userSelection',null);
@@ -228,24 +225,21 @@
 		}
 
 		// WHERE return_column= [UNIQUE_ID, SeatNumber]
-		function sendData(table_name, condition, value, ID, tickets){
+		function sendData(table_name, condition, value,ID,tickets){
 				var ajax = new XMLHttpRequest();
 				let datainput =  new FormData();
 				var method = "POST";
 				var url = "./php/dataCheckout.php";
 				var asynchronous = true;
 				var uniqID;
-				var userSelection= JSON.parse(localStorage.getItem('userSelection'));
 				// Add data into packet
-
-				//ID=ID.slice(3,ID.length-1);
+				ID=ID.slice(3,ID.length-1);
 				datainput.append("table_name", table_name);
 				datainput.append("condition", condition);
-				datainput.append("TIMESTAMP", userSelection.time);
-				//datainput.append("DATE",);
+				datainput.append("value", value); 
 				datainput.append("ID",ID);
 				datainput.append("tickets",tickets);
-				//console.log("USERGLOBAL ", userSelection.time);
+				console.log("Date input",datainput);
 				//For posting
 				ajax.open(method, url, asynchronous);	
 				ajax.send(datainput);
@@ -306,10 +300,10 @@
 			<select id="SelectMovie" class="menu-select" onchange="onClick(1,'loc_address', 'MOVIE_ID', this, ['CINEMA_ID','CINEMA'],'OPTION','SelectCinema')" style="width:40%;margin-right:1.25%">
 				<option value="" disabled selected>Select movie</option>
 			</select>
-			<select id="SelectCinema" class="menu-select" onchange="onClick(2,'loc_address', 'CINEMA_ID', this, ['DAY','DAY'],'OPTION', 'SelectDate')" style="width:15%;margin-right:1.25%">
+			<select id="SelectCinema" class="menu-select" onchange="onClick(2,'loc_address', 'CINEMA_ID', this, ['DATE','DATE'],'OPTION', 'SelectDate')" style="width:15%;margin-right:1.25%">
 				<option value="" disabled selected>Select cinema</option>
 			</select>
-			<select id="SelectDate" class="menu-select" onchange="onClick(3,'loc_address', 'DAY', this, ['TIME','TIMESTAMP'],'OPTION', 'SelectTime')" style="width:15%;margin-right:1.25%">
+			<select id="SelectDate" class="menu-select" onchange="onClick(3,'loc_address', 'DATE', this, ['TIME','TIME'],'OPTION', 'SelectTime')" style="width:15%;margin-right:1.25%">
 				<option value="" disabled selected>Select day</option>
 			</select>
 			<select id="SelectTime" class="menu-select" onchange="onClick(4,'loc_address', 'TIME', this, ['UNIQUE_ID','UNIQUE_ID'], 'BUTTON', 'BOOK')" style="width:15%;margin-right:1.25%">

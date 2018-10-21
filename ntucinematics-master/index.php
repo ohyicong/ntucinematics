@@ -5,8 +5,7 @@
 		session_start();
 	}
 	if(isset($_SESSION["useraccount"])){
-		echo "<script>const useraccount=".$_SESSION["useraccount"]."[0];console.log(useraccount)</script>";
-		header("Location: http://localhost:1234/ntucinematics/useraccount.php");
+		echo "<script>const useraccount=".$_SESSION['useraccount']."[0];console.log(useraccount)</script>";
 	}else{
 		echo "<script>const useraccount=null</script>";
 	}
@@ -15,7 +14,7 @@
 <head>
 	<title>Movies</title>
 	<link rel="stylesheet" type="text/css" href="./css/ee4717.css">
-	<script type="text/javascript" src='./scripts/login.js'></script>
+	<script type="text/javascript" src="./scripts/index.js"></script>
 	<script type="text/javascript" src='./scripts/globalinit.js'></script>
 </head>
 <body>
@@ -52,16 +51,16 @@
 			</span>			
 			<span class="dot" id="dot">0</span>
 		</nav>
-	</div>	
+	</div>
 	<div class="container clearfix" style="margin-bottom:10px">
 		<center>
 			<select id="SelectMovie" class="menu-select" onchange="onClick(1,'loc_address', 'MOVIE_ID', this, ['CINEMA_ID','CINEMA'],'OPTION','SelectCinema')" style="width:40%;margin-right:1.25%">
 				<option value="" disabled selected>Select movie</option>
 			</select>
-			<select id="SelectCinema" class="menu-select" onchange="onClick(2,'loc_address', 'CINEMA_ID', this, ['DAY','DAY'],'OPTION', 'SelectDate')" style="width:15%;margin-right:1.25%">
+			<select id="SelectCinema" class="menu-select" onchange="onClick(2,'loc_address', 'CINEMA_ID', this, ['DATE','DATE'],'OPTION', 'SelectDate')" style="width:15%;margin-right:1.25%">
 				<option value="" disabled selected>Select cinema</option>
 			</select>
-			<select id="SelectDate" class="menu-select" onchange="onClick(3,'loc_address', 'DAY', this, ['TIME','TIMESTAMP'],'OPTION', 'SelectTime')" style="width:15%;margin-right:1.25%">
+			<select id="SelectDate" class="menu-select" onchange="onClick(3,'loc_address', 'DATE', this, ['TIME','TIMESTAMP'],'OPTION', 'SelectTime')" style="width:15%;margin-right:1.25%">
 				<option value="" disabled selected>Select day</option>
 			</select>
 			<select id="SelectTime" class="menu-select" onchange="onClick(4,'loc_address', 'TIME', this, ['UNIQUE_ID','UNIQUE_ID'], 'BUTTON', 'BOOK')" style="width:15%;margin-right:1.25%">
@@ -70,19 +69,22 @@
 			<input id="BOOK" type="button" class="teal-button" value="Book now" onclick="storeSend()" style="width:10%">
 		</center>
 	</div>
-	<span class="two-third" style="height:450px">
-		<img src="./img/minions.jpg" style="height:100%;width:100%">
-	</span>
-	<span class="one-third" style="height:450px;border:1px solid black;border-radius:5px;">
-		<div style="padding:10px;height:400px;padding:10px 10px">
-			<label>Email</label><br>
-			<input id = "email" type="text" style="width:100%;height:25px;" class="teal-input" required><br>
-			<label>Password</label><br>
-			<input id = "password" type="password" style="width:100%;height:25px;" class="teal-input" required><br><br>
-			<input type="button" value="Login" class="teal-button" onclick="onlogin()" style="margin-top:5px;width:100%"><br>
-			<a href="./register.html"><input type="button" value="Register" class="teal-border-button" style="margin-top:10px;width:100%"></a>
+	<div class="slider" style="height:522px" >
+		<img id="banner" src="./img/crazyrichasian-banner.jpg" style="width:100%;height:100%">
+		<div style="width:200px;height:150px;position:absolute;bottom:10px;left:10px;background-color: grey;opacity: 0.7;padding:10px">
+			<h1 id='movie'style="margin:0px;margin-bottom:5px">Crazy Rich Asians (PG)</h1>
+			<p style="margin:0px;margin-bottom:5px">Showing now</p>
+			<input id='booknow'type="button" class="teal-button" value="Book Now">	
 		</div>
-		
+	</div>
+	<span class="one-third" style="height:250px;padding-top:10px;padding-right:10px">
+		<img src="./img/nuggets.jpg" style="height:200px;width:100%;margin:auto;">
+	</span>
+	<span class="one-third" style="height:250px;padding-top:10px;">
+		<img src="./img/mirai.jpg" style="height:200px;width:100%;margin:auto;">
+	</span>
+	<span class="one-third" style="height:250px;padding-top:10px;padding-left:10px">
+		<img src="./img/moviepromo.jpg" style="height:200px;width:100%;margin:auto;">
 	</span>
 	<footer>
 		<center>

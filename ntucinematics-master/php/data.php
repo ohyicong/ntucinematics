@@ -19,11 +19,7 @@ if ($table_name==="current_movies"){
 } else if ($table_name==="unique_seats") {
 	$result = mysqli_query($conn, "SELECT " .  $return_column . " FROM " . $table_name . " WHERE " . $condition . "=" . $value);
 }else{
-	if($condition==="UNIQUE_ID"){
-		$result = mysqli_query($conn, "SELECT " .  $return_column . " FROM " . $table_name . " WHERE " . $condition . " LIKE " . "'%" . $value . "00%'");
-	}else{
-		$result = mysqli_query($conn, "SELECT " .  $return_column . " FROM " . $table_name . " WHERE " . $condition . "=" . $value);
-	}
+	$result = mysqli_query($conn, "SELECT " .  $return_column . " FROM " . $table_name . " WHERE " . $condition . "=" . $value);
 }
 
 //$result = mysqli_query($conn, "INSERT INTO ". $table_name . "(" . $attribute_name . ")" . " VALUES (" . $value . ")");
@@ -33,7 +29,7 @@ while($row = mysqli_fetch_assoc($result)){
 	$data[]=$row;
 }
 
-//rray_unshift($data,$);
+//array_unshift($data,$value);
 
 $conn->close();
 echo json_encode($data);

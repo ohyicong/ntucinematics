@@ -58,10 +58,10 @@
 			<select id="SelectMovie" class="menu-select" onchange="onClick(1,'loc_address', 'MOVIE_ID', this, ['CINEMA_ID','CINEMA'],'OPTION','SelectCinema')" style="width:40%;margin-right:1.25%">
 				<option value="" disabled selected>Select movie</option>
 			</select>
-			<select id="SelectCinema" class="menu-select" onchange="onClick(2,'loc_address', 'CINEMA_ID', this, ['DAY','DAY'],'OPTION', 'SelectDate')" style="width:15%;margin-right:1.25%">
+			<select id="SelectCinema" class="menu-select" onchange="onClick(2,'loc_address', 'CINEMA_ID', this, ['DATE','DATE'],'OPTION', 'SelectDate')" style="width:15%;margin-right:1.25%">
 				<option value="" disabled selected>Select cinema</option>
 			</select>
-			<select id="SelectDate" class="menu-select" onchange="onClick(3,'loc_address', 'DAY', this, ['TIME','TIMESTAMP'],'OPTION', 'SelectTime')" style="width:15%;margin-right:1.25%">
+			<select id="SelectDate" class="menu-select" onchange="onClick(3,'loc_address', 'DATE', this, ['TIME','TIME'],'OPTION', 'SelectTime')" style="width:15%;margin-right:1.25%">
 				<option value="" disabled selected>Select day</option>
 			</select>
 			<select id="SelectTime" class="menu-select" onchange="onClick(4,'loc_address', 'TIME', this, ['UNIQUE_ID','UNIQUE_ID'], 'BUTTON', 'BOOK')" style="width:15%;margin-right:1.25%">

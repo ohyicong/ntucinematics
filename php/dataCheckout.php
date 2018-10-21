@@ -7,11 +7,17 @@ $dbname="user_data";
 
 $table_name=$_POST["table_name"];
 $condition=$_POST["condition"];
-$value=$_POST["value"];
+$TIMESTAMP=$_POST["TIMESTAMP"];
 
+
+//CONCAT DATE WITH TIMESTAMP
+function datetime($date, $timeinput){
+	$time = DateTime::createFromFormat('H:i:s', $timeinput);
+	$merge=$date->format('Y-m-d') . ' ' . $timeinput;
+	return $merge;
+}
 
 //create connection
-
 $conn = mysqli_connect($servername, $dbusername, $dbpassword, $dbname);
 
 
@@ -20,26 +26,41 @@ if ($condition=="updateSeats"){
 	$ID = $_POST["ID"];
 	$tickets = $_POST["tickets"];
 
-	for($i=0; sizeof($tickets);$i++){
-		$result=mysqli_query($conn, "UPDATE " . $table_name . " SET STATUS = '" . $value ."' WHERE (UNIQUE_ID, SEAT_NO) = (" . $ID . ',' . $tickets[$i] . ")");
-	}
+	$fp = fopen('./log.txt', 'w');
 
+	//MOVIE DATE + GIVEN TIMESTAMP	
+	$datetime=datetime(new DateTime(), $TIMESTAMP);
+	$result = mysqli_query($conn, "INSERT INTO ". $table_name . "(UNIQUE_ID, SEAT_NO, DATETIME) VALUES (" . $ID . ",'" . $tickets . "','" . $datetime . "')");
+
+	fwrite($fp, "INSERT INTO ". $table_name . " (UNIQUE_ID, SEAT_NO, DATETIME) VALUES (" . $ID . ",'" . $tickets . "','" . $datetime . "')");
+			
+	fclose($fp);
 	$conn->close();
-	echo ("UPDATE " . $table_name . " SET STATUS = '" . $value ."' WHERE (UNIQUE_ID, SEAT_NO) = (" . $col . ")");
 
 } else {
-	$return_column=$_POST["return_column"];
-	$result = mysqli_query($conn, "SELECT " .  $return_column . " FROM " . $table_name . " WHERE " . $condition . "=" ."'". $value."'");
-	//UPDATE `unique_seats` SET `STATUS`='True' WHERE UNIQUE_ID='1001001001' AND SEAT_NO='1';
-	//$result = mysqli_query($conn, "INSERT INTO ". $table_name . "(" . $return_column . ")" . " VALUES (" . $value . ")". "WHERE");
-	//$result = mysqli_query($conn, "SELECT*FROM " . $table_name);
+	//$SEAT_NO=$condition;
+	$ID=$_POST["ID"];
+	//MOVIE DATE + GIVEN TIMESTAMP
+	$datetime=datetime(new DateTime(), $TIMESTAMP);
+	$result = mysqli_query($conn, "SELECT SEAT_NO FROM " . $table_name . " WHERE UNIQUE_ID = " . $ID . " AND DATETIME >= '" . $datetime . "'");
+	
 	while($row = mysqli_fetch_assoc($result)){
 		$data[]=$row;
 	}
-	//array_unshift($data,$value);
+
+	for ($i=0; $i<sizeof($data); $i++){
+		$data_new[]=$data[$i]['SEAT_NO'];
+	}
+
+	$fp = fopen('./log.txt', 'w');
+	fwrite($fp, "SELECT SEAT_NO FROM " . $table_name . " WHERE UNIQUE_ID = " . $ID . " AND DATETIME >= '" . $datetime . "'");
+	fclose($fp);
+
 	$conn->close();
-	echo json_encode($data);
+	echo json_encode($data_new);
 }
+
+
 
 ?>
 

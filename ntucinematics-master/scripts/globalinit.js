@@ -65,16 +65,7 @@ function onClick(index,table_name, condition, element,return_column,element_tag,
 		if(check_repeated(index)){ // Status check if segment's dropdown has been selected before, if so -> reset dependent dropdowns
 			console.log('selected array', obj.selected_array); //sanity check
 			obj.setUniqueID(index, element.value); // update Unique_ID 'onclick' where index is reference segment to add or update
-			//=====================================================================//
-			//Handle date-time unique states with unique id  - YET TO ADD DATE
-			if(output_container=="SelectTime"){
-				condition="UNIQUE_ID"
-				value=obj.getUniqueID();
-				getData(index, table_name, condition, value, return_column, element_tag ,output_container); // Main Web Server Call
-			}else{
-				getData(index, table_name, condition, element.value, return_column, element_tag ,output_container); // Main Web Server Call
-			}
-			//=====================================================================//
+			getData(index, table_name, condition, element.value, return_column, element_tag ,output_container); // Main Web Server Call
 			//Prep and save selection
 			console.log('selection',element[String(element.value).slice(2)].textContent);
 			updateUserSelection(index,element[String(element.value).slice(2)].textContent);
@@ -107,7 +98,7 @@ function getData(index, table_name, condition, value, return_column=["",""], ele
 		if(this.readyState==4 && this.status ==200){
 			try{
 			var data = JSON.parse(this.responseText);
-			console.log('data',data);
+			//console.log('data',data);
 			//callback.apply(data, output_container, element_tag);
 			}catch{
 			data = this.responseText
@@ -120,8 +111,8 @@ function getData(index, table_name, condition, value, return_column=["",""], ele
 			var indexNum=0;
 			// If retrieving Unique_ID - update (output_container)element's  value attribute to the resultant UNIQUE_ID for parameter parsing on next data call
 			if(return_column[0]=="UNIQUE_ID"){
-				console.log("Unique_ID = ",obj.getUniqueID());
-				return;
+				console.log(obj.getUniqueID());
+				change_element_value(obj.getUniqueID(),"BOOK NOW", output_container); return null;
 			} 
 			// if retrieving seat value & status -> for every result in response -> add a button element with corresponding seat value and status 
 			else if (return_column[0]=="SEAT_NO"){
