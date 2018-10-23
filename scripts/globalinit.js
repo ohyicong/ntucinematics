@@ -1,8 +1,6 @@
-var userlogin=null;
 var userCartGlobal;
 var userCartSize=0;
 var executed=false;
-var loginbox;
 
 //aaron dropdown box
 var userSelectionGlobal={"day":"", "date":"","cinema":"","time":"","movie":"","movieImage":"","tickets":""};
@@ -103,15 +101,15 @@ function getData(index, table_name, condition, value, return_column=["",""], ele
 	ajax.open(method, url, asynchronous);	
 	ajax.send(datainput);			
 	//For receiving response from data.php
-	 ajax.onreadystatechange= function(){
+	ajax.onreadystatechange= function(){
 		if(this.readyState==4 && this.status ==200){
 			try{
 			var data = JSON.parse(this.responseText);
 			console.log('data',data);
 			//callback.apply(data, output_container, element_tag);
 			}catch{
-			data = this.responseText
-			console.log(this.responseText);
+				data = this.responseText
+				console.log(this.responseText);
 			}
 			// -----  END OF CALL & RESPONSE -----			
 			// case handling - SEND UNIQUE ID TO DB, GET SEAT STATUS, ALL OTHER CASES
@@ -247,9 +245,8 @@ function resetUserSelection(index){
 
 function storeSend(){
 	console.log('ID',obj.getUniqueID());
-	localStorage.setItem('UniqueID', JSON.stringify(obj.getUniqueID()));
+	localStorage.setItem('UniqueID', obj.getUniqueID());
 	localStorage.setItem('userSelection',JSON.stringify(userSelectionGlobal));
-	//window.location.href = './checkout.html';
 	window.open('./checkout.html');
 }
 

@@ -12,7 +12,7 @@
 			redirect.innerHTML="You will be redicted in...."+(5-parseInt((newTime-oldTime)/1000));
 			if((newTime-oldTime)>=5000){
 				clearInterval(countdown);
-				location.href="./index.html";
+				location.href="./index.php";
 				console.log("intervalcleared");
 			}
 		},1000)

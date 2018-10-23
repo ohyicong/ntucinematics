@@ -1,15 +1,31 @@
 <!DOCTYPE html>
 <html>
+<?php
+	if (!isset($_SESSION)){
+		session_start();
+	}
+	if(isset($_SESSION["useraccount"])){
+		echo "<script>const useraccount=".$_SESSION['useraccount']."[0];console.log(useraccount)</script>";
+	}else{
+		echo "<script>const useraccount=null</script>";
+	}
+	$servername="localhost";
+	$dbusername="myuser";
+	$dbpassword="xxxx";
+	$dbname="user_data";
+	$conn = mysqli_connect($servername, $dbusername, $dbpassword, $dbname);
+?>
+
 <head>
 	<title>Movies</title>
 	<link rel="stylesheet" type="text/css" href="./css/ee4717.css">
 	<script type="text/javascript" src='./scripts/globalinit.js'></script>
 </head>
 <script type="text/javascript">
-	const days=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
-	const cinemas=['amk','jem'];
-	const movie="Crazy Rich Asian (PG13)"
-	const movieImage="./img/crazyrichasian.jpg"
+	const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+	const cinemas=['JURONG','YISHUN','HABOURFRONT'];
+	const movie="Crazy Rich Asians"
+	const movieImage="./img/CRAZY RICH ASIANS.jpg"
 	var userSelection=[];
 	
 	function generateUserSelection(movie,movieImage){
@@ -22,19 +38,22 @@
 		console.log('javascript functioning');
 		for(let x=0;x<cinemas.length;x++){
 			for(let i=0;i<7;i++){
-				var element = document.getElementById(cinemas[x]+i);
+				var element = document.getElementById(cinemas[x]+(i+1));
 				var date = addDays(i);
+				console.log("mydate",date);
+				console.log("myday",date.getDay());
+				
 				//Generate timing tables
 				if(i==0){
-					element.innerHTML='Today<br>'+ date.getDate()+'/'+date.getMonth()+'/'+date.getFullYear();
+					element.innerHTML='Today<br>'+ date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()
 					//Update user's selection
-					userSelection[String(cinemas[x])].date=date.getDate()+'/'+date.getMonth()+'/'+date.getFullYear();
+					userSelection[String(cinemas[x])].date=date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()
 					userSelection[String(cinemas[x])].day= date.getDay();
 					userSelection[String(cinemas[x])].cinema=String(cinemas[x]);
 					//User's selection end
-
 				}else{
-					element.innerHTML=days[date.getDay()]+'<br>'+ date.getDate()+'/'+date.getMonth()+'/'+date.getFullYear();	
+					console.log(date.getDay());
+					element.innerHTML=days[date.getDay()]+'<br>'+ date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()	
 				}
 			}	
 		}
@@ -44,20 +63,19 @@
 		let selectedCinema = element.id.slice(0,element.id.length-1);
 		let date = addDays(element.id.slice(element.id.length-1,element.id.length))
 		//Update user's selection
-		userSelection[selectedCinema].date=date.getDate()+'/'+date.getMonth()+'/'+date.getFullYear();
+		userSelection[selectedCinema].date=date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
 		userSelection[selectedCinema].day= date.getDay();
 		userSelection[selectedCinema].cinema=selectedCinema;
 		//User's selection end
-		console.log(userSelection);
-		for(let i=0;i<7;i++){
+		for(let i=1;i<8;i++){
 			document.getElementById(selectedCinema+i).classList.remove('showtimetd');
 			document.getElementById(selectedCinema+i).classList.add('showtimetr');
 		}
 
 		element.classList.add('showtimetd');
 	}
-	function selectedTime(cinema,time){
-		userSelection[cinema].time=time;
+	function selectedTime(cinema,ele){
+		userSelection[cinema].time=ele.innerHTML;
 		console.log(userSelection[cinema]);
 		localStorage.setItem("userSelection",JSON.stringify(userSelection[cinema]));
 		window.location.href="./checkout.html";
@@ -81,11 +99,26 @@
 			<a href="./promotions.html" class="menu">Promotions</a>
 			<a href="./cart" class="menu" > Cart</a>
 			<span class="account-box" style="float:right;">
-				<span id='account' class="menu" style="padding-right:0px"> 
-					Account
-				</span>
-				<span id="account-option" class="account-option" style="width:100%;text-align: center;">
-				</span>	
+				<?php
+					if (isset($_SESSION["useraccount"])){
+						echo "	<span id='account' class='menu' style='padding-right:0px'> 
+									Account
+								</span>
+								<span id='account-option' class='account-option' style='width:100%;text-align: center;''>
+									<a>Profile</a>
+									<a>Logout</a>
+								</span>	";		
+					}else{
+						echo"	<span id='account' class='menu' style='padding-right:0px'> 
+									Account
+								</span>
+								<span id='account-option' class='account-option' style='width:100%;text-align: center;''>
+									<a href='./login.php'>Login</a>
+									<a href='./register.php'>Register</a>
+								</span>	";
+					}
+				?>
+				
 			</span>			
 			<span class="dot" id="dot">0</span>
 		</nav>
@@ -107,10 +140,10 @@
 			<input id="BOOK" type="button" class="teal-button" value="Book now" onclick="storeSend()" style="width:10%">
 		</center>
 	</div>
-	<span class="one-third" style="height:600px">
+	<span class="one-third" style="height:500px">
 		<img src="./img/CRAZY RICH ASIANS.jpg" style="width:100%;height:100%;">
 	</span>
-	<span class="two-third" style="height:600px;padding:10px;">
+	<span class="two-third" style="height:500px;padding:10px;">
 		<h1 style="color:#008080">Crazy Rich Asian (PG13)</h1>
 		<hr>
 		<dl>
@@ -128,57 +161,95 @@
 			 	It turns out that he is not only the scion of one of the country’s wealthiest families but also one of its most sought-after bachelors. Being on Nick’s arm puts a target on Rachel’s back, with jealous socialites and, worse, Nick’s own disapproving mother (Michelle Yeoh) taking aim. And it soon becomes clear that while money can’t buy love, it can definitely complicate things.</dd>
 		</dl>
 	</span>
-	<span class="full" style="height:400px;">
+	<span class="full" style="height:500px;">
 		<h2>SHOWTIMES</h2>
 		<table class="showtimetable" cellpadding="10px">
 			<tr class="showtimetr">
-				<th>AMK Hub</th>
-				<th class='showtimetd'id='amk0' onclick="selectedDay(this)"></th>
-				<th id='amk1' onclick="selectedDay(this)"></th>
-				<th id='amk2' onclick="selectedDay(this)"></th>
-				<th id='amk3' onclick="selectedDay(this)"></th>
-				<th id='amk4' onclick="selectedDay(this)"></th>
-				<th id='amk5' onclick="selectedDay(this)"></th>
-				<th id='amk6' onclick="selectedDay(this)"></th>
+				<th>JURONG</th>
+				<th class='showtimetd' id='JURONG1' onclick="selectedDay(this)"></th>
+				<th class='showtimetr' id='JURONG2' onclick="selectedDay(this)"></th>
+				<th class='showtimetr' id='JURONG3' onclick="selectedDay(this)"></th>
+				<th class='showtimetr' id='JURONG4' onclick="selectedDay(this)"></th>
+				<th class='showtimetr' id='JURONG5' onclick="selectedDay(this)"></th>
+				<th class='showtimetr' id='JURONG6' onclick="selectedDay(this)"></th>
+				<th class='showtimetr' id='JURONG7' onclick="selectedDay(this)"></th>
 			</tr>
 			<tr>
 				<td style="width:200px">
 					Dolby Digital<br>
 					English with Chinese subtitles
 				</td>
-				<td class='showtimetd' onclick="selectedTime('amk','10:00')">10:00</td>
-				<td class='showtimetd' onclick="selectedTime('amk','12:00')">12:00</td>
-				<td class='showtimetd' onclick="selectedTime('amk','14:00')">14:00</td>
-				<td class='showtimetd' onclick="selectedTime('amk','16:00')">16:00</td>
-				<td class='showtimetd' onclick="selectedTime('amk','18:00')">18:00</td>
-				<td class='showtimetd' onclick="selectedTime('amk','20:00')">20:00</td>
-				<td class='showtimetd' onclick="selectedTime('amk','22:00')">22:00</td>
+				<?php
+					$query="select timestamp from loc_address where movie_id='001' && cinema_id='001' && day='001' order by timestamp asc";
+					$val=null;
+					$result=$conn->query($query);
+					while($row = mysqli_fetch_assoc($result)){
+						$val[]=$row;
+					}
+					for($i=0;$i<@sizeof($val);$i++){
+						echo "<td class='showtimetd' onclick='selectedTime(\"JURONG\",this)'>".$val[$i]['timestamp']."</td>";
+					}
+				?>
 			</tr>
 		</table>
 		<br>
 		<table class="showtimetable" cellpadding="10px">
 			<tr class="showtimetr">
-				<th>JEM</th>
-				<th class='showtimetd' id='jem0' onclick="selectedDay(this)"></th>
-				<th id='jem1' onclick="selectedDay(this)"></th>
-				<th id='jem2' onclick="selectedDay(this)"></th>
-				<th id='jem3' onclick="selectedDay(this)"></th>
-				<th id='jem4' onclick="selectedDay(this)"></th>
-				<th id='jem5' onclick="selectedDay(this)"></th>
-				<th id='jem6' onclick="selectedDay(this)"></th>
+				<th>YISHUN</th>
+				<th class='showtimetd' id='YISHUN1' onclick="selectedDay(this)"></th>
+				<th id='YISHUN2' onclick="selectedDay(this)"></th>
+				<th id='YISHUN3' onclick="selectedDay(this)"></th>
+				<th id='YISHUN4' onclick="selectedDay(this)"></th>
+				<th id='YISHUN5' onclick="selectedDay(this)"></th>
+				<th id='YISHUN6' onclick="selectedDay(this)"></th>
+				<th id='YISHUN7' onclick="selectedDay(this)"></th>
 			</tr>
 			<tr>
 				<td style="width:200px">
 					Dolby Atmos<br>
 					English only (No Subtitle)
 				</td>
-				<td class='showtimetd' onclick="selectedTime('jem','10:00')">10:00</td>
-				<td class='showtimetd' onclick="selectedTime('jem','12:00')">12:00</td>
-				<td class='showtimetd' onclick="selectedTime('jem','14:00')">14:00</td>
-				<td class='showtimetd' onclick="selectedTime('jem','16:00')">16:00</td>
-				<td class='showtimetd' onclick="selectedTime('jem','18:00')">18:00</td>
-				<td class='showtimetd' onclick="selectedTime('jem','20:00')">20:00</td>
-				<td class='showtimetd' onclick="selectedTime('jem','22:00')">22:00</td>
+				<?php
+					$query="select timestamp from loc_address where movie_id='001' && cinema_id='002' && day='001' order by timestamp asc";
+					$val=null;
+					$result=$conn->query($query);
+					while($row = mysqli_fetch_assoc($result)){
+						$val[]=$row;
+					}
+					for($i=0;$i<@sizeof($val);$i++){
+						echo "<td class='showtimetd' onclick='selectedTime(\"YISHUN\",this)'>".$val[$i]['timestamp']."</td>";
+					}
+				?>
+			</tr>
+		</table>
+		<br>
+		<table class="showtimetable" cellpadding="10px">
+			<tr class="showtimetr">
+				<th>HABOURFRONT</th>
+				<th class='showtimetd' id='HABOURFRONT1' onclick="selectedDay(this)"></th>
+				<th id='HABOURFRONT2' onclick="selectedDay(this)"></th>
+				<th id='HABOURFRONT3' onclick="selectedDay(this)"></th>
+				<th id='HABOURFRONT4' onclick="selectedDay(this)"></th>
+				<th id='HABOURFRONT5' onclick="selectedDay(this)"></th>
+				<th id='HABOURFRONT6' onclick="selectedDay(this)"></th>
+				<th id='HABOURFRONT7' onclick="selectedDay(this)"></th>
+			</tr>
+			<tr>
+				<td style="width:200px">
+					Dolby Atmos<br>
+					English only (No Subtitle)
+				</td>
+				<?php
+					$query="select timestamp from loc_address where movie_id='001' && cinema_id='003' && day='001' order by timestamp asc";
+					$result=$conn->query($query);
+					$val=null;
+					while($row = mysqli_fetch_assoc($result)){
+						$val[]=$row;
+					}
+					for($i=0;$i<@sizeof($val);$i++){
+						echo "<td class='showtimetd' onclick='selectedTime(\"HABOURFRONT\",this)'>".$val[$i]['timestamp']."</td>";
+					}
+				?>
 			</tr>
 		</table>
 	</span>

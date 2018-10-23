@@ -14,6 +14,7 @@
 					document.getElementById('postalcode').value=useraccount.postalcode;
 					document.getElementById('cardtype').value=useraccount.cardtype;
 					document.getElementById('cardno').value=useraccount.cardno;
+					document.getElementById('ccv').value=useraccount.ccv;
 				}
 			  </script>";
 	}else{
@@ -28,6 +29,154 @@
 	<title>Movies</title>
 	<link rel="stylesheet" type="text/css" href="./css/ee4717.css">
 	<script type="text/javascript" src='./scripts/globalinit.js'></script>
+	<script>
+		function checkBeforeSave(){
+			function checkName(ele){
+				regex=/^[A-Za-z\s]+$/;
+				if(!regex.test(ele.value)){
+					console.log("name error");
+					ele.style.border='1px solid #B91D47';
+				}else{
+					ele.style.border='1px solid #00B3B3';
+				}
+				return regex.test(ele.value);
+			}
+			function checkEmail(ele){
+				regex=/^[\w.-]+@[A-Za-z](.[A-Za-z]{2,3})+$/;
+				if(!regex.test(ele.value)){
+					console.log("email error");
+					ele.style.border='1px solid #B91D47';
+				}else{
+					ele.style.border='1px solid #00B3B3';
+				}
+				return regex.test(ele.value);
+			}
+			function checkAddress(ele){
+				regex=/^[\w\s-.#@()]+$/;
+				if(!regex.test(ele.value)){
+					console.log("address error");
+					ele.style.border='1px solid #B91D47';
+				}else{
+					ele.style.border='1px solid #00B3B3';
+				}
+				return regex.test(ele.value);
+			}
+			function checkPostal(ele){
+				regex=/^[\d]{6}$/;
+				if(!regex.test(ele.value)){
+					console.log("postal error");
+					ele.style.border='1px solid #B91D47';
+				}else{
+					ele.style.border='1px solid #00B3B3';
+				}
+				return regex.test(ele.value);
+			}
+			function checkCardNumber(ele){
+				regex=/^[\d]{16}$/;
+				if(!regex.test(ele.value)){
+					console.log("cardno error");
+					ele.style.border='1px solid #B91D47';
+				}else{
+					ele.style.border='1px solid #00B3B3';
+				}
+				return regex.test(ele.value); 
+			}
+			function checkCardVerification(ele){
+				regex=/^[\d]{3}$/;
+				if(!regex.test(ele.value)){
+					console.log("cardveri error");
+					ele.style.border='1px solid #B91D47';
+				}else{
+					ele.style.border='1px solid #00B3B3';
+				}
+				return regex.test(ele.value);
+			}
+			function checkCardType(ele){
+				if(ele.value){
+					ele.style.border='1px solid #00B3B3';
+					return true;
+				}else{
+					ele.style.border='1px solid #B91D47';
+					return false;
+				}
+			}
+			if(checkName(document.getElementById('name'))&&checkEmail(document.getElementById('email'))&&checkAddress(document.getElementById('address'))&&checkPostal(document.getElementById('postalcode'))&&checkCardNumber(document.getElementById('cardno'))&&checkCardVerification(document.getElementById('ccv'))&&checkCardType(document.getElementById('cardtype'))&&checkPassword()){
+				if(confirm("Confirm changes?")){
+					let form = new FormData();
+					let ajax = new XMLHttpRequest();
+					let method = "POST";
+					let url = "./php/changeaccinfo.php";
+					let asynchronous=true;
+					form.append('address',document.getElementById('address').value);
+					form.append('postalcode',document.getElementById('postalcode').value);
+					form.append('cardno',document.getElementById('cardno').value);
+					form.append('ccv',document.getElementById('ccv').value);
+					form.append('cardtype',document.getElementById('cardtype').value);
+					form.append('password',document.getElementById('password').value);
+					ajax.open(method, url, asynchronous);	
+					ajax.send(form);
+					console.log("Form sent",form);
+					document.getElementById('saveBtn').style.display="none";
+					document.getElementById('changeBtn').style.display="block";
+				}else{
+
+				}
+			}else{
+				alert('Please check your inputs');
+			};
+
+
+		}
+		function checkPassword(){
+				passwordEle=document.getElementById('password');
+				retypePasswordEle=document.getElementById('retypepassword');
+				if(passwordEle.value==retypePasswordEle.value){
+					passwordEle.style.border='1px solid #00B3B3';
+					retypePasswordEle.style.border='1px solid #00B3B3';				
+					return true;
+				}else{
+					passwordEle.style.border='1px solid #B91D47';
+					retypePasswordEle.style.border='1px solid #B91D47';
+					return false;
+				}
+
+		}
+
+		function onChange(){
+			document.getElementById('name').readOnly=false;
+			document.getElementById('email').readOnly=false;
+			document.getElementById('address').readOnly=false;
+			document.getElementById('postalcode').readOnly=false;
+			document.getElementById('cardno').readOnly=false;
+			document.getElementById('ccv').readOnly=false;
+			document.getElementById('cardtype').readOnly=false;
+			document.getElementById('retypepassword').readOnly=false;
+			document.getElementById('password').readOnly=false;
+			document.getElementById('saveBtn').style.display="block";
+			document.getElementById('changeBtn').style.display="none";
+			
+		}
+		function onSave(){
+			document.getElementById('address').readOnly=true;
+			document.getElementById('postalcode').readOnly=true;
+			document.getElementById('cardno').readOnly=true;
+			document.getElementById('ccv').readOnly=true;
+			document.getElementById('cardtype').readOnly=true;
+			document.getElementById('retypepassword').readOnly=true;
+			document.getElementById('password').readOnly=true;
+			checkBeforeSave()
+		}
+		document.onload=function(){
+			readOnlyTrue();
+		}
+		
+
+	</script>
+	<style>
+		table {width:100%;text-align:left;padding:0px;border-collapse: collapse;}
+		tr:nth-child(even) {background-color: #f2f2f2;}
+
+	</style>
 </head>
 <body>
 	<div class="clearfix">
@@ -82,7 +231,7 @@
 			<input id="BOOK" type="button" class="teal-button" value="Book now" onclick="storeSend()" style="width:10%">
 		</center>
 	</div>
-	<div style="height:600px;border:1px solid #b3b3b3">
+	<div style="height:600px;">
 		<div>
 			<input id="nowShowingBtn" type="button" value="Account" class="teal-border-button" style="float:left;outline:none;border-radius:0px;width:10%" onclick="document.getElementById('nowShowing').style.visibility = 'visible';
 			 document.getElementById('comingSoon').style.visibility = 'hidden';
@@ -105,45 +254,77 @@
 		</div>
 		<span id="nowShowing" class="full" style="height:600px;overflow-y:none">
 			<div id='accountinfo' style="height:40%;width:50%">
-				<fieldset style="margin:0px;margin-top:10px">
+				<form>
+				  <fieldset>
 				    <legend>Personal Details</legend>
 					<label>Name</label><br>
-					<input id='name' type="text" style="height:25px;width:33.33%" class="teal-input" value=''><br>
+					<input id='name' type="text" style="height:25px;width:40%" class="teal-input" value='' readonly="readonly"><br>
 					<label>Email</label><br>
-					<input id='email'type="email" style="height:25px;width:33.33%" class="teal-input" value=''><br>
+					<input id='email'type="email" style="height:25px;width:40%" class="teal-input" value='' readonly="readonly"><br>
 					<label>Address</label><br>
-					<textarea id='address' style="height:50px;width:33.33%" class="teal-input" value=''></textarea><br>
+					<textarea id='address' style="height:50px;width:40%" class="teal-input" value='' readonly="readonly"></textarea><br>
 					<label>Postalcode</label><br>
-					<input id='postalcode'type="number" style="height:25px;width:33.33%" class="teal-input" value=''><br>
-				</fieldset>
-				<fieldset style="margin:0px;margin-top:10px">
+					<input id='postalcode'type="number" style="height:25px;width:40%" class="teal-input" value='' readonly="readonly"><br>
+					<label>Password</label><br>
+					<input id='password' type="password" style="height:25px;width:40%" class="teal-input" value='' readonly="readonly"><br>
+					<label>Retype password</label><br>
+					<input id='retypepassword'type="password" style="height:25px;width:40%" class="teal-input" value='' onkeyup="checkPassword()" readonly="readonly"><br>
+
+				  </fieldset>
+				  <fieldset>
 				    <legend>Payment Details</legend>
 					<label>Card type*</label><br>
-					<select id="cardtype" class="grey-input" style="height:25px">
+					<select id="cardtype" class="grey-input" style="height:25px" readonly="readonly">
 						<option value="" disabled selected>-Please Select-</option>
 						<option>Mastercard</option>
 						<option>VISA</option>
 					</select><br>
 					<label>CreditCard Number*</label><br>
-					<input id='cardno' type="text" value="" class="grey-input" style="height:25px"><br>
+					<input id='cardno' type="text" value="" class="grey-input" style="height:25px" readonly="readonly"><br>
 				    <label>Card Verification Number*</label><br>
-				    <input id='cardverification' type="text" name="" class="grey-input" style="height:25px"><br>
-				    <input id='registerbtn' type="button" value="Register" class="teal-border-button" onclick="onRegister()" style="margin-top:10px;">
+				    <input id='ccv' type="number" name="" class="grey-input" style="height:25px" readonly="readonly"><br>
+				    <input id='changeBtn' type="button" value="Enable Edit" class="red-border-button" onclick="onChange()" style="margin-top:10px;">
+				    <input id='saveBtn' type="button" value="Save" class="teal-border-button" onclick="onSave()" style="margin-top:10px;display: none;">
 				  </fieldset>
+				</form>
 			</div>
 		</span>
-		<span id="comingSoon" class="full" style="height:600px;position:relative;z-index:-2px;visibility:hidden;" >
-			<div class="one-fifth">
-				<img src="./img/smallfootsmall.jpg" style="height:100%;width:80%">
-				<div class='movies'>
-					<label style="font-size:20px">Small Foot</label><br>
-					<label style="font-size:15px">(PG)</label><br>
-					<label style="font-size:15px">95 Mins</label><br>
-					<label style="font-size:15px">English</label>
-				</div>		
-			</div>
-			
-			
+		<span id="comingSoon" class="full" style="height:600px;position:relative;z-index:-2px;visibility:hidden;overflow-y:auto;" >
+			<table cellpadding="15px" style="margin-top:2px">
+				<tr>
+					<th>No.</th>
+					<th>Movie Title</th>
+					<th>Cinema</th>
+					<th>Time</th>
+					<th>Date Of Purchase</th>
+				</tr>
+				<?php
+					$servername="localhost";
+					$dbusername="myuser";
+					$dbpassword="xxxx";
+					$dbname="user_data";
+					$conn = mysqli_connect($servername, $dbusername, $dbpassword, $dbname);
+					$useraccount=json_decode($_SESSION["useraccount"])[0];
+					$query="select * from purchase_history where userid='".$useraccount->userid."'";
+					$result=$conn->query($query);
+					if ($result->num_rows > 0) {
+					    // output data of each row
+					    $i=0;
+					    while($row = $result->fetch_assoc()) {
+					    	$i++;
+					        echo "<tr>";
+					        echo "<td>".$i."</td>";
+					        echo "<td>".$row["movieName"]."</td>";
+					        echo "<td>".$row["cinema"]."</td>";
+					        echo "<td>".$row["movieDate"]."</td>";
+					        echo "<td>".$row["purchaseDate"]."</td>";
+					        echo "</tr>";
+					    }
+					}else{
+						echo "<tr><td colspan='5'>No information available</td></tr>";
+					}
+				?>
+			</table>
 		</span>
 	</div>
 

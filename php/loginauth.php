@@ -17,11 +17,11 @@
 
 	$conn = mysqli_connect($servername, $dbusername, $dbpassword, $dbname);
 
-	//$result = mysqli_query($conn, "INSERT INTO ". $table_name . "(name, password, email, cardno, address)" . " VALUES ('" . $name . "','" . $password . "','" . $email . "','" . $address . "','" . $cardno . "');");
-
-	$result = mysqli_query($conn, "SELECT *" . " FROM " . $table_name . " WHERE (password, email) = ('" . $password . "' , '" . $email . "');");
-
-
+	$query="SELECT *" . " FROM " . $table_name . " WHERE (password, email) = ('" . $password . "' , '" . $email . "')";
+	$result = mysqli_query($conn,$query);
+	$fp = fopen('./login.txt', "w");
+	fwrite($fp, $query);
+	fclose($fp);
 	while($row = mysqli_fetch_assoc($result)){
 		$data[]=$row;
 	}

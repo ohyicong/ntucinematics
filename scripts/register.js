@@ -12,6 +12,7 @@ function sendData(table_name, array){
 		cardno=array[4];
 		ccv=array[5];
 		cardtype=array[6];
+		postalcode=array[7];
 
 		datainput.append("table_name", table_name);
 		datainput.append("name", name);
@@ -21,6 +22,7 @@ function sendData(table_name, array){
 		datainput.append("cardno", cardno);
 		datainput.append("ccv", ccv);
 		datainput.append("cardtype", cardtype);
+		datainput.append("postalcode", postalcode);
 
 		//For posting
 		ajax.open(method, url, asynchronous);	
@@ -53,13 +55,13 @@ function onRegister(){
 	var cardtype= checkcardtype();
 	var postalcode = checkpostalcode();
 	//Check if there are still any mistakes before sending to DB
-	var checkinput= [name, password2, email, cardno, address, ccv, cardtype, postalcode];
+	var checkinput= [name, password2, email, address, cardno, ccv, cardtype, postalcode];
 	console.log(checkinput);
 	if(checkinput.includes(false)){
 		
 	} else{
 		sendData('user_accounts', checkinput);
-		window.location.href = './login.html';
+		window.location.href = './login.php';
 		alert('Registration Successful!');
 	}
 }
@@ -73,7 +75,7 @@ function checkname() {
 		ele.style.border='1px solid #00B3B3';
 		return ele.value;
 	}else{
-		alert('Name Error! Must be more than 2 characters');
+		//alert('Name Error! Must be more than 2 characters');
 		ele.style.border='1px solid #B91D47';
 		return false;
 	}
@@ -88,7 +90,7 @@ function checkemail(){
 		ele.style.border='1px solid #00B3B3';
 		return ele.value;
 	}else{
-		alert('Email Invalid. Please enter email again.');
+		//alert('Email Invalid. Please enter email again.');
 		ele.style.border='1px solid #B91D47';
 		return false;
 	}
@@ -103,7 +105,7 @@ function checkpassword(){
 		return ele.value;
 	}else{
 		ele.style.border='1px solid #B91D47';
-		alert('Error! Password must be at least 6 alpha-numeric characters');
+		//alert('Error! Password must be at least 6 alpha-numeric characters');
 		return false;
 	}
 }
@@ -120,7 +122,7 @@ function checkpassword2(){
 			ele2.style.border='1px solid #00B3B3';
 			return ele1.value;			
 		}else{
-			alert('Password mismatched!');
+			//alert('Password mismatched!');
 			ele1.style.border='1px solid #B91D47';
 			ele2.style.border='1px solid #B91D47';
 			return false;
@@ -128,13 +130,13 @@ function checkpassword2(){
 	}else{
 		ele1.style.border='1px solid #B91D47';
 		ele2.style.border='1px solid #B91D47';
-		alert('Error! Password must be at least 6 alpha-numeric characters');
+		//alert('Error! Password must be at least 6 alpha-numeric characters');
 		return false;
 	}
 }
 
 function checkaddress(){
-	var regex=/^[A-Za-z0-9]{5,}$/;
+	var regex=/^[A-Za-z0-9\s]{5,}$/;
 	ele=document.getElementById('address');
 	console.log(ele.value);
 	if(regex.test(ele.value)){
@@ -142,7 +144,7 @@ function checkaddress(){
 		return ele.value;
 	}else{
 		ele.style.border='1px solid #B91D47';
-		alert('Address needs to be a minimum of 5 characters');
+		//alert('Address needs to be a minimum of 5 characters');
 		return false;
 	}
 }
@@ -156,7 +158,7 @@ function checkcardno(){
 		return ele.value;
 	}else{
 		ele.style.border='1px solid #B91D47';
-		alert('Incorrect Card Number. Card Numbers must be 16 digits');
+		//alert('Incorrect Card Number. Card Numbers must be 16 digits');
 		return false;
 	}	
 }
@@ -170,7 +172,7 @@ function checkccv(){
 		return ele.value;
 	}else{
 		ele.style.border='1px solid #B91D47';
-		alert('Incorrect CCV. CCV Numbers must be 3 digits');
+		//alert('Incorrect CCV. CCV Numbers must be 3 digits');
 		return false;
 	}	
 }
@@ -179,7 +181,7 @@ function checkcardtype(){
 	console.log(ele.value);
 	if(ele.value==""){
 		ele.style.border='1px solid #B91D47';
-		alert('Select card type');
+		//alert('Select card type');
 		return false;
 	}else {
 		ele.style.border='1px solid #b3b3b3';
@@ -197,7 +199,7 @@ function checkpostalcode(){
 		return ele.value;
 	}else{
 		ele.style.border='1px solid #B91D47';
-		alert('Incorrect Postalcode. Must have 6 digits');
+		//alert('Incorrect Postalcode. Must have 6 digits');
 		return false;
 	}
 }

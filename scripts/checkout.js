@@ -83,7 +83,6 @@ function populateTable() {
   	for(let i =0;i<obj.seat_status.length;i++){
   		var td=document.getElementById(i);
   		td.innerText=i;
-  		console.log(obj);
   		if(obj.seat_status[i]==1){
   			td.classList.add('available');
   		}else{
@@ -259,13 +258,14 @@ function getData(table_name, timestamp, value, condition){
 		if(this.readyState==4 && this.status ==200){
 			try{
 				var data = JSON.parse(this.responseText);
+				console.log("Seats Not Empty, some seats are not availble");
 			}catch{
-				console.log(this.responseText);
-				console.log("Error occured");
+				console.log("Seats Empty, all seats are availble");
 			}
+			//Needa edit this part abit..
 			if(data){
 				for(let i=0;i<30;i++){
-					if(data.includes(""+i)){
+					if(data.includes(str(i))){
 						obj.seat_status.push(0);
 					}else{
 						obj.seat_status.push(1);
@@ -277,7 +277,7 @@ function getData(table_name, timestamp, value, condition){
 					obj.seat_status.push(1);
 				}
 			}
-				populateTable();
+			populateTable();
 		};
 	}
 }

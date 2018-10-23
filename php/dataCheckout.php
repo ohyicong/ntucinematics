@@ -47,13 +47,15 @@ if ($condition=="updateSeats"){
 	while($row = mysqli_fetch_assoc($result)){
 		$data[]=$row;
 	}
-
-	for ($i=0; $i<sizeof($data); $i++){
-		$data_new[]=$data[$i]['SEAT_NO'];
+	if(isset($data)){
+		for ($i=0; $i<sizeof($data); $i++){
+			$data_new[]=$data[$i]['SEAT_NO'];
+		}
+	}else{
+		$data_new=null;
 	}
-
 	$fp = fopen('./log.txt', 'w');
-	fwrite($fp, "SELECT SEAT_NO FROM " . $table_name . " WHERE UNIQUE_ID = " . $ID . " AND DATETIME >= '" . $datetime . "'");
+	fwrite($fp, "sELECT SEAT_NO FROM " . $table_name . " WHERE UNIQUE_ID = " . $ID . " AND DATETIME >= '" . $datetime . "'");
 	fclose($fp);
 
 	$conn->close();

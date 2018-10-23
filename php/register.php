@@ -24,13 +24,12 @@
 	if($result->num_rows !=0){
 		echo "failed";
 	}else{
-		$result = mysqli_query($conn, "INSERT INTO ". $table_name . "(userid ,name, password, email, cardno, address, ccv, cardtype,postalcode)" . " VALUES ('". sha1($email) . "','" . $name . "','" . $password . "','" . $email . "','" . $cardno . "','" . $address . "','" . $ccv ."','". $cardtype  ."','".$postalcode."');");
+		$query="INSERT INTO ". $table_name . "(userid ,name, password, email, cardno, address, ccv, cardtype,postalcode)" . " VALUES ('". sha1($email) . "','" . $name . "','" . $password . "','" . $email . "','" . $cardno . "','" . $address . "','" . $ccv ."','". $cardtype  ."','".$postalcode."')";
+		$result = mysqli_query($conn,$query);
 	}
-
-
-
-
-		
+	$fp = fopen('./registerlog.txt', "w");
+	fwrite($fp, $query);
+	fclose($fp);	
 	$conn->close();
 
 ?>

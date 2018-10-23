@@ -42,8 +42,8 @@
 									Account
 								</span>
 								<span id='account-option' class='account-option' style='width:100%;text-align: center;''>
-									<a>Login</a>
-									<a>Register</a>
+									<a href='./login.php'>Login</a>
+									<a href='./register.php'>Register</a>
 								</span>	";
 					}
 				?>
@@ -70,11 +70,13 @@
 		</center>
 	</div>
 	<div class="slider" style="height:522px" >
-		<img id="banner" src="./img/crazyrichasian-banner.jpg" style="width:100%;height:100%">
+		<a id='imglink' href='./crazyrichasian.php'>
+			<img id="banner" src="./img/crazyrichasian-banner.jpg" style="width:100%;height:100%">
+		</a>
 		<div style="width:200px;height:150px;position:absolute;bottom:10px;left:10px;background-color: grey;opacity: 0.7;padding:10px">
 			<h1 id='movie'style="margin:0px;margin-bottom:5px">Crazy Rich Asians (PG)</h1>
 			<p style="margin:0px;margin-bottom:5px">Showing now</p>
-			<input id='booknow'type="button" class="teal-button" value="Book Now">	
+			<input id='booknow'type="button" class="teal-button" value="Book Now" onclick="onBookNow()">	
 		</div>
 	</div>
 	<span class="one-third" style="height:250px;padding-top:10px;padding-right:10px">

@@ -14,6 +14,7 @@
 	<title>Movies</title>
 	<link rel="stylesheet" type="text/css" href="./css/ee4717.css">
 	<script type="text/javascript" src='./scripts/globalinit.js'></script>
+	<script type="text/javascript" src='./scripts/moment.js'></script>
 	<script type="text/javascript">
 		var totalTickets=0;
 		var userCart;
@@ -44,9 +45,7 @@
 				row.innerHTML="<tr><th>Movie</th><th>Venue</th><th>Date</th><th>Time</th><th>Seats</th></tr>"
 				tableConfirm.appendChild(row);	
 				for(let i=0;i<userCart.length;i++){
-					if(userCart[i].tickets==null||userCart[i].tickets==[]){
-						//do nothing
-					}else{
+					if(!(userCart[i].tickets.length<1)){
 						//Main table
 						let tr = document.createElement("tr");
 						let td0 = document.createElement("td");
@@ -60,7 +59,7 @@
 							console.log('tr'+td0.path[1].id);
 							let tempTr = document.getElementById('tr'+td0.path[1].id);
 							console.log(tempTr);
-							console.log('scream my name',td0.path[1].id,tempTr);
+							console.log('Deleted',td0.path[1].id,tempTr);
 							console.log(userCart.splice(parseInt(td0.path[1].id),1));
 							if(userCart.length==0){
 								localStorage.setItem('userCart',null);
@@ -101,7 +100,6 @@
 						trConfirm.appendChild(tdConfirm4);
 						tableConfirm.appendChild(trConfirm);
 					}
-					
 				}
 				total.innerHTML="$"+totalTickets*12+".00";
 				row= document.createElement("tr");
@@ -172,7 +170,16 @@
 				}
 				return regex.test(ele.value);
 			}
-			if(checkName(document.getElementById('name'))&&checkEmail(document.getElementById('email'))&&checkAddress(document.getElementById('address'))&&checkPostal(document.getElementById('postalcode'))&&checkCardNumber(document.getElementById('cardno'))&&checkCardVerification(document.getElementById('ccv'))){
+			function checkCardType(ele){
+				if(ele.value){
+					ele.style.border='1px solid #00B3B3';
+					return true;
+				}else{
+					ele.style.border='1px solid #B91D47';
+					return false;
+				}
+			}
+			if(checkName(document.getElementById('name'))&&checkEmail(document.getElementById('email'))&&checkAddress(document.getElementById('address'))&&checkPostal(document.getElementById('postalcode'))&&checkCardNumber(document.getElementById('cardno'))&&checkCardVerification(document.getElementById('ccv'))&&checkCardType(document.getElementById('cardtype'))){
 				document.getElementById('confirmPage').style.display='block';
 			}else{
 				alert('Please check your inputs');
@@ -188,15 +195,15 @@
 			const confirmInterval=setInterval(function(){
 				if(Math.random()>0){
 					//This is the place to submit orders
-					for(let i=0;i<userCart.length;i++){
-						console.log('Updating server')
-						console.log(userCart[i].uniqueID);
-						console.log(userCart[i].tickets);
-						console.log(userCart[i].time);
-						for(let seat=0; seat<userCart[i].tickets.length; seat++){
-							sendData("unique_seats", "updateSeats", "0", userCart[i].uniqueID, userCart[i].tickets[seat]);
-						}
-					}
+					let ajax = new XMLHttpRequest();
+					let method = "POST";
+					let url = "./php/purchasetickets.php";
+					let asynchronous = true;
+					ajax.open(method, url, asynchronous);
+					ajax.setRequestHeader("Content-type", "application/json");	
+					ajax.send(JSON.stringify(userCart));
+					console.log("Submitting to purcahse",userCart);
+					purchaseTickets(userCart);
 					localStorage.setItem('userCart',null);
 					localStorage.setItem('userSelection',null);
 					location.href='./paymentsuccess.html';
@@ -205,7 +212,7 @@
 					alert('Payment failed... Please try again');
 				}
 				clearInterval(confirmInterval);
-			},5000)
+			},2000)
 	
 		}
 		setInterval(function(){
@@ -218,22 +225,43 @@
 				return;
 			}
 			// ARRAY FORMAT [userID, Name, Password, Email, Address, CardNo, CCV]
+			console.log("My useraccount",useraccount);
 			document.getElementById('name').value=useraccount.name;
 			document.getElementById('email').value=useraccount.email;
 			document.getElementById('address').value=useraccount.address;
-			//[TODO] postal code
-			//[TODO] card type
+			document.getElementById('postalcode').value=useraccount.postalcode;
 			document.getElementById('cardno').value=useraccount.cardno;
 			document.getElementById('ccv').value=useraccount.ccv;
+			document.getElementById('cardtype').value=useraccount.cardtype;
+		}
+		function purchaseTickets(userCart){
+
+			purchaseDate=moment(new Date()).format('YYYY-MM-DD HH-mm-ss');
+			email=document.getElementById('email').value;
+			for (let i=0;i<userCart.length;i++){
+				movieDate= moment(new Date(userCart[i].date+" "+userCart[i].time)).format('YYYY-MM-DD HH-mm-ss');
+				let request= new XMLHttpRequest();
+				let form = new FormData();
+				form.append('email',email);
+				form.append('movie',userCart[i].movie);
+				form.append('quantity',userCart[i].tickets.length);
+				form.append('purchaseDate',purchaseDate);
+				form.append('movieDate',movieDate);
+				form.append('tickets',JSON.stringify(userCart[i].tickets));
+				form.append('uniqueID',userCart[i].uniqueID);
+				form.append('cinema',userCart[i].cinema);
+				request.open("POST", "./php/purchasetickets.php",true);
+				request.send(form);
+			}
 		}
 
 		// WHERE return_column= [UNIQUE_ID, SeatNumber]
 		function sendData(table_name, condition, value, ID, tickets){
-				var ajax = new XMLHttpRequest();
+				let ajax = new XMLHttpRequest();
 				let datainput =  new FormData();
-				var method = "POST";
-				var url = "./php/dataCheckout.php";
-				var asynchronous = true;
+				let method = "POST";
+				let url = "./php/dataCheckout.php";
+				let asynchronous = true;
 				var uniqID;
 				var userSelection= JSON.parse(localStorage.getItem('userSelection'));
 				// Add data into packet
@@ -265,6 +293,10 @@
 		}
 	</script>
 	<script type="text/javascript" src='./scripts/globalinit.js'></script>
+	<style>
+		.table td,th{border:1px solid black;text-align:left;}
+		.table tr:nth-child(even){background-color: #b3b3b3}
+	</style>
 </head>
 <body>
 	<div class="clearfix">

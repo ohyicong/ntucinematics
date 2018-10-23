@@ -1,0 +1,1 @@
+update user_accounts set address='Ang Mo Kio ave 10', postalcode='123456', cardno='1234512345123451', ccv='123', cardtype='Mastercard', password='asdasd' where userid='0aa73acded4fe0b62e573718e5f57d0a88bca0b8'help

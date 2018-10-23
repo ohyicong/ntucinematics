@@ -21,7 +21,7 @@ function sendData(table_name, array, dataIn) {
 		var ajax = new XMLHttpRequest();
 		let datainput =  new FormData();
 		var method = "POST";
-		var url = "./php/login.php";
+		var url = "./php/loginauth.php";
 		var asynchronous = true;
 
 		// Add data into packet
@@ -31,8 +31,9 @@ function sendData(table_name, array, dataIn) {
 		datainput.append("table_name", table_name);
 		datainput.append("password", password);
 		datainput.append("email", email);
-
-			//For posting
+		console.log("asd",array[0],array[1]);
+		
+		//For posting
 		ajax.open(method, url, asynchronous);
 		// Make the request
 		ajax.send(datainput);
@@ -40,9 +41,10 @@ function sendData(table_name, array, dataIn) {
 	  // Return a new promise.
 		ajax.onreadystatechange = function () {
 			if (this.readyState==4 && this.status==200){
-			    //return dataIn(this.responseText);
+			    console.log("Login response",this.responseText);
 				try{
 					var data = JSON.parse(this.responseText);
+					
 					for(let i=0;i<data.length;i++){
 						userdata=""+ data[i].userid +","+ data[i].name +","+ data[i].password +","+ data[i].email +","+ data[i].cardno +","+ data[i].address +","+ data[i].ccv +","+ data[i].registerdate;
 					}
@@ -68,9 +70,6 @@ function onlogin(){
 	if(checkinput.includes(false)){
 		alert('Try Again! Please check if your information is keyed correctly.');
 	} else{
-			//window.location.href = './useraccount.html';
-			//sendData('user_accounts', checkinput, dataIn);
-			
 			sendData('user_accounts', checkinput).then(function(value) { 
 			  console.log("Completed",value);
 			  localStorage.setItem("loginInfo", value);
