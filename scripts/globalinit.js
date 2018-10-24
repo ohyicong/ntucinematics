@@ -7,22 +7,17 @@ var userSelectionGlobal={"day":"", "date":"","cinema":"","time":"","movie":"","m
 var obj = { 'seat_status': [],
 			'element_id': {'1':'SelectMovie', '2':'SelectCinema','3':'SelectDate', '4':'SelectTime'}, 
 			'selected_array':[],
-			'timelist':['10:30','14:30','16:45','18:30'],
 			'seg': ['','','',''],
 			'userSelection':[],
 			'getUniqueID': function (){
 				return this.seg[0]+this.seg[1]+this.seg[2]+this.seg[3];
 			},
-			'reset_timelist': function () {
-				obj.timelist = ['11:30','15:30','17:45','19:30'];
-			},
 			'setUniqueID': function (index, code) {
+				console.log('ID INSERTION', index);
+				console.log('ID INSERTION', code);
 				this.seg[index-1]=code;
+				console.log('UNIQUE ID', this.getUniqueID());
 			},
-			'getTime': function () {
-				if(this.timelist.length<1){this.reset_timelist();} 
-				value = this.timelist.shift(); 
-				return value;},	
 			'insert_seat_status': function (index, status){
 				this.seat_status["S"+index]=status;
 			} 
@@ -61,16 +56,16 @@ function onClick(index,table_name, condition, element,return_column,element_tag,
 	//console.log('SELECT '+ return_column + ' FROM '+ table_name + ' WHERE ' + condition + '=' + element.value);
 	try{
 		if(check_repeated(index)){ // Status check if segment's dropdown has been selected before, if so -> reset dependent dropdowns
-			console.log('selected array', obj.selected_array); //sanity check
+			console.log('dropdown selected array', obj.selected_array); //sanity check
 			obj.setUniqueID(index, element.value); // update Unique_ID 'onclick' where index is reference segment to add or update
 			//=====================================================================//
-			//Handle date-time unique states with unique id  - YET TO ADD DATE
-			if(output_container=="SelectTime"){
-				condition="UNIQUE_ID"
+			//Handle date-time unique states with unique id // || output_container=="SelectDate"
+			if(output_container=="SelectTime" || output_container=="SelectDate"){
+				condition="UNIQUE_ID";
 				value=obj.getUniqueID();
 				getData(index, table_name, condition, value, return_column, element_tag ,output_container); // Main Web Server Call
 			}else{
-				getData(index, table_name, condition, element.value, return_column, element_tag ,output_container); // Main Web Server Call
+				getData(index, table_name, condition, element.value, return_column, element_tag ,output_container); // onload Main Web Server Call
 			}
 			//=====================================================================//
 			//Prep and save selection
@@ -106,7 +101,6 @@ function getData(index, table_name, condition, value, return_column=["",""], ele
 			try{
 			var data = JSON.parse(this.responseText);
 			console.log('data',data);
-			//callback.apply(data, output_container, element_tag);
 			}catch{
 				data = this.responseText
 				console.log(this.responseText);
@@ -116,13 +110,9 @@ function getData(index, table_name, condition, value, return_column=["",""], ele
 			key_list=Object.keys(data[0]);
 			var temp_value=[];
 			var indexNum=0;
-			// If retrieving Unique_ID - update (output_container)element's  value attribute to the resultant UNIQUE_ID for parameter parsing on next data call
-			if(return_column[0]=="UNIQUE_ID"){
-				console.log("Unique_ID = ",obj.getUniqueID());
-				return;
-			} 
+
 			// if retrieving seat value & status -> for every result in response -> add a button element with corresponding seat value and status 
-			else if (return_column[0]=="SEAT_NO"){
+			if (return_column[0]=="SEAT_NO"){
 				for (element in data){
 					// also update status in obj storage
 					obj.insert_seat_status(data[element][key_list[0]], data[element][key_list[1]]); 
@@ -141,10 +131,15 @@ function getData(index, table_name, condition, value, return_column=["",""], ele
 						if(output_container=="SelectTime"){
 							temp_name=data[element][key_list[1]];
 						}
-						//create the element in html
-						add_element(element_tag, data[element][key_list[0]],temp_name, output_container);
-						//add to the 'done' list
-						temp_value.push(data[element][key_list[0]]);
+						if(temp_name!=null){
+							//create the element in html
+							add_element(element_tag, data[element][key_list[0]],temp_name, output_container);
+							//add to the 'done' list
+							temp_value.push(data[element][key_list[0]]);
+						}else{
+							empty_element(output_container);
+							break;
+						}
 					}
 				}
 			}
@@ -161,6 +156,25 @@ function add_element(element_tag,element_value,element_name, output_container, o
 		x.appendChild(t);
 	    document.getElementById(output_container).appendChild(x);
 	    return x;
+}
+
+function empty_element(output_container){
+	switch(output_container) {
+    case "SelectMovie":
+        document.getElementById(output_container).innerHTML="<option disabled selected value> -- Select movie -- </option>";
+        break;
+    case "SelectCinema":
+        document.getElementById(output_container).innerHTML="<option disabled selected value> -- Select cinema -- </option>";
+        break;
+    case "SelectDate":
+        document.getElementById(output_container).innerHTML="<option disabled selected value> -- Select day -- </option>";
+        break;
+    case "SelectDate":
+        document.getElementById(output_container).innerHTML="<option disabled selected value> -- Select time -- </option>";
+        break;
+    default:
+        document.getElementById(output_container).innerHTML="<option disabled selected value> -- Reselect again -- </option>";
+	}
 }
 
 // Recursively delete child node of selected parent node and reset to default html
@@ -181,20 +195,17 @@ function check_repeated(index){
 			element_reset = obj.selected_array.slice(index);
 			console.log("ELEMENT RESET", element_reset);
 			while(element_reset.length > 0){ 
-				element=element_reset.shift()
+				element=element_reset.shift();
+				obj.setUniqueID(element, '');
 				console.log('DELETED OBJECT', obj.element_id[element]);
 				reset_element(obj.element_id[element]);
 			}
 			obj.selected_array=obj.selected_array.slice(0,index);
-			if (index<4){
-				obj.selected_array.push(index+1);
-			}
+			obj.selected_array.sort();
 			return true;
-		}else{
+		}else{ // Not repeated
 			obj.selected_array.push(index);
-			if(index<4){
-				obj.selected_array.push(index+1);
-			}
+			obj.selected_array.sort();
 			return true;				
 		}
 	}else{
@@ -244,10 +255,14 @@ function resetUserSelection(index){
 }
 
 function storeSend(){
-	console.log('ID',obj.getUniqueID());
-	localStorage.setItem('UniqueID', obj.getUniqueID());
-	localStorage.setItem('userSelection',JSON.stringify(userSelectionGlobal));
-	window.open('./checkout.html');
+	if(userSelectionGlobal.time!="" && userSelectionGlobal.day!="" && userSelectionGlobal.cinema!="" && userSelectionGlobal.movie!=""){
+		console.log('ID',obj.getUniqueID());
+		localStorage.setItem('UniqueID', obj.getUniqueID());
+		localStorage.setItem('userSelection',JSON.stringify(userSelectionGlobal));
+		window.open('./checkout.php');
+	}else{
+		alert("Incomplete Selection");
+	}
 }
 
 setInterval(globalInit,1000);

@@ -6,7 +6,7 @@
 	}
 	if(isset($_SESSION["useraccount"])){
 		echo "<script>const useraccount=".$_SESSION["useraccount"]."[0];console.log(useraccount)</script>";
-		header("Location: http://localhost:1234/ntucinematics/useraccount.php");
+		header("Location: ./useraccount.php");
 	}else{
 		echo "<script>const useraccount=null</script>";
 	}
@@ -25,8 +25,8 @@
 		</header>
 		<nav style="text-align:right;padding-right:0px">
 			<a href="./index.php" class="menu">Home</a>
-			<a href="./movies.html" class="menu">Movies</a>
-			<a href="./promotions.html" class="menu">Promotions</a>
+			<a href="./movies.php" class="menu">Movies</a>
+			<a href="./promotions.php" class="menu">Promotions</a>
 			<a href="./cart.php" class="menu" > Cart</a>
 			<span class="account-box" style="float:right;">
 				<?php
@@ -35,16 +35,16 @@
 									Account
 								</span>
 								<span id='account-option' class='account-option' style='width:100%;text-align: center;''>
-									<a>Profile</a>
-									<a>Logout</a>
+									<a href='./useraccount.php'>Profile</a>
+									<a href='./logout.php'>Logout</a>
 								</span>	";		
 					}else{
 						echo"	<span id='account' class='menu' style='padding-right:0px'> 
 									Account
 								</span>
 								<span id='account-option' class='account-option' style='width:100%;text-align: center;''>
-									<a>Login</a>
-									<a>Register</a>
+									<a href='./login.php'>Login</a>
+									<a href='./register.php'>Register</a>
 								</span>	";
 					}
 				?>

@@ -31,7 +31,7 @@
 			console.log(userCart);
 			if(userCart==''||userCart=='null'||userCart==null||userCart.length==0){
 				alert('No items in cart.... You will be redirected');
-				location.href="./index.html"	
+				window.location.href="./index.php"	
 			}else{
 				userCart=JSON.parse(userCart);
 				console.log("MyUser",userCart)
@@ -305,8 +305,8 @@
 		</header>
 		<nav style="text-align:right;padding-right:0px">
 			<a href="./index.php" class="menu">Home</a>
-			<a href="./movies.html" class="menu">Movies</a>
-			<a href="./promotions.html" class="menu">Promotions</a>
+			<a href="./movies.php" class="menu">Movies</a>
+			<a href="./promotions.php" class="menu">Promotions</a>
 			<a href="./cart.php" class="menu" > Cart</a>
 			<span class="account-box" style="float:right;">
 				<?php
@@ -315,16 +315,16 @@
 									Account
 								</span>
 								<span id='account-option' class='account-option' style='width:100%;text-align: center;''>
-									<a>Profile</a>
-									<a>Logout</a>
+									<a href='./useraccount.php'>Profile</a>
+									<a href='./logout.php'>Logout</a>
 								</span>	";		
 					}else{
 						echo"	<span id='account' class='menu' style='padding-right:0px'> 
 									Account
 								</span>
 								<span id='account-option' class='account-option' style='width:100%;text-align: center;''>
-									<a>Login</a>
-									<a>Register</a>
+									<a href='./login.php'>Login</a>
+									<a href='./register.php'>Register</a>
 								</span>	";
 					}
 				?>

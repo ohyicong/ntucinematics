@@ -19,7 +19,7 @@
 			  </script>";
 	}else{
 		echo "<script>const useraccount=null</script>";
-		header("Location: http://localhost:1234/ntucinematics/index.php");
+		header("Location: ./index.php");
 	}
 	
 
@@ -100,7 +100,12 @@
 					return false;
 				}
 			}
+
+
+
+
 			if(checkName(document.getElementById('name'))&&checkEmail(document.getElementById('email'))&&checkAddress(document.getElementById('address'))&&checkPostal(document.getElementById('postalcode'))&&checkCardNumber(document.getElementById('cardno'))&&checkCardVerification(document.getElementById('ccv'))&&checkCardType(document.getElementById('cardtype'))&&checkPassword()){
+				console.log("checkpw",checkPassword());
 				if(confirm("Confirm changes?")){
 					let form = new FormData();
 					let ajax = new XMLHttpRequest();
@@ -116,20 +121,32 @@
 					ajax.open(method, url, asynchronous);	
 					ajax.send(form);
 					console.log("Form sent",form);
+					alert("Details Updated")
+					document.getElementById('password').value='';
+					document.getElementById('retypepassword').value='';
 					document.getElementById('saveBtn').style.display="none";
 					document.getElementById('changeBtn').style.display="block";
 				}else{
 
 				}
 			}else{
-				alert('Please check your inputs');
+				document.getElementById('address').readOnly=false;
+				document.getElementById('postalcode').readOnly=false;
+				document.getElementById('cardno').readOnly=false;
+				document.getElementById('ccv').readOnly=false;
+				document.getElementById('cardtype').readOnly=false;
+				document.getElementById('retypepassword').readOnly=false;
+				document.getElementById('password').readOnly=false;
+				alert('Try again! Incorrect inputs!');
 			};
 
 
 		}
+
 		function checkPassword(){
-				passwordEle=document.getElementById('password');
-				retypePasswordEle=document.getElementById('retypepassword');
+			passwordEle=document.getElementById('password');
+			retypePasswordEle=document.getElementById('retypepassword');
+			if(passwordEle.value!=''&&retypePasswordEle.value!=''){
 				if(passwordEle.value==retypePasswordEle.value){
 					passwordEle.style.border='1px solid #00B3B3';
 					retypePasswordEle.style.border='1px solid #00B3B3';				
@@ -139,8 +156,27 @@
 					retypePasswordEle.style.border='1px solid #B91D47';
 					return false;
 				}
-
+			}else{
+					passwordEle.style.border='1px solid #B91D47';
+					retypePasswordEle.style.border='1px solid #B91D47';
+					return false;
+			}
 		}
+
+		/*
+		function checkPassword(){
+			passwordEle=document.getElementById('password');
+			retypePasswordEle=document.getElementById('retypepassword');
+			if(passwordEle.value==retypePasswordEle.value){
+				passwordEle.style.border='1px solid #00B3B3';
+				retypePasswordEle.style.border='1px solid #00B3B3';				
+				return true;
+			}else{
+				passwordEle.style.border='1px solid #B91D47';
+				retypePasswordEle.style.border='1px solid #B91D47';
+				return false;
+			}
+		}*/
 
 		function onChange(){
 			document.getElementById('name').readOnly=false;
@@ -164,7 +200,7 @@
 			document.getElementById('cardtype').readOnly=true;
 			document.getElementById('retypepassword').readOnly=true;
 			document.getElementById('password').readOnly=true;
-			checkBeforeSave()
+			checkBeforeSave();
 		}
 		document.onload=function(){
 			readOnlyTrue();
@@ -185,8 +221,8 @@
 		</header>
 		<nav style="text-align:right;padding-right:0px">
 			<a href="./index.php" class="menu">Home</a>
-			<a href="./movies.html" class="menu">Movies</a>
-			<a href="./promotions.html" class="menu">Promotions</a>
+			<a href="./movies.php" class="menu">Movies</a>
+			<a href="./promotions.php" class="menu">Promotions</a>
 			<a href="./cart.php" class="menu" > Cart</a>
 			<span class="account-box" style="float:right;">
 				<?php
@@ -195,20 +231,19 @@
 									Account
 								</span>
 								<span id='account-option' class='account-option' style='width:100%;text-align: center;''>
-									<a>Profile</a>
-									<a>Logout</a>
+									<a href='./useraccount.php'>Profile</a>
+									<a href='./logout.php'>Logout</a>
 								</span>	";		
 					}else{
 						echo"	<span id='account' class='menu' style='padding-right:0px'> 
 									Account
 								</span>
 								<span id='account-option' class='account-option' style='width:100%;text-align: center;''>
-									<a>Login</a>
-									<a>Register</a>
+									<a href='./login.php'>Login</a>
+									<a href='./register.php'>Register</a>
 								</span>	";
 					}
 				?>
-				
 			</span>			
 			<span class="dot" id="dot">0</span>
 		</nav>
@@ -266,7 +301,7 @@
 					<label>Postalcode</label><br>
 					<input id='postalcode'type="number" style="height:25px;width:40%" class="teal-input" value='' readonly="readonly"><br>
 					<label>Password</label><br>
-					<input id='password' type="password" style="height:25px;width:40%" class="teal-input" value='' readonly="readonly"><br>
+					<input id='password' type="password" style="height:25px;width:40%" class="teal-input" value='' readonly="readonly" required=""><br>
 					<label>Retype password</label><br>
 					<input id='retypepassword'type="password" style="height:25px;width:40%" class="teal-input" value='' onkeyup="checkPassword()" readonly="readonly"><br>
 

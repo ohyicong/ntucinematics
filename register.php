@@ -12,10 +12,10 @@
 			<img src="./img/logo.jpg" style="width:80%;height:100%;">
 		</header>
 		<nav style="text-align:right;padding-right:0px">
-			<a href="./index.html" class="menu">Home</a>
-			<a href="./movies.html" class="menu">Movies</a>
-			<a href="./promotions.html" class="menu">Promotions</a>
-			<a href="./cart" class="menu" > Cart</a>
+			<a href="./index.php" class="menu">Home</a>
+			<a href="./movies.php" class="menu">Movies</a>
+			<a href="./promotions.php" class="menu">Promotions</a>
+			<a href="./cart.php" class="menu" > Cart</a>
 			<span class="account-box" style="float:right;">
 				<span id='account' class="menu" style="padding-right:0px"> 
 					Account

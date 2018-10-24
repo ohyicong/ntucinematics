@@ -5,7 +5,8 @@
 	$servername="localhost";
 	$dbusername="myuser";
 	$dbpassword="xxxx";
-	$dbname="user_data";
+	$dbname="ntucinematics";
+	
 	$conn = mysqli_connect($servername, $dbusername, $dbpassword, $dbname);
 	$address=$_POST['address'];
 	$postalcode=$_POST['postalcode'];

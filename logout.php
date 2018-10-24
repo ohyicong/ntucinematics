@@ -6,7 +6,7 @@
 	}
 	if(isset($_SESSION["useraccount"])){
 		unset($_SESSION["useraccount"]);
-		header("Location: http://localhost:1234/ntucinematics/index.php"); /* Redirect browser */
+		header("Location: ./index.php"); /* Redirect browser */
 		exit();
 	}
 

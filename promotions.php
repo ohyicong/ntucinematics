@@ -1,21 +1,15 @@
 <!DOCTYPE html>
 <html>
-<?php 
-	if (!isset($_SESSION)){
-		session_start();
-	}
-	if(isset($_SESSION["useraccount"])){
-		echo "<script>const useraccount=".$_SESSION['useraccount']."[0];console.log(useraccount)</script>";
-	}else{
-		echo "<script>const useraccount=null</script>";
-	}
-	
-?>
 <head>
 	<title>Movies</title>
 	<link rel="stylesheet" type="text/css" href="./css/ee4717.css">
-	<script type="text/javascript" src="./scripts/index.js"></script>
-	<script type="text/javascript" src='./scripts/globalinit.js'></script>
+	<script type="text/javascript" src="./scripts/checkout.js"></script>
+	<script type="text/javascript" src="./scripts/globalinit.js"></script>
+	<style type="text/css">
+		.taken{border-radius:6px;background-color:pink}
+		.available{border-radius:6px;background-color:green}
+		.choosen{border-radius:6px;background-color:grey}
+	</style>
 </head>
 <body>
 	<div class="clearfix">
@@ -47,11 +41,10 @@
 								</span>	";
 					}
 				?>
-				
 			</span>			
 			<span class="dot" id="dot">0</span>
 		</nav>
-	</div>
+	</div>	
 	<div class="container clearfix" style="margin-bottom:10px">
 		<center>
 			<select id="SelectMovie" class="menu-select" onchange="onClick(1,'loc_address', 'MOVIE_ID', this, ['CINEMA_ID','CINEMA'],'OPTION','SelectCinema')" style="width:40%;margin-right:1.25%">
@@ -69,25 +62,16 @@
 			<input id="BOOK" type="button" class="teal-button" value="Book now" onclick="storeSend()" style="width:10%">
 		</center>
 	</div>
-	<div class="slider" style="height:522px" >
-		<a id='imglink' href='./crazyrichasian.php'>
-			<img id="banner" src="./img/crazyrichasian-banner.jpg" style="width:100%;height:100%">
-		</a>
-		<div style="width:200px;height:150px;position:absolute;bottom:10px;left:10px;background-color: grey;opacity: 0.7;padding:10px">
-			<h1 id='movie'style="margin:0px;margin-bottom:5px">Crazy Rich Asians (PG)</h1>
-			<p style="margin:0px;margin-bottom:5px">Showing now</p>
-			<input id='booknow'type="button" class="teal-button" value="Book Now" onclick="onBookNow()">	
+		<div class="two-third" style="height:600px">
+			<div class="full">
+
+				
+			</div>
 		</div>
-	</div>
-	<span class="one-third" style="height:250px;padding-top:10px;padding-right:10px">
-		<img src="./img/nuggets.jpg" style="height:200px;width:100%;margin:auto;">
-	</span>
-	<span class="one-third" style="height:250px;padding-top:10px;">
-		<img src="./img/mirai.jpg" style="height:200px;width:100%;margin:auto;">
-	</span>
-	<span class="one-third" style="height:250px;padding-top:10px;padding-left:10px">
-		<img src="./img/moviepromo.jpg" style="height:200px;width:100%;margin:auto;">
-	</span>
+			
+			
+		</div>
+		
 	<footer>
 		<center>
 			<label style="border-right:1px solid black;margin-right:10px">

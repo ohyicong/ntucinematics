@@ -7,7 +7,8 @@
 	$servername="localhost";
 	$dbusername="myuser";
 	$dbpassword="xxxx";
-	$dbname="user_data";
+	$dbname="ntucinematics";
+	
 	$conn = mysqli_connect($servername, $dbusername, $dbpassword, $dbname);
 	$query="select max(TIME) as maxTime from loc_address where MOVIE_ID='".$movieID."'and CINEMA_ID='".$cinemaID."'";
 	$result = mysqli_query($conn, $query);

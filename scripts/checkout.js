@@ -262,6 +262,7 @@ function getData(table_name, timestamp, value, condition){
 			}catch{
 				console.log("Seats Empty, all seats are availble");
 			}
+			
 			//Needa edit this part abit..
 			console.log('mydata',data);
 			if(data){

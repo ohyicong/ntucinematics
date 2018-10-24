@@ -3,7 +3,7 @@
 $servername="localhost";
 $dbusername="myuser";
 $dbpassword="xxxx";
-$dbname="user_data";
+$dbname="ntucinematics";
 
 $string=$_POST["string"];
 

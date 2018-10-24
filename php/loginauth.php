@@ -5,7 +5,7 @@
 	$servername="localhost";
 	$dbusername="myuser";
 	$dbpassword="xxxx";
-	$dbname="user_data";
+	$dbname="ntucinematics";
 
 	//[name, password, email, address, cardno];
 	$table_name=$_POST["table_name"];

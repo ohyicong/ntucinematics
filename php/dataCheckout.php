@@ -3,7 +3,7 @@
 $servername="localhost";
 $dbusername="myuser";
 $dbpassword="xxxx";
-$dbname="user_data";
+$dbname="ntucinematics";
 
 $table_name=$_POST["table_name"];
 $condition=$_POST["condition"];
