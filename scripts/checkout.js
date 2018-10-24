@@ -263,11 +263,17 @@ function getData(table_name, timestamp, value, condition){
 				console.log("Seats Empty, all seats are availble");
 			}
 			//Needa edit this part abit..
+			console.log('mydata',data);
 			if(data){
 				for(let i=0;i<30;i++){
-					if(data.includes(str(i))){
-						obj.seat_status.push(0);
-					}else{
+					var isset=false;
+					for(let y=0;y<data.length;y++){
+						if(i==data[y]){
+							obj.seat_status.push(0);
+							isset=true;
+						}
+					}
+					if(!isset){
 						obj.seat_status.push(1);
 					}
 				}

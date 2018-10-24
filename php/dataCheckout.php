@@ -43,23 +43,16 @@ if ($condition=="updateSeats"){
 	//MOVIE DATE + GIVEN TIMESTAMP
 	$datetime=datetime(new DateTime(), $TIMESTAMP);
 	$result = mysqli_query($conn, "SELECT SEAT_NO FROM " . $table_name . " WHERE UNIQUE_ID = " . $ID . " AND DATETIME >= '" . $datetime . "'");
-	
+	$seatsArray=array();
 	while($row = mysqli_fetch_assoc($result)){
-		$data[]=$row;
-	}
-	if(isset($data)){
-		for ($i=0; $i<sizeof($data); $i++){
-			$data_new[]=$data[$i]['SEAT_NO'];
-		}
-	}else{
-		$data_new=null;
+		array_push($seatsArray,$row['SEAT_NO']);
 	}
 	$fp = fopen('./log.txt', 'w');
 	fwrite($fp, "sELECT SEAT_NO FROM " . $table_name . " WHERE UNIQUE_ID = " . $ID . " AND DATETIME >= '" . $datetime . "'");
 	fclose($fp);
 
 	$conn->close();
-	echo json_encode($data_new);
+	echo json_encode($seatsArray);
 }
 
 

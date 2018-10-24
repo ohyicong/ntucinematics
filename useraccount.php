@@ -296,6 +296,7 @@
 					<th>Movie Title</th>
 					<th>Cinema</th>
 					<th>Time</th>
+					<th>Seats</th>
 					<th>Date Of Purchase</th>
 				</tr>
 				<?php
@@ -317,6 +318,7 @@
 					        echo "<td>".$row["movieName"]."</td>";
 					        echo "<td>".$row["cinema"]."</td>";
 					        echo "<td>".$row["movieDate"]."</td>";
+					        echo "<td>".preg_replace("/[\[\]\"]/", "",$row["seatNumber"])."</td>";
 					        echo "<td>".$row["purchaseDate"]."</td>";
 					        echo "</tr>";
 					    }
