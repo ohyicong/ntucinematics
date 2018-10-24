@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <?php
 	if (!isset($_SESSION)){
@@ -78,7 +78,7 @@
 		userSelection[cinema].time=ele.innerHTML;
 		console.log(userSelection[cinema]);
 		localStorage.setItem("userSelection",JSON.stringify(userSelection[cinema]));
-		window.location.href="./checkout.html";
+		window.location.href="./checkout.php";
 	}
 	function addDays(days){
 		const date = new Date();
