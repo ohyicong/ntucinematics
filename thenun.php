@@ -24,8 +24,8 @@
 <script type="text/javascript">
 	const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 	const cinemas=['JURONG','YISHUN','HABOURFRONT'];
-	const movie="Down A Dark Hall"
-	const movieImage="./img/Down A Dark Hall.jpg"
+	const movie="The Nun"
+	const movieImage="./img/THE NUN.jpg"
 	var userSelection=[];
 	
 	function generateUserSelection(movie,movieImage){
@@ -141,21 +141,20 @@
 		</center>
 	</div>
 	<span class="one-third" style="height:500px">
-		<img src="./img/Down A Dark Hall.jpg" style="width:100%;height:100%;">
+		<img src="./img/THE NUN.jpg" style="width:100%;height:100%;">
 	</span>
 	<span class="two-third" style="height:500px;padding:10px;">
-		<h1 style="color:#008080">Down A Dark Hall</h1>
+		<h1 style="color:#008080">Crazy Rich Asian (PG13)</h1>
 		<hr>
 		<dl>
 			<dt style="margin-bottom:5px">CAST</dt>
-			<dd>AnnaSophia Robb, Uma Thurman, Victoria Moroles</dd>
+			<dd>Taissa Farmiga , Bonnie Aarons , Demián Bichir</dd>
 			<br>
 			<dt style="margin-bottom:5px">DIRECTOR</dt>
-			<dd>Rodrigo Cortés</dd>
+			<dd>Corin Hardy</dd>
 			<br>
 			<dt style="margin-bottom:5px">SYNOPSIS</dt>
-			<dd>Kit Gordy (AnnaSophia Robb), a difficult young girl, is sent to the mysterious Blackwood Boarding School when her heated temper becomes too much for her mother to handle. Once she arrives at Blackwood, Kit encounters eccentric headmistress Madame Duret (Uma Thurman) and meets the school’s only other students, four young women also headed down a troubled path. While exploring the labyrinthine corridors of the school, Kit and her classmates discover that Blackwood Manor hides an age-old secret rooted in the paranormal
-			</dd>
+			<dd>When a young nun at a cloistered abbey in Romania takes her own life, a priest with a haunted past and a novitiate on the threshold of her final vows are sent by the Vatican to investigate. Together, they uncover the order's unholy secret. Risking not only their lives but their faith and their very souls, they confront a malevolent force in the form of a demonic nun.</dd>
 		</dl>
 	</span>
 	<span class="full" style="height:500px;">
@@ -177,7 +176,7 @@
 					English with Chinese subtitles
 				</td>
 				<?php
-					$query="select timestamp from loc_address where movie_id='003' && cinema_id='001' && day='001' order by timestamp asc";
+					$query="select timestamp from loc_address where movie_id='006' && cinema_id='001' && day='001' order by timestamp asc";
 					$val=null;
 					$result=$conn->query($query);
 					while($row = mysqli_fetch_assoc($result)){
@@ -207,7 +206,7 @@
 					English only (No Subtitle)
 				</td>
 				<?php
-					$query="select timestamp from loc_address where movie_id='003' && cinema_id='002' && day='001' order by timestamp asc";
+					$query="select timestamp from loc_address where movie_id='006' && cinema_id='002' && day='001' order by timestamp asc";
 					$val=null;
 					$result=$conn->query($query);
 					while($row = mysqli_fetch_assoc($result)){
@@ -237,7 +236,7 @@
 					English only (No Subtitle)
 				</td>
 				<?php
-					$query="select timestamp from loc_address where movie_id='003' && cinema_id='003' && day='001' order by timestamp asc";
+					$query="select timestamp from loc_address where movie_id='006' && cinema_id='003' && day='001' order by timestamp asc";
 					$result=$conn->query($query);
 					$val=null;
 					while($row = mysqli_fetch_assoc($result)){

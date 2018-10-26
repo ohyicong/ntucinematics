@@ -24,8 +24,8 @@
 <script type="text/javascript">
 	const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 	const cinemas=['JURONG','YISHUN','HABOURFRONT'];
-	const movie="Down A Dark Hall"
-	const movieImage="./img/Down A Dark Hall.jpg"
+	const movie="A Star is Born"
+	const movieImage="./img/A STAR IS BORN.jpg"
 	var userSelection=[];
 	
 	function generateUserSelection(movie,movieImage){
@@ -141,21 +141,20 @@
 		</center>
 	</div>
 	<span class="one-third" style="height:500px">
-		<img src="./img/Down A Dark Hall.jpg" style="width:100%;height:100%;">
+		<img src="./img/A STAR IS BORN.jpg" style="width:100%;height:100%;">
 	</span>
 	<span class="two-third" style="height:500px;padding:10px;">
-		<h1 style="color:#008080">Down A Dark Hall</h1>
+		<h1 style="color:#008080">A STAR IS BORN (PG)</h1>
 		<hr>
 		<dl>
 			<dt style="margin-bottom:5px">CAST</dt>
-			<dd>AnnaSophia Robb, Uma Thurman, Victoria Moroles</dd>
+			<dd>Bradley Cooper , Lady Gaga , Sam Elliot</dd>
 			<br>
 			<dt style="margin-bottom:5px">DIRECTOR</dt>
-			<dd>Rodrigo Cortés</dd>
+			<dd>Bradley Cooper</dd>
 			<br>
 			<dt style="margin-bottom:5px">SYNOPSIS</dt>
-			<dd>Kit Gordy (AnnaSophia Robb), a difficult young girl, is sent to the mysterious Blackwood Boarding School when her heated temper becomes too much for her mother to handle. Once she arrives at Blackwood, Kit encounters eccentric headmistress Madame Duret (Uma Thurman) and meets the school’s only other students, four young women also headed down a troubled path. While exploring the labyrinthine corridors of the school, Kit and her classmates discover that Blackwood Manor hides an age-old secret rooted in the paranormal
-			</dd>
+			<dd>Seasoned musician Jackson Maine discovers -- and falls in love with -- struggling artist Ally. She has just about given up on her dream to make it big as a singer until Jackson coaxes her into the spotlight. But even as Ally's career takes off, the personal side of their relationship is breaking down, as Jackson fights an ongoing battle with his own internal demons.</dd>
 		</dl>
 	</span>
 	<span class="full" style="height:500px;">
@@ -177,7 +176,7 @@
 					English with Chinese subtitles
 				</td>
 				<?php
-					$query="select timestamp from loc_address where movie_id='003' && cinema_id='001' && day='001' order by timestamp asc";
+					$query="select timestamp from loc_address where movie_id='004' && cinema_id='001' && day='001' order by timestamp asc";
 					$val=null;
 					$result=$conn->query($query);
 					while($row = mysqli_fetch_assoc($result)){
@@ -207,7 +206,7 @@
 					English only (No Subtitle)
 				</td>
 				<?php
-					$query="select timestamp from loc_address where movie_id='003' && cinema_id='002' && day='001' order by timestamp asc";
+					$query="select timestamp from loc_address where movie_id='004' && cinema_id='002' && day='001' order by timestamp asc";
 					$val=null;
 					$result=$conn->query($query);
 					while($row = mysqli_fetch_assoc($result)){
@@ -237,7 +236,7 @@
 					English only (No Subtitle)
 				</td>
 				<?php
-					$query="select timestamp from loc_address where movie_id='003' && cinema_id='003' && day='001' order by timestamp asc";
+					$query="select timestamp from loc_address where movie_id='004' && cinema_id='003' && day='001' order by timestamp asc";
 					$result=$conn->query($query);
 					$val=null;
 					while($row = mysqli_fetch_assoc($result)){

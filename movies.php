@@ -14,7 +14,7 @@
 </head>
 
 
-<body style="overflow-y:hidden">
+<body style="overflow-y:auto">
 	<div class="clearfix">
 		<header>
 			<img src="./img/logo.jpg" style="width:80%;height:100%;">
@@ -86,9 +86,9 @@
 			 document.getElementById('nowShowingBtn').classList.remove('teal-border-button');
 			 document.getElementById('nowShowingBtn').classList.add('grey-button');">
 	</div>
-	<span id="nowShowing" class="full" style="height:600px;overflow-y:none" >
+	<span id="nowShowing" class="full" style="height:700px; overflow-y:none;" >
 		<div class="one-fifth">
-			<a href="./crazyrichasian.php"><img src="./img/crazyrichasianssmall.jpg" style="height:284px;width:80%;" ></a>
+			<a href="./crazyrichasian.php"><img src="./img/crazyrichasianssmall.jpg" style="height:284px;width:80%;margin-top: 10px;"></a>
 			<div class='movies'>
 				<label style="font-size:20px">Crazy Rich Asian</label><br>
 				<label style="font-size:15px">(PG)</label><br>
@@ -97,7 +97,7 @@
 			</div>	
 		</div>
 		<div class="one-fifth">
-			<a href="./thefirstpurge.php"><img src="./img/firstpurgesmall.jpg" style="height:284px;width:80%;"></a>
+			<a href="./thefirstpurge.php"><img src="./img/firstpurgesmall.jpg" style="height:284px;width:80%;margin-top: 10px;"></a>
 			<div class='movies'>
 				<label style="font-size:20px">The First Purge</label><br>
 				<label style="font-size:15px">(M16)</label><br>
@@ -106,7 +106,7 @@
 			</div>		
 		</div>
 		<div class="one-fifth">
-			<a href="./downadarkhall.php"><img src="./img/downadarkhallsmall.jpg" style="height:284px;width:80%;"></a>
+			<a href="./downadarkhall.php"><img src="./img/downadarkhallsmall.jpg" style="height:284px;width:80%;margin-top: 10px;"></a>
 			<div class='movies'>
 				<label style="font-size:20px">Down a Dark Hall</label><br>
 				<label style="font-size:15px">(M16)</label><br>
@@ -114,8 +114,36 @@
 				<label style="font-size:15px">English</label>
 			</div>	
 		</div>
+		<div class="one-fifth">
+			<a href="./astarisborn.php"><img src="./img/astarisbornsmall.jpg" style="height:284px;width:80%;margin-top: 10px;" ></a>
+			<div class='movies'>
+				<label style="font-size:20px">A Star Is Born</label><br>
+				<label style="font-size:15px">(PG)</label><br>
+				<label style="font-size:15px">110 Mins</label><br>
+				<label style="font-size:15px">English</label>
+			</div>	
+		</div>
+		<div class="one-fifth">
+			<a href="./venom.php"><img src="./img/venomsmall.jpg" style="height:284px;width:80%;margin-top: 10px;"></a>
+			<div class='movies'>
+				<label style="font-size:20px">Venom</label><br>
+				<label style="font-size:15px">(PG)</label><br>
+				<label style="font-size:15px">135 Mins</label><br>
+				<label style="font-size:15px">English</label>
+			</div>		
+		</div>
+		<div class="one-fifth">
+			<a href="./thenun.php"><img src="./img/thenunsmall.jpg" style="height:284px;width:80%;margin-top: 30px;"></a>
+			<div class='movies'>
+				<label style="font-size:20px">The Nun</label><br>
+				<label style="font-size:15px">(M16)</label><br>
+				<label style="font-size:15px">115 Mins</label><br>
+				<label style="font-size:15px">English</label>
+			</div>	
+		</div>
 	</span>
-	<span id="comingSoon" class="full" style="height:600px;position:relative;z-index:-2px;visibility:hidden;" >
+
+	<span id="comingSoon" class="full" style="height:700px;position:relative;z-index:-2px;visibility:hidden;" >
 		<div class="one-fifth">
 			<img src="./img/smallfootsmall.jpg" style="height:100%;width:80%">
 			<div class='movies'>

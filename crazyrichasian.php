@@ -12,7 +12,7 @@
 	$servername="localhost";
 	$dbusername="myuser";
 	$dbpassword="xxxx";
-	$dbname="user_data";
+	$dbname="ntucinematics";
 	$conn = mysqli_connect($servername, $dbusername, $dbpassword, $dbname);
 ?>
 
@@ -78,7 +78,7 @@
 		userSelection[cinema].time=ele.innerHTML;
 		console.log(userSelection[cinema]);
 		localStorage.setItem("userSelection",JSON.stringify(userSelection[cinema]));
-		window.location.href="./checkout.php";
+		window.location.href="./checkout.html";
 	}
 	function addDays(days){
 		const date = new Date();

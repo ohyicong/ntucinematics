@@ -61,16 +61,30 @@
 			</select>
 			<input id="BOOK" type="button" class="teal-button" value="Book now" onclick="storeSend()" style="width:10%">
 		</center>
+	
 	</div>
-		<div class="two-third" style="height:600px">
-			<div class="full">
+	<span id="nowShowing" class="full" style="height:700px;overflow-y:none" >
+		<div class="one-fifth" style="display: inline-block; margin-top: 30px">
+			<a><img src="./img/promos/b2school.jpg" style="height:284px;width:80%;"></a>
+		</div>
+		<div class="one-fifth" style="display: inline-block; margin-top: 30px">
+			<a><img src="./img/promos/HPB.jpg" style="height:284px;width:80%;"></a>
+		</div>
+		<div class="one-fifth" style="display: inline-block; margin-top: 30px">
+			<a><img src="./img/promos/nutcracker.jpg" style="height:284px;width:80%;"></a>
+		</div>
+		<div class="one-fifth" style="display: inline-block; margin-top: 30px">
+			<a><img src="./img/promos/scream.jpg" style="height:284px;width:80%;"></a>
+		</div>
+		<div class="one-fifth" style="display: inline-block; margin-top: 30px">
+			<a><img src="./img/promos/welcomeplatter.jpg" style="height:284px;width:80%;"></a>
+		</div>	
+		<div class="one-fifth" style="display: inline-block; margin-top: 30px">
+			<a><img src="./img/promos/mornmidnight.jpg" style="height:284px;width:80%;"></a>
+		</div>
+	</span>
+	
 
-				
-			</div>
-		</div>
-			
-			
-		</div>
 		
 	<footer>
 		<center>

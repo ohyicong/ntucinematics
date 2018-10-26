@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 24, 2018 at 05:54 PM
+-- Generation Time: Oct 26, 2018 at 03:45 PM
 -- Server version: 10.1.34-MariaDB
 -- PHP Version: 7.2.8
 
@@ -30,17 +30,21 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `current_movies` (
   `MOVIE_ID` text NOT NULL,
-  `MOVIE_NAME` text NOT NULL
+  `MOVIE_NAME` text NOT NULL,
+  `GENRE` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `current_movies`
 --
 
-INSERT INTO `current_movies` (`MOVIE_ID`, `MOVIE_NAME`) VALUES
-('001', 'CRAZY RICH ASIANS'),
-('002', 'THE FIRST PURGE'),
-('003', 'DOWN A DARK HALL');
+INSERT INTO `current_movies` (`MOVIE_ID`, `MOVIE_NAME`, `GENRE`) VALUES
+('001', 'CRAZY RICH ASIANS', 'ROMANCE'),
+('002', 'THE FIRST PURGE', 'THRILLER'),
+('003', 'DOWN A DARK HALL', 'HORROR'),
+('004', 'A STAR IS BORN', 'ROMANCE'),
+('005', 'VENOM', 'THRILLER'),
+('006', 'THE NUN', 'HORROR');
 
 -- --------------------------------------------------------
 
@@ -104,7 +108,9 @@ CREATE TABLE `purchase_history` (
 INSERT INTO `purchase_history` (`purchaseID`, `userID`, `movieID`, `quantity`, `purchaseDate`, `movieDate`, `seatNumber`, `cinema`, `movieName`) VALUES
 (8, '0aa73acded4fe0b62e573718e5f57d0a88bca0b8', '001', 2, '2018-10-23 16:13:55', '2018-10-23 05:15:00', '[\"0\",\"1\"]', 'JURONG', 'CRAZY RICH ASIANS'),
 (9, '8a06c10369c5c0cd798e1d7a838ed4764850ee9d', '002', 3, '2018-10-24 08:40:21', '2018-10-24 05:50:00', '[\"0\",\"1\",\"2\"]', 'JURONG', 'THE FIRST PURGE'),
-(10, '0aa73acded4fe0b62e573718e5f57d0a88bca0b8', '001', 3, '2018-10-24 11:03:42', '2018-10-24 04:15:00', '[\"0\",\"1\",\"2\"]', 'JURONG', 'Crazy Rich Asians');
+(10, '0aa73acded4fe0b62e573718e5f57d0a88bca0b8', '001', 3, '2018-10-24 11:03:42', '2018-10-24 04:15:00', '[\"0\",\"1\",\"2\"]', 'JURONG', 'Crazy Rich Asians'),
+(11, '8a06c10369c5c0cd798e1d7a838ed4764850ee9d', '001', 0, '2018-10-26 05:29:32', '2018-10-24 05:15:00', '[]', 'JURONG', 'CRAZY RICH ASIANS'),
+(12, '8a06c10369c5c0cd798e1d7a838ed4764850ee9d', '001', 3, '2018-10-26 05:29:32', '2018-10-27 05:15:00', '[\"0\",\"1\",\"2\"]', 'JURONG', 'CRAZY RICH ASIANS');
 
 -- --------------------------------------------------------
 
@@ -151,7 +157,10 @@ INSERT INTO `unique_seats` (`UNIQUE_ID`, `SEAT_NO`, `DATETIME`) VALUES
 ('002001001002', '2', '2018-10-24 13:50:00'),
 ('001001005001', '0', '2018-10-24 12:15:00'),
 ('001001005001', '1', '2018-10-24 12:15:00'),
-('001001005001', '2', '2018-10-24 12:15:00');
+('001001005001', '2', '2018-10-24 12:15:00'),
+('001001002002', '0', '2018-10-27 13:15:00'),
+('001001002002', '1', '2018-10-27 13:15:00'),
+('001001002002', '2', '2018-10-27 13:15:00');
 
 -- --------------------------------------------------------
 
@@ -198,7 +207,7 @@ ALTER TABLE `purchase_history`
 -- AUTO_INCREMENT for table `purchase_history`
 --
 ALTER TABLE `purchase_history`
-  MODIFY `purchaseID` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `purchaseID` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
