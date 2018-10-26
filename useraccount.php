@@ -338,7 +338,7 @@
 					$servername="localhost";
 					$dbusername="myuser";
 					$dbpassword="xxxx";
-					$dbname="user_data";
+					$dbname="ntucinematics";
 					$conn = mysqli_connect($servername, $dbusername, $dbpassword, $dbname);
 					$useraccount=json_decode($_SESSION["useraccount"])[0];
 					$query="select * from purchase_history where userid='".$useraccount->userid."'";
