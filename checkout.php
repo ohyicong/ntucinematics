@@ -1,9 +1,26 @@
 <!DOCTYPE html>
 <html>
+<?php		
+	if (!isset($_SESSION)){
+		session_start();
+	}
+	if (!isset($_SESSION['usercart'])){
+		$_SESSION['usercart'] = array();
+	}
+	if(isset($_SESSION["useraccount"])){
+		echo "<script>const useraccount=".$_SESSION["useraccount"]."[0];console.log(useraccount)</script>";
+	}else{
+		echo "<script>const useraccount=null</script>";
+	}
+	$servername="localhost";
+	$dbusername="myuser";
+	$dbpassword="xxxx";
+	$dbname="ntucinematics";
+	$conn = mysqli_connect($servername, $dbusername, $dbpassword, $dbname);
+?>
 <head>
 	<title>Movies</title>
 	<link rel="stylesheet" type="text/css" href="./css/ee4717.css">
-	<script type="text/javascript" src="./scripts/checkout.js"></script>
 	<script type="text/javascript" src="./scripts/globalinit.js"></script>
 	<style type="text/css">
 		.taken{border-radius:6px;background-color:pink}
@@ -11,6 +28,141 @@
 		.choosen{border-radius:6px;background-color:grey}
 	</style>
 </head>
+<?php  
+		if(isset($_GET['uniqueID'])&&isset($_GET['userSelection'])){
+			//if init seats
+			$_SESSION['uniqueID']=$_GET['uniqueID'];
+			$_SESSION['userSelection']=json_decode($_GET['userSelection']);
+			//Get movie info
+			$query = "select timestamp from loc_address where UNIQUE_ID='".$_GET['uniqueID']."'";
+			$result=$conn->query($query);
+			$movieinfo = $result->fetch_assoc();
+			//Get all seating info
+			$query = "select seat_no from unique_seats where UNIQUE_ID='".$_GET['uniqueID']."' and DATETIME >='".date("Y-m-d")." ".$movieinfo["timestamp"]."'";
+			$result=$conn->query($query);
+			$seatArray=array();
+			if (@$result->num_rows > 0) {
+			    // output data of each row
+			    while($row = $result->fetch_assoc()) {
+			        array_push($seatArray, $row['seat_no']);
+			    }
+
+			} 
+			$seats=array();
+			for($i=0;$i<30;$i++){
+				$isChecked=False;
+				for($x=0;$x<count($seatArray);$x++){
+					if($seatArray[$x]==(string)$i&&!$isChecked){
+						array_push($seats,"0");
+						$isChecked=True;	
+					}
+				}
+				if(!$isChecked){
+					array_push($seats,"1");
+				}
+			}
+			echo "<script>obj.seat_status=".json_encode($seats).";console.log('My seats status',obj.seat_status)</script>";
+		}else if(isset($_SESSION['uniqueID'])&&isset($_SESSION['userSelection'])&&isset($_GET['add'])){
+			//if add seats
+			if(!isset($_SESSION['usercart'][$_SESSION['uniqueID']])){
+				//if not set feed into global usercart
+				$_SESSION['usercart'][$_SESSION['uniqueID']]=$_SESSION['userSelection'];
+			}
+			if(!in_array($_GET['add'],$_SESSION['usercart'][$_SESSION['uniqueID']]->tickets)){
+				array_push($_SESSION['usercart'][$_SESSION['uniqueID']]->tickets,$_GET['add']);
+			}
+			$query = "select timestamp from loc_address where UNIQUE_ID='".$_SESSION['uniqueID']."'";
+			$result=$conn->query($query);
+			$movieinfo = $result->fetch_assoc();
+			$query = "select seat_no from unique_seats where UNIQUE_ID='".$_SESSION['uniqueID']."' and DATETIME >='".date("Y-m-d")." ".$movieinfo["timestamp"]."'";
+			$result=$conn->query($query);
+			$seatArray=array();
+			if (@$result->num_rows > 0) {
+			    // output data of each row
+			    while($row = $result->fetch_assoc()) {
+			        array_push($seatArray, $row['seat_no']);
+			    }
+
+			} 
+			$seats=array();
+			for($i=0;$i<30;$i++){
+				$isChecked=False;
+				for($x=0;$x<count($seatArray);$x++){
+					if($seatArray[$x]==(string)$i&&!$isChecked){
+						array_push($seats,"0");
+						$isChecked=True;	
+					}
+				}
+				if(!$isChecked){
+					array_push($seats,"1");
+				}
+			}
+			echo "<script>obj.seat_status=".json_encode($seats).";console.log('My seats status',obj.seat_status)</script>";
+		}else if(isset($_SESSION['uniqueID'])&&isset($_SESSION['userSelection'])&&isset($_GET['remove'])){
+			//remove seats
+			if (($key = array_search($_GET['remove'], $_SESSION['usercart'][$_SESSION['uniqueID']]->tickets)) !== false) {
+			    unset($_SESSION['usercart'][$_SESSION['uniqueID']]->tickets[$key]);
+			}
+			$query = "select timestamp from loc_address where UNIQUE_ID='".$_SESSION['uniqueID']."'";
+			$result=$conn->query($query);
+			$movieinfo = $result->fetch_assoc();
+			$query = "select seat_no from unique_seats where UNIQUE_ID='".$_SESSION['uniqueID']."' and DATETIME >='".date("Y-m-d")." ".$movieinfo["timestamp"]."'";
+			$result=$conn->query($query);
+			$seatArray=array();
+			if (@$result->num_rows > 0) {
+			    // output data of each row
+			    while($row = $result->fetch_assoc()) {
+			        array_push($seatArray, $row['seat_no']);
+			    }
+
+			} 
+			$seats=array();
+			for($i=0;$i<30;$i++){
+				$isChecked=False;
+				for($x=0;$x<count($seatArray);$x++){
+					if($seatArray[$x]==(string)$i&&!$isChecked){
+						array_push($seats,"0");
+						$isChecked=True;	
+					}
+				}
+				if(!$isChecked){
+					array_push($seats,"1");
+				}
+			}
+			echo "<script>obj.seat_status=".json_encode($seats).";console.log('My seats status',obj.seat_status)</script>";
+		}else if(isset($_SESSION['uniqueID'])&&isset($_SESSION['userSelection'])&&isset($_GET['removeall'])){
+			//remove all 
+			$_SESSION['usercart'][$_SESSION['uniqueID']]->tickets=array();
+			$query = "select timestamp from loc_address where UNIQUE_ID='".$_SESSION['uniqueID']."'";
+			$result=$conn->query($query);
+			$movieinfo = $result->fetch_assoc();
+			$query = "select seat_no from unique_seats where UNIQUE_ID='".$_SESSION['uniqueID']."' and DATETIME >='".date("Y-m-d")." ".$movieinfo["timestamp"]."'";
+			$result=$conn->query($query);
+			$seatArray=array();
+			if (@$result->num_rows > 0) {
+			    // output data of each row
+			    while($row = $result->fetch_assoc()) {
+			        array_push($seatArray, $row['seat_no']);
+			    }
+
+			} 
+			$seats=array();
+			for($i=0;$i<30;$i++){
+				$isChecked=False;
+				for($x=0;$x<count($seatArray);$x++){
+					if($seatArray[$x]==(string)$i&&!$isChecked){
+						array_push($seats,"0");
+						$isChecked=True;	
+					}
+				}
+				if(!$isChecked){
+					array_push($seats,"1");
+				}
+			}
+			echo "<script>obj.seat_status=".json_encode($seats).";console.log('My seats status',obj.seat_status)</script>";
+		}
+		
+?>
 <body>
 	<div class="clearfix">
 		<header>
@@ -18,18 +170,19 @@
 		</header>
 		<nav style="text-align:right;padding-right:0px">
 			<a href="./index.php" class="menu">Home</a>
-			<a href="./movies.html" class="menu">Movies</a>
-			<a href="./promotions.html" class="menu">Promotions</a>
+			<a href="./movies.php" class="menu">Movies</a>
+			<a href="./promotions.php" class="menu">Promotions</a>
 			<a href="./cart.php" class="menu" > Cart</a>
 			<span class="account-box" style="float:right;">
 				<?php
 					if (isset($_SESSION["useraccount"])){
-						echo "	<span id='account' class='menu' style='padding-right:0px'> 
-									Account
+						$useraccount= json_decode($_SESSION["useraccount"])[0];
+						echo "	<span id='account' class='menu' style='padding-right:0px;'>
+									<a>".strtoupper($useraccount->name)."</a>
 								</span>
 								<span id='account-option' class='account-option' style='width:100%;text-align: center;''>
-									<a>Profile</a>
-									<a>Logout</a>
+									<a href='./useraccount.php'>Profile</a>
+									<a href='./logout.php'>Logout</a>
 								</span>	";		
 					}else{
 						echo"	<span id='account' class='menu' style='padding-right:0px'> 
@@ -42,9 +195,23 @@
 					}
 				?>
 			</span>			
-			<span class="dot" id="dot">0</span>
+			<span class="dot" >
+				<?php
+						if(isset($_SESSION['usercart'])){
+							$tempcount=0;
+							foreach ($_SESSION['usercart'] as $item) {
+							   	foreach ($item->tickets as $ticket) {
+							   		$tempcount=$tempcount+1;
+								}
+							}
+							echo $tempcount;
+						}else{
+							echo "0";
+						}
+					?>
+			</span>
 		</nav>
-	</div>	
+	</div>
 	<div class="container clearfix" style="margin-bottom:10px">
 		<center>
 			<select id="SelectMovie" class="menu-select" onchange="onClick(1,'loc_address', 'MOVIE_ID', this, ['CINEMA_ID','CINEMA'],'OPTION','SelectCinema')" style="width:40%;margin-right:1.25%">
@@ -64,9 +231,15 @@
 	</div>
 		<div class="two-third" style="height:600px">
 			<div class="full">
-				<img id='movieImage' src="" style="width:220px;height:320px;float:left;margin-right:10px">
-				<h2 id='movie'style="color:#008080;margin:0px;padding-left:10px">Crazy Rich Asian (PG13)</h2>
-				<p style='margin-top:10px' id='instruction'></p>
+				<img id='movieImage' src=<?php echo "'".$_SESSION['userSelection']->movieImage."'" ?> style="width:220px;height:320px;float:left;margin-right:10px">
+				<h2 id='movie'style="color:#008080;margin:0px;padding-left:10px"><?php echo $_SESSION['userSelection']->movie ?></h2>
+				<p style='margin-top:10px' id='instruction'>
+					<?php
+						echo "Showing on :".$_SESSION['userSelection']->date."<br>Time :".$_SESSION['userSelection']->time."hrs <br>Venue: ".strtoupper($_SESSION['userSelection']->cinema);
+					?>
+						
+
+				</p>
 			</div>
 			<div class="full">
 			<br>
@@ -77,43 +250,57 @@
 					Screen
 				</td>
 			</tr>
-			<tr>
-				<td id='0' onclick="onSeatClick(this)"></td>
-				<td id='1' onclick="onSeatClick(this)"></td>
-				<td id='2' onclick="onSeatClick(this)"></td>
-				<td id='3' onclick="onSeatClick(this)"></td>
-				<td id='4' onclick="onSeatClick(this)"></td>
-				<td id='5' onclick="onSeatClick(this)"></td>
-				<td id='6' onclick="onSeatClick(this)"></td>
-				<td id='7' onclick="onSeatClick(this)"></td>
-				<td id='8' onclick="onSeatClick(this)"></td>
-				<td id='9' onclick="onSeatClick(this)"></td>
-			</tr>
-			<tr>
-				<td id='10' onclick="onSeatClick(this)"></td>
-				<td id='11' onclick="onSeatClick(this)"></td>
-				<td id='12' onclick="onSeatClick(this)"></td>
-				<td id='13' onclick="onSeatClick(this)"></td>
-				<td id='14' onclick="onSeatClick(this)"></td>
-				<td id='15' onclick="onSeatClick(this)"></td>
-				<td id='16' onclick="onSeatClick(this)"></td>
-				<td id='17' onclick="onSeatClick(this)"></td>
-				<td id='18' onclick="onSeatClick(this)"></td>
-				<td id='19' onclick="onSeatClick(this)"></td>
-			</tr>
-			<tr>
-				<td id='20' onclick="onSeatClick(this)"></td>
-				<td id='21' onclick="onSeatClick(this)"></td>
-				<td id='22' onclick="onSeatClick(this)"></td>
-				<td id='23' onclick="onSeatClick(this)"></td>
-				<td id='24' onclick="onSeatClick(this)"></td>
-				<td id='25' onclick="onSeatClick(this)"></td>
-				<td id='26' onclick="onSeatClick(this)"></td>
-				<td id='27' onclick="onSeatClick(this)"></td>
-				<td id='28' onclick="onSeatClick(this)"></td>
-				<td id='29' onclick="onSeatClick(this)"></td>
-			</tr>
-		</table>
+			<?php
+				if(!isset($_SESSION['usercart'][$_SESSION['uniqueID']])){
+					for($x=0;$x<3;$x++){
+						echo "<tr>";
+						for($y=0;$y<10;$y++){
+							if($x==0){
+								if($seats[($x*10)+$y]==0){
+									echo "<td id='".$y."' class='taken' >".$y."</td>";
+								}else{
+									echo "<td id='".$y."' class='available' >"."<a style='color:black;text-decoration: none;' href='".$_SERVER['PHP_SELF']."?add=".$y."'>".$y."</a></td>";
+								}
+							}else{
+								if($seats[($x*10)+$y]==0){
+									echo "<td id='".$x.$y."' class='taken'>".$x.$y."</td>";
+								}else{
+									echo "<td id='".$x.$y."' class='available' >".$x.$y."</td>";
+								}
+							}
+							
+						}
+						echo "</tr>";
+					}
+				}else{
+					for($x=0;$x<3;$x++){
+						echo "<tr>";
+						for($y=0;$y<10;$y++){
+							if($x==0){
+								if($seats[($x*10)+$y]==0){
+									echo "<td id='".$y."' class='taken' >".$y."</td>";
+								}else if (in_array((string)(($x*10)+$y),$_SESSION['usercart'][$_SESSION['uniqueID']]->tickets)){
+									echo "<td id='".$y."' class='choosen' >"."<a style='color:black;text-decoration: none;' href='".$_SERVER['PHP_SELF']."?remove=".$y."'>".$y."</a></td>";
+								}else{
+									echo "<td id='".$y."' class='available' >"."<a style='color:black;text-decoration: none;' href='".$_SERVER['PHP_SELF']."?add=".$y."'>".$y."</a></td>";
+								}
+							}else{
+								if($seats[($x*10)+$y]==0){
+									echo "<td id='".$x.$y."' class='taken' >".$x.$y."</td>";
+								}if (in_array((string)(($x*10)+$y),$_SESSION['usercart'][$_SESSION['uniqueID']]->tickets)){
+									echo "<td id='".$y."' class='choosen' >"."<a style='color:black;text-decoration: none;' href='".$_SERVER['PHP_SELF']."?remove=".$y."'>".$y."</a></td>";
+								}else{
+									echo "<td id='".$x.$y."' class='available' >".$x.$y."</td>";
+								}
+							}
+							
+						}
+						echo "</tr>";
+					}
+				}
+			?>
+			
+			</table>
 				
 			</div>
 		</div>
@@ -124,12 +311,19 @@
 			<div style="height:400px">
 				<table style="width:100%;border:none"> 
 					<tr>
-						<td id="cancel" style="color:red" onclick="clearCart()">X</td>
+						<?php
+							echo "<td id='cancel' onclick='clearCart()' ><a style='color:red;text-decoration: none;' href='".$_SERVER['PHP_SELF']."?removeall=1'>X</a></td>";
+						?>
 						<td id='selectedMovie'>
-						
+							<?php echo $_SESSION['userSelection']->movie ?>
 						</td>
 						<td id='quantity' style="text-align:right"> 
-							
+							x<?php 
+							if(isset($_SESSION['usercart'][$_SESSION['uniqueID']])) {
+								echo count($_SESSION['usercart'][$_SESSION['uniqueID']]->tickets);
+							}else{
+								echo "0";
+							}?>
 						</td>
 					</tr>
 				</table>
@@ -139,7 +333,15 @@
 					<td>
 						Total
 					</td>
-					<td id="total" style="text-align:right">	
+					<td id="total" style="text-align:right">
+						<?php
+							if(isset($_SESSION['usercart'][$_SESSION['uniqueID']])) {
+								echo number_format(count($_SESSION['usercart'][$_SESSION['uniqueID']]->tickets)*12, 2, '.', '');;
+							}else{
+								echo "0.00";
+							}
+						?>
+					
 					</td>
 				</tr>
 			</table>

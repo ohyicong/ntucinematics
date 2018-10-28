@@ -3,6 +3,22 @@
 <head>
 	<title>Admin Control</title>
 	<link rel="stylesheet" type="text/css" href="./css/ee4717.css">
+	<?php
+		if (!isset($_SESSION)){
+			session_start();
+		}
+		if(isset($_SESSION["useraccount"])){
+			echo "<script>const useraccount=".$_SESSION["useraccount"]."[0];console.log(useraccount)</script>";
+		}else{
+			echo "<script>const useraccount=null</script>";
+		}
+		$servername="localhost";
+		$dbusername="myuser";
+		$dbpassword="xxxx";
+		$dbname="ntucinematics";
+		//create connection  
+		$conn = mysqli_connect($servername, $dbusername, $dbpassword, $dbname);
+	?>
 </head>
 <body>
 	<div class="clearfix">
@@ -11,16 +27,16 @@
 		</header>
 	</div>	
 	<div class="one-fifth vertical-nav" style="height:604px;border:solid #008080 2px; border-radius:5px">
-		<ul>
-		  <li><a href="#home">Home</a></li>
-		  <li><a href="#news">News</a></li>
-		  <li><a href="#contact">Contact</a></li>
-		  <li><a href="#about">About</a></li>
+		<ul >
+			<li><a href="./overview.php">Overview</a></li>
+		  	<li><a href="./addmovie.php">Add Movie Time</a></li>
+		  	<li><a href="./deletemovie.php">Delete Movie Time</a></li>
+		  
 		</ul>
 	</div>
 	<div class="four-fifth" style="height:600px;border:solid #008080 2px;border-radius:5px">
 		<center>
-			<h1 style="margin:0px;margin-top:10px;color:#008080;position:relative">Movie Insertion</h1>
+			<h1 style="margin:0px;margin-top:10px;color:#008080;position:relative">Add Movie Timing</h1>
 		</center>
 		<hr>
 		<form method="POST" action='./php/admincontrol.php'>
@@ -39,6 +55,15 @@
 							</option>
 							<option value="003">
 								DOWN A DARK HALL
+							</option>
+							<option value="004">
+								A STAR IS BORN
+							</option>
+							<option value="005">
+								VENOM
+							</option>
+							<option value="006">
+								THE NUN
 							</option>
 						</select>
 					</td>
@@ -76,7 +101,6 @@
 					</td>
 				</tr>
 			</table>
-			
 		</form>
 		
 	</div>

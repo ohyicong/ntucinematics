@@ -1,1 +1,1 @@
-sELECT SEAT_NO FROM unique_seats WHERE UNIQUE_ID = null AND DATETIME >= '2018-10-26 12:15'
+select * from loc_address where MOVIE_ID='005'and CINEMA_ID='003' and timestamp='14:30'

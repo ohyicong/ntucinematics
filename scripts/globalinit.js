@@ -3,7 +3,7 @@ var userCartSize=0;
 var executed=false;
 
 //aaron dropdown box
-var userSelectionGlobal={"day":"", "date":"","cinema":"","time":"","movie":"","movieImage":"","tickets":""};
+var userSelectionGlobal={"day":"", "date":"","cinema":"","time":"","movie":"","movieImage":"","tickets":[]};
 var obj = { 'seat_status': [],
 			'element_id': {'1':'SelectMovie', '2':'SelectCinema','3':'SelectDate', '4':'SelectTime'}, 
 			'selected_array':[],
@@ -30,24 +30,6 @@ function globalInit(){
 		onClick(0,"current_movies","","",["MOVIE_ID","MOVIE_NAME"],'OPTION',"SelectMovie");
 		executed=true;
 	}
-	userCartSize=0;
-	userCartGlobal=localStorage.getItem('userCart');
-	if(userCartGlobal=='null'||userCartGlobal==null||userCartGlobal==''||userCartGlobal.length==0){
-		console.log('Empty cart',userCartGlobal);
-	}else{
-		try{	
-			userCartGlobal=JSON.parse(userCartGlobal);
-			for(let x=0;x<userCartGlobal.length;x++){
-				userCartSize+=userCartGlobal[x].tickets.length;
-			}
-			console.log(userCartSize)
-			console.log('Full cart',userCartGlobal);
-		}catch(e){
-			console.log("UserCart error",e);
-		}
-	}
-	document.getElementById('dot').innerHTML=userCartSize;
-
 }
 
 
@@ -255,10 +237,8 @@ function resetUserSelection(index){
 }
 
 function storeSend(){
-	if(userSelectionGlobal.time!="" && userSelectionGlobal.day!="" && userSelectionGlobal.cinema!="" && userSelectionGlobal.movie!=""){
-		console.log('ID',obj.getUniqueID());
-		localStorage.setItem('UniqueID', obj.getUniqueID());
-		localStorage.setItem('userSelection',JSON.stringify(userSelectionGlobal));
+	if(userSelectionGlobal.time!="" && userSelectionGlobal.day!="" && userSelectionGlobal.cinema!="" && userSelectionGlobal.movie!=""|| userSelectionGlobal.day==0){
+		window.open("./checkout.php?uniqueID="+obj.getUniqueID()+"&userSelection="+JSON.stringify(userSelectionGlobal));
 		window.open('./checkout.php');
 	}else{
 		alert("Incomplete Selection");

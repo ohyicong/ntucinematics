@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 26, 2018 at 03:45 PM
+-- Generation Time: Oct 28, 2018 at 05:17 PM
 -- Server version: 10.1.34-MariaDB
 -- PHP Version: 7.2.8
 
@@ -25,26 +25,45 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `cinema`
+--
+
+CREATE TABLE `cinema` (
+  `cinemaID` varchar(100) NOT NULL,
+  `cinemaName` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `cinema`
+--
+
+INSERT INTO `cinema` (`cinemaID`, `cinemaName`) VALUES
+('001', 'JURONG'),
+('002', 'YISHUN'),
+('003', 'HABOURFRONT');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `current_movies`
 --
 
 CREATE TABLE `current_movies` (
   `MOVIE_ID` text NOT NULL,
-  `MOVIE_NAME` text NOT NULL,
-  `GENRE` text NOT NULL
+  `MOVIE_NAME` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `current_movies`
 --
 
-INSERT INTO `current_movies` (`MOVIE_ID`, `MOVIE_NAME`, `GENRE`) VALUES
-('001', 'CRAZY RICH ASIANS', 'ROMANCE'),
-('002', 'THE FIRST PURGE', 'THRILLER'),
-('003', 'DOWN A DARK HALL', 'HORROR'),
-('004', 'A STAR IS BORN', 'ROMANCE'),
-('005', 'VENOM', 'THRILLER'),
-('006', 'THE NUN', 'HORROR');
+INSERT INTO `current_movies` (`MOVIE_ID`, `MOVIE_NAME`) VALUES
+('001', 'CRAZY RICH ASIANS'),
+('002', 'THE FIRST PURGE'),
+('003', 'DOWN A DARK HALL'),
+('004', 'A STAR IS BORN'),
+('005', 'VENOM'),
+('006', 'THE NUN');
 
 -- --------------------------------------------------------
 
@@ -68,20 +87,13 @@ CREATE TABLE `loc_address` (
 --
 
 INSERT INTO `loc_address` (`MOVIE_ID`, `MOVIE_NAME`, `CINEMA_ID`, `CINEMA`, `DAY`, `TIME`, `TIMESTAMP`, `UNIQUE_ID`) VALUES
-('001', 'CRAZY RICH ASIANS', '001', 'JURONG', '001', '001', '13:15', '001001001001'),
-('001', 'CRAZY RICH ASIANS', '001', 'JURONG', '002', '001', '13:15', '001001002001'),
-('001', 'CRAZY RICH ASIANS', '001', 'JURONG', '003', '001', '13:15', '001001003001'),
-('001', 'CRAZY RICH ASIANS', '001', 'JURONG', '004', '001', '13:15', '001001004001'),
-('001', 'CRAZY RICH ASIANS', '001', 'JURONG', '005', '001', '13:15', '001001005001'),
-('001', 'CRAZY RICH ASIANS', '001', 'JURONG', '006', '001', '13:15', '001001006001'),
-('001', 'CRAZY RICH ASIANS', '001', 'JURONG', '007', '001', '13:15', '001001007001'),
-('001', 'CRAZY RICH ASIANS', '001', 'JURONG', '001', '002', '12:15', '001001001001'),
-('001', 'CRAZY RICH ASIANS', '001', 'JURONG', '002', '002', '12:15', '001001002001'),
-('001', 'CRAZY RICH ASIANS', '001', 'JURONG', '003', '002', '12:15', '001001003001'),
-('001', 'CRAZY RICH ASIANS', '001', 'JURONG', '004', '002', '12:15', '001001004001'),
-('001', 'CRAZY RICH ASIANS', '001', 'JURONG', '005', '002', '12:15', '001001005001'),
-('001', 'CRAZY RICH ASIANS', '001', 'JURONG', '006', '002', '12:15', '001001006001'),
-('001', 'CRAZY RICH ASIANS', '001', 'JURONG', '007', '002', '12:15', '001001007001');
+('001', 'CRAZY RICH ASIANS', '001', 'JURONG', '001', '001', '14:00', '001001001001'),
+('001', 'CRAZY RICH ASIANS', '001', 'JURONG', '002', '001', '14:00', '001001002001'),
+('001', 'CRAZY RICH ASIANS', '001', 'JURONG', '003', '001', '14:00', '001001003001'),
+('001', 'CRAZY RICH ASIANS', '001', 'JURONG', '004', '001', '14:00', '001001004001'),
+('001', 'CRAZY RICH ASIANS', '001', 'JURONG', '005', '001', '14:00', '001001005001'),
+('001', 'CRAZY RICH ASIANS', '001', 'JURONG', '006', '001', '14:00', '001001006001'),
+('001', 'CRAZY RICH ASIANS', '001', 'JURONG', '007', '001', '14:00', '001001007001');
 
 -- --------------------------------------------------------
 
@@ -97,30 +109,8 @@ CREATE TABLE `purchase_history` (
   `purchaseDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `movieDate` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `seatNumber` varchar(100) NOT NULL,
-  `cinema` varchar(100) NOT NULL,
-  `movieName` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `purchase_history`
---
-
-INSERT INTO `purchase_history` (`purchaseID`, `userID`, `movieID`, `quantity`, `purchaseDate`, `movieDate`, `seatNumber`, `cinema`, `movieName`) VALUES
-(8, '0aa73acded4fe0b62e573718e5f57d0a88bca0b8', '001', 2, '2018-10-23 16:13:55', '2018-10-23 05:15:00', '[\"0\",\"1\"]', 'JURONG', 'CRAZY RICH ASIANS'),
-(9, '8a06c10369c5c0cd798e1d7a838ed4764850ee9d', '002', 3, '2018-10-24 08:40:21', '2018-10-24 05:50:00', '[\"0\",\"1\",\"2\"]', 'JURONG', 'THE FIRST PURGE'),
-(10, '0aa73acded4fe0b62e573718e5f57d0a88bca0b8', '001', 3, '2018-10-24 11:03:42', '2018-10-24 04:15:00', '[\"0\",\"1\",\"2\"]', 'JURONG', 'Crazy Rich Asians'),
-(11, '8a06c10369c5c0cd798e1d7a838ed4764850ee9d', '001', 0, '2018-10-26 05:29:32', '2018-10-24 05:15:00', '[]', 'JURONG', 'CRAZY RICH ASIANS'),
-(12, '8a06c10369c5c0cd798e1d7a838ed4764850ee9d', '001', 3, '2018-10-26 05:29:32', '2018-10-27 05:15:00', '[\"0\",\"1\",\"2\"]', 'JURONG', 'CRAZY RICH ASIANS');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `rubbish`
---
-
-CREATE TABLE `rubbish` (
-  `name` varchar(100) NOT NULL,
-  `id` varchar(100) NOT NULL
+  `cinemaID` varchar(100) NOT NULL,
+  `uniqueID` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -134,33 +124,6 @@ CREATE TABLE `unique_seats` (
   `SEAT_NO` text NOT NULL,
   `DATETIME` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `unique_seats`
---
-
-INSERT INTO `unique_seats` (`UNIQUE_ID`, `SEAT_NO`, `DATETIME`) VALUES
-('001001001001', '0', '2018-10-21 10:00:00'),
-('001001001001', '1', '2018-10-21 10:00:00'),
-('001001001001', '2', '2018-10-21 10:00:00'),
-('001001001002', '3', '2018-10-21 12:30:00'),
-('001001001002', '13', '2018-10-21 12:30:00'),
-('001001001002', '4', '2018-10-21 12:30:00'),
-('001001001002', '12', '2018-10-21 12:30:00'),
-('001001002003', '1', '2018-10-21 15:50:00'),
-('001001002003', '12', '2018-10-21 15:50:00'),
-('001001002003', '0', '2018-10-21 15:50:00'),
-('001001002003', '16', '2018-10-21 15:50:00'),
-('001001002003', '13', '2018-10-21 15:50:00'),
-('002001001002', '0', '2018-10-24 13:50:00'),
-('002001001002', '1', '2018-10-24 13:50:00'),
-('002001001002', '2', '2018-10-24 13:50:00'),
-('001001005001', '0', '2018-10-24 12:15:00'),
-('001001005001', '1', '2018-10-24 12:15:00'),
-('001001005001', '2', '2018-10-24 12:15:00'),
-('001001002002', '0', '2018-10-27 13:15:00'),
-('001001002002', '1', '2018-10-27 13:15:00'),
-('001001002002', '2', '2018-10-27 13:15:00');
 
 -- --------------------------------------------------------
 
@@ -182,14 +145,6 @@ CREATE TABLE `user_accounts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `user_accounts`
---
-
-INSERT INTO `user_accounts` (`userid`, `name`, `password`, `email`, `cardno`, `address`, `ccv`, `registerdate`, `cardtype`, `postalcode`) VALUES
-('0aa73acded4fe0b62e573718e5f57d0a88bca0b8', 'yicong', '123123', 'ohyicong123@hotmail.com', '1234512345123451', 'Ang Mo Kio 123', '123', '2018-10-23 09:48:01', 'VISA', '123456'),
-('0aa73acded4fe0b62e573718e5f57d0a88bca0b8', 'yicong', '123123', 'ohyicong123@hotmail.com', '1234512345123451', 'Ang Mo Kio 123', '123', '2018-10-24 10:45:24', 'VISA', '123456');
-
---
 -- Indexes for dumped tables
 --
 
@@ -207,7 +162,7 @@ ALTER TABLE `purchase_history`
 -- AUTO_INCREMENT for table `purchase_history`
 --
 ALTER TABLE `purchase_history`
-  MODIFY `purchaseID` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `purchaseID` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

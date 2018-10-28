@@ -4,11 +4,6 @@
 	if (!isset($_SESSION)){
 		session_start();
 	}
-	if(isset($_SESSION["useraccount"])){
-		echo "<script>const useraccount=".$_SESSION['useraccount']."[0];console.log(useraccount)</script>";
-	}else{
-		echo "<script>const useraccount=null</script>";
-	}
 	$servername="localhost";
 	$dbusername="myuser";
 	$dbpassword="xxxx";
@@ -30,7 +25,7 @@
 	
 	function generateUserSelection(movie,movieImage){
 		for(let i=0;i<cinemas.length;i++){
-			userSelection[cinemas[i]]={"day":"0","date":"","cinema":cinemas[i],"time":"","movie":movie,"movieImage":movieImage,"tickets":""};
+			userSelection[cinemas[i]]={"day":"0","date":"","cinema":cinemas[i],"time":"","movie":movie,"movieImage":movieImage,"tickets":[]};
 		}
 	}
 	generateUserSelection(movie,movieImage);
@@ -74,11 +69,11 @@
 
 		element.classList.add('showtimetd');
 	}
-	function selectedTime(cinema,ele){
+	function selectedTime(cinema,ele,uniqueID){
 		userSelection[cinema].time=ele.innerHTML;
 		console.log(userSelection[cinema]);
 		localStorage.setItem("userSelection",JSON.stringify(userSelection[cinema]));
-		window.location.href="./checkout.html";
+		window.location.href="./checkout.php?uniqueID="+uniqueID+"&userSelection="+JSON.stringify(userSelection[cinema]);
 	}
 	function addDays(days){
 		const date = new Date();
@@ -101,8 +96,9 @@
 			<span class="account-box" style="float:right;">
 				<?php
 					if (isset($_SESSION["useraccount"])){
-						echo "	<span id='account' class='menu' style='padding-right:0px'> 
-									Account
+						$useraccount= json_decode($_SESSION["useraccount"])[0];
+						echo "	<span id='account' class='menu' style='padding-right:0px;'>
+									<a>".strtoupper($useraccount->name)."</a>
 								</span>
 								<span id='account-option' class='account-option' style='width:100%;text-align: center;''>
 									<a href='./useraccount.php'>Profile</a>
@@ -118,9 +114,22 @@
 								</span>	";
 					}
 				?>
-				
 			</span>			
-			<span class="dot" id="dot">0</span>
+			<span class="dot" >
+				<?php
+						if(isset($_SESSION['usercart'])){
+							$tempcount=0;
+							foreach ($_SESSION['usercart'] as $item) {
+							   	foreach ($item->tickets as $ticket) {
+							   		$tempcount=$tempcount+1;
+								}
+							}
+							echo $tempcount;
+						}else{
+							echo "0";
+						}
+					?>
+			</span>
 		</nav>
 	</div>
 	<div class="container clearfix" style="margin-bottom:10px">
@@ -176,14 +185,14 @@
 					English with Chinese subtitles
 				</td>
 				<?php
-					$query="select timestamp from loc_address where movie_id='004' && cinema_id='001' && day='001' order by timestamp asc";
+					$query="select * from loc_address where movie_id='004' && cinema_id='001' && day='001' order by timestamp asc";
 					$val=null;
 					$result=$conn->query($query);
 					while($row = mysqli_fetch_assoc($result)){
 						$val[]=$row;
 					}
 					for($i=0;$i<@sizeof($val);$i++){
-						echo "<td class='showtimetd' onclick='selectedTime(\"JURONG\",this)'>".$val[$i]['timestamp']."</td>";
+						echo "<td class='showtimetd'  onclick='selectedTime(\"JURONG\",this,\"".$val[$i]['UNIQUE_ID']."\")'>".$val[$i]['TIMESTAMP']."</td>";
 					}
 				?>
 			</tr>
@@ -206,14 +215,14 @@
 					English only (No Subtitle)
 				</td>
 				<?php
-					$query="select timestamp from loc_address where movie_id='004' && cinema_id='002' && day='001' order by timestamp asc";
+					$query="select * from loc_address where movie_id='004' && cinema_id='002' && day='001' order by timestamp asc";
 					$val=null;
 					$result=$conn->query($query);
 					while($row = mysqli_fetch_assoc($result)){
 						$val[]=$row;
 					}
 					for($i=0;$i<@sizeof($val);$i++){
-						echo "<td class='showtimetd' onclick='selectedTime(\"YISHUN\",this)'>".$val[$i]['timestamp']."</td>";
+						echo "<td class='showtimetd'  onclick='selectedTime(\"YISHUN\",this,\"".$val[$i]['UNIQUE_ID']."\")'>".$val[$i]['TIMESTAMP']."</td>";
 					}
 				?>
 			</tr>
@@ -236,14 +245,14 @@
 					English only (No Subtitle)
 				</td>
 				<?php
-					$query="select timestamp from loc_address where movie_id='004' && cinema_id='003' && day='001' order by timestamp asc";
+					$query="select * from loc_address where movie_id='004' && cinema_id='003' && day='001' order by timestamp asc";
 					$result=$conn->query($query);
 					$val=null;
 					while($row = mysqli_fetch_assoc($result)){
 						$val[]=$row;
 					}
 					for($i=0;$i<@sizeof($val);$i++){
-						echo "<td class='showtimetd' onclick='selectedTime(\"HABOURFRONT\",this)'>".$val[$i]['timestamp']."</td>";
+						echo "<td class='showtimetd' onclick='selectedTime(\"HABOURFRONT\",this,\"".$val[$i]['UNIQUE_ID']."\")'>".$val[$i]['TIMESTAMP']."</td>";
 					}
 				?>
 			</tr>

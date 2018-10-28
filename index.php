@@ -30,8 +30,9 @@
 			<span class="account-box" style="float:right;">
 				<?php
 					if (isset($_SESSION["useraccount"])){
-						echo "	<span id='account' class='menu' style='padding-right:0px'> 
-									Account
+						$useraccount= json_decode($_SESSION["useraccount"])[0];
+						echo "	<span id='account' class='menu' style='padding-right:0px;'>
+									<a>".strtoupper($useraccount->name)."</a>
 								</span>
 								<span id='account-option' class='account-option' style='width:100%;text-align: center;''>
 									<a href='./useraccount.php'>Profile</a>
@@ -47,9 +48,22 @@
 								</span>	";
 					}
 				?>
-				
 			</span>			
-			<span class="dot" id="dot">0</span>
+			<span class="dot" >
+				<?php
+						if(isset($_SESSION['usercart'])){
+							$tempcount=0;
+							foreach ($_SESSION['usercart'] as $item) {
+							   	foreach ($item->tickets as $ticket) {
+							   		$tempcount=$tempcount+1;
+								}
+							}
+							echo $tempcount;
+						}else{
+							echo "0";
+						}
+					?>
+			</span>
 		</nav>
 	</div>
 	<div class="container clearfix" style="margin-bottom:10px">

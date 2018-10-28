@@ -4,10 +4,21 @@
 	if (!isset($_SESSION)){
 		session_start();
 	}
+	if (!isset($_SESSION['usercart'])){
+		$_SESSION['usercart'] = array();
+	}
 	if(isset($_SESSION["useraccount"])){
 		echo "<script>const useraccount=".$_SESSION["useraccount"]."[0];console.log(useraccount)</script>";
 	}else{
 		echo "<script>const useraccount=null</script>";
+	}
+	$servername="localhost";
+	$dbusername="myuser";
+	$dbpassword="xxxx";
+	$dbname="ntucinematics";
+	$conn = mysqli_connect($servername, $dbusername, $dbpassword, $dbname);
+	if(isset($_GET["remove"])){
+		unset($_SESSION['usercart'][$_GET["remove"]]);
 	}
 ?>
 <head>
@@ -24,87 +35,10 @@
 		}
 		function onInit(){
 			totalTickets=0;
-			userCart = localStorage.getItem('userCart');
-			const table = document.getElementById('carttable');
-			const tableConfirm=document.getElementById('tableConfirm');
-			const total = document.getElementById('total');
 			console.log(userCart);
 			if(userCart==''||userCart=='null'||userCart==null||userCart.length==0){
-				alert('No items in cart.... You will be redirected');
-				window.location.href="./index.php"	
-			}else{
-				userCart=JSON.parse(userCart);
-				console.log("MyUser",userCart)
-				while(table.hasChildNodes()){
-					table.removeChild(table.firstChild);
-				}
-				while(tableConfirm.hasChildNodes()){
-					tableConfirm.removeChild(tableConfirm.firstChild);
-				}
-				let row = document.createElement("tr");
-				row.innerHTML="<tr><th>Movie</th><th>Venue</th><th>Date</th><th>Time</th><th>Seats</th></tr>"
-				tableConfirm.appendChild(row);	
-				for(let i=0;i<userCart.length;i++){
-					if(!(userCart[i].tickets.length<1)){
-						//Main table
-						let tr = document.createElement("tr");
-						let td0 = document.createElement("td");
-						let td1 = document.createElement("td");
-						let td2 = document.createElement("td");
-						td0.innerHTML="<label style='color:red;font-size:20px;'>x</label>";
-						td0.id=i;
-						tr.id="tr"+i
-						td0.onclick=function(td0,td1,td2,tr){
-							console.log(td0);
-							console.log('tr'+td0.path[1].id);
-							let tempTr = document.getElementById('tr'+td0.path[1].id);
-							console.log(tempTr);
-							console.log('Deleted',td0.path[1].id,tempTr);
-							console.log(userCart.splice(parseInt(td0.path[1].id),1));
-							if(userCart.length==0){
-								localStorage.setItem('userCart',null);
-							}else{
-								localStorage.setItem('userCart',JSON.stringify(userCart));
-							}
-							localStorage.setItem('userCart',JSON.stringify(userCart));
-							while(table.hasChildNodes()){
-								table.removeChild(table.firstChild);
-							}
-							onInit();
-						}
-						td1.innerHTML="<label style='font-size:15px'>"+userCart[i].movie+"<label><br/>"+userCart[i].cinema.toUpperCase()+", "+userCart[i].date+", "+userCart[i].time+", Seats: "+userCart[i].tickets;
-						td2.innerHTML="x "+userCart[i].tickets.length;
-						totalTickets+=userCart[i].tickets.length;
-						tr.appendChild(td0);
-						tr.appendChild(td1);
-						tr.appendChild(td2);
-						table.appendChild(tr);
-						console.log(table);
-
-						//Confirmation table
-						let trConfirm = document.createElement("tr");
-						let tdConfirm0 = document.createElement("td");
-						let tdConfirm1 = document.createElement("td");
-						let tdConfirm2 = document.createElement("td");
-						let tdConfirm3 = document.createElement("td");
-						let tdConfirm4 = document.createElement("td");
-						tdConfirm0.innerHTML= userCart[i].movie+'';
-						tdConfirm1.innerHTML= userCart[i].cinema.toUpperCase()+'';
-						tdConfirm2.innerHTML= userCart[i].date+'';
-						tdConfirm3.innerHTML= userCart[i].time+'';
-						tdConfirm4.innerHTML= userCart[i].tickets+'';
-						trConfirm.appendChild(tdConfirm0);
-						trConfirm.appendChild(tdConfirm1);
-						trConfirm.appendChild(tdConfirm2);
-						trConfirm.appendChild(tdConfirm3);
-						trConfirm.appendChild(tdConfirm4);
-						tableConfirm.appendChild(trConfirm);
-					}
-				}
-				total.innerHTML="$"+totalTickets*12+".00";
-				row= document.createElement("tr");
-				row.innerHTML="<tr><th></th><th></th><th></th><th>Total:</th><th>$"+totalTickets*12+".00</th></tr>";
-				tableConfirm.appendChild(row);
+				//alert('No items in cart.... You will be redirected');
+				//window.location.href="./index.php"	
 			}
 			//Check if accoun details exist
 			autofill();
@@ -194,19 +128,8 @@
 			spinner.style.display="block";
 			const confirmInterval=setInterval(function(){
 				if(Math.random()>0){
-					//This is the place to submit orders
-					let ajax = new XMLHttpRequest();
-					let method = "POST";
-					let url = "./php/purchasetickets.php";
-					let asynchronous = true;
-					ajax.open(method, url, asynchronous);
-					ajax.setRequestHeader("Content-type", "application/json");	
-					ajax.send(JSON.stringify(userCart));
-					console.log("Submitting to purcahse",userCart);
-					purchaseTickets(userCart);
-					localStorage.setItem('userCart',null);
-					localStorage.setItem('userSelection',null);
-					location.href='./paymentsuccess.html';
+					let cartForm=document.getElementById('cartForm');
+					cartForm.submit();
 				}else{
 					spinner.style.display="none";
 					alert('Payment failed... Please try again');
@@ -311,8 +234,9 @@
 			<span class="account-box" style="float:right;">
 				<?php
 					if (isset($_SESSION["useraccount"])){
-						echo "	<span id='account' class='menu' style='padding-right:0px'> 
-									Account
+						$useraccount= json_decode($_SESSION["useraccount"])[0];
+						echo "	<span id='account' class='menu' style='padding-right:0px;'>
+									<a>".strtoupper($useraccount->name)."</a>
 								</span>
 								<span id='account-option' class='account-option' style='width:100%;text-align: center;''>
 									<a href='./useraccount.php'>Profile</a>
@@ -328,11 +252,24 @@
 								</span>	";
 					}
 				?>
-				
 			</span>			
-			<span class="dot" id="dot">0</span>
+			<span class="dot" >
+				<?php
+						if(isset($_SESSION['usercart'])){
+							$tempcount=0;
+							foreach ($_SESSION['usercart'] as $item) {
+							   	foreach ($item->tickets as $ticket) {
+							   		$tempcount=$tempcount+1;
+								}
+							}
+							echo $tempcount;
+						}else{
+							echo "0";
+						}
+					?>
+			</span>
 		</nav>
-	</div>	
+	</div>
 	<div class="container clearfix" style="margin-bottom:10px">
 		<center>
 			<select id="SelectMovie" class="menu-select" onchange="onClick(1,'loc_address', 'MOVIE_ID', this, ['CINEMA_ID','CINEMA'],'OPTION','SelectCinema')" style="width:40%;margin-right:1.25%">
@@ -351,31 +288,30 @@
 		</center>
 	</div>
 	<span class="two-third" style="height:600px">
-		<form>
+		<form id='cartForm' method="POST" action="./paymentsuccess.php">
 		  <fieldset>
 		    <legend>Personal Details</legend>
 			<label>Name</label><br>
-			<input id='name' type="text" style="height:25px;width:33.33%" class="teal-input" value=''><br>
+			<input name='name' id='name' type="text" style="height:25px;width:33.33%" class="teal-input" value=''><br>
 			<label>Email</label><br>
-			<input id='email'type="email" style="height:25px;width:33.33%" class="teal-input" value=''><br>
+			<input name='email' id='email'type="email" style="height:25px;width:33.33%" class="teal-input" value=''><br>
 			<label>Address</label><br>
-			<textarea id='address' style="height:50px;width:33.33%" class="teal-input" value=''></textarea><br>
+			<textarea name='address' id='address' style="height:50px;width:33.33%" class="teal-input" value=''></textarea><br>
 			<label>Postalcode</label><br>
-			<input id='postalcode'type="number" style="height:25px;width:33.33%" class="teal-input" value=''><br>
+			<input name='postalcode' id='postalcode'type="number" style="height:25px;width:33.33%" class="teal-input" value=''><br>
 		  </fieldset>
 		  <fieldset>
 		    <legend>Payment Details</legend>
 			<label>Card type*</label><br>
-			<select id="cardtype" class="grey-input" style="height:25px">
+			<select name='cardtype' id="cardtype" class="grey-input" style="height:25px">
 				<option value="" disabled selected>-Please Select-</option>
 				<option>Mastercard</option>
 				<option>VISA</option>
 			</select><br>
 			<label>CreditCard Number*</label><br>
-			<input id='cardno' type="text" value="" class="grey-input" style="height:25px"><br>
+			<input name='cardno' id='cardno' type="text" value="" class="grey-input" style="height:25px"><br>
 		    <label>Card Verification Number*</label><br>
-		    <input id='ccv' type="number" name="" class="grey-input" style="height:25px"><br>
-
+		    <input name='ccv' id='ccv' type="number" name="" class="grey-input" style="height:25px"><br>
 		  </fieldset>
 		</form>
 	</span>
@@ -385,7 +321,30 @@
 			<hr>
 			<div style="height:300px">
 				<table style="width:100%;border:none" id='carttable'> 
-
+					<?php
+						foreach ($_SESSION['usercart'] as $key => $item) {
+							echo "<tr>";
+							echo "<td><a style='color:red;text-decoration:none' href='".$_SERVER['PHP_SELF']."?remove=".$key."''>X</a></td>";
+							echo "<td>";
+							echo $item->movie." (";
+							echo $item->cinema.")";
+							echo "<td>";
+							echo "<td>";
+							echo "x ".count($item->tickets);
+							echo "<td>";
+							echo "</tr>";
+							echo "<tr><td></td>";
+							echo "<td> Time: ";
+							echo $item->time;
+							echo "</td><td></td><td></td>";
+							echo "</tr>";
+							echo "<tr><td></td>";
+							echo "<td> Seats: ";
+							echo preg_replace('/[\"\[\]]/'," ",json_encode($item->tickets));
+							echo "</td><td></td><td></td>";
+							echo "</tr>";
+						}
+					?>
 				</table>
 			</div>
 			<table style="width:100%;border:none"> 
@@ -424,8 +383,27 @@
 <div id='confirmPage' style="z-index:2;margin:auto;width:100%;height:100%;padding:0px;top:0px;right:0;position:absolute;background-color: white;opacity:0.9;display: none;">
 	<center style="margin-top:10%">
 		<h2  style="margin-bottom:15px">Tickets Confirmation</h2>
-		<table id='tableConfirm' class="table" style="margin-bottom:15px">
-			
+		<table id='tableConfirm' class="table" style="margin-bottom:15px" cellpadding="15px">
+			<tr>
+				<th>Movie</th>
+				<th>Cinema</th>
+				<th>Time</th>
+				<th>Seats</th>
+				<th>Quantity</th>
+				<th>Subtotal</th>
+			</tr>
+			<?php
+				foreach ($_SESSION['usercart'] as $key => $item) {
+					echo "<tr>";
+					echo "<td>".$item->movie."</td>";
+					echo "<td>".$item->cinema."</td>";
+					echo "<td>".$item->time."</td>";
+					echo "<td>".preg_replace('/[\"\[\]]/'," ",json_encode($item->tickets));
+					echo "<td>".count($item->tickets)."</td>";
+					echo "<td>".number_format(count($item->tickets)*12,2,'.','')."</td>";
+					echo "</tr>";
+				}
+			?>
 		</table>
 		<input type="" name="" value="Confirm" class="teal-button" style="width:100px;" onclick="onConfirm()">
 		<input type="" name="" value="Cancel" class="red-button" style="width:100px" onclick="document.getElementById('confirmPage').style.display='none'; ">
