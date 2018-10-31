@@ -23,7 +23,7 @@
 			$insert="insert into `unique_seats` (`UNIQUE_ID`, `SEAT_NO`, `DATETIME`) values ('".$uniqueID."','".$ticket."','".$item->date." ".$item->time."')";
 			$conn->query($insert);
 		}
-		$insert="insert into `purchase_history`(`userID`, `movieID`, `quantity`, `purchaseDate`, `movieDate`, `seatNumber`,`cinemaID`,`uniqueID`) values ('".sha1($_POST['email'])."','".substr($uniqueID,0,3)."',".count($item->tickets).",'".date("Y-m-d h:i")."','".$item->date." ".$item->time."','".preg_replace('/[\"\[\]]/'," ",json_encode($item->tickets))."','00".substr($uniqueID,3,3)."','".$uniqueID."')";
+		$insert="insert into `purchase_history`(`userID`, `movieID`, `quantity`, `purchaseDate`, `movieDate`, `seatNumber`,`cinemaID`,`uniqueID`) values ('".sha1($_POST['email'])."','".substr($uniqueID,0,3)."',".count($item->tickets).",'".date("Y-m-d h:i")."','".$item->date." ".$item->time."','".preg_replace('/[\"\[\]]/'," ",json_encode($item->tickets))."','".substr($uniqueID,3,3)."','".$uniqueID."')";
 			$conn->query($insert);
 		$purchaseString=$purchaseString.$item->movie." (".$item->cinema."), ".$item->date." at ".$item->date." hrs \r\n";
 		echo $insert;

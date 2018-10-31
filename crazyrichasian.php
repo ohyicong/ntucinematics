@@ -75,10 +75,11 @@
 		element.classList.add('showtimetd');
 	}
 	function selectedTime(cinema,ele,uniqueID){
+		let date = new Date();
 		userSelection[cinema].time=ele.innerHTML;
 		console.log(userSelection[cinema]);
-		localStorage.setItem("userSelection",JSON.stringify(userSelection[cinema]));
-		window.location.href="./checkout.php?uniqueID="+uniqueID+"&userSelection="+JSON.stringify(userSelection[cinema]);
+		reconstructUniqueID=uniqueID.slice(0,8)+date.getDay()+uniqueID.slice(9);
+		window.location.href="./checkout.php?uniqueID="+reconstructUniqueID+"&userSelection="+JSON.stringify(userSelection[cinema]);
 	}
 	function addDays(days){
 		const date = new Date();

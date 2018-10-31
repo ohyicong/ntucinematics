@@ -17,6 +17,14 @@
 	$dbpassword="xxxx";
 	$dbname="ntucinematics";
 	$conn = mysqli_connect($servername, $dbusername, $dbpassword, $dbname);
+	if(isset($_SESSION["usercart"])){
+		foreach ($_SESSION["usercart"] as $key => $value) {	
+			if(count($value->tickets)==0){
+				unset($_SESSION["usercart"][$key]);
+				echo "My console:".var_dump($value);
+			}
+		}
+	}
 	if(isset($_GET["remove"])){
 		unset($_SESSION['usercart'][$_GET["remove"]]);
 	}
@@ -157,63 +165,7 @@
 			document.getElementById('ccv').value=useraccount.ccv;
 			document.getElementById('cardtype').value=useraccount.cardtype;
 		}
-		function purchaseTickets(userCart){
-
-			purchaseDate=moment(new Date()).format('YYYY-MM-DD HH-mm-ss');
-			email=document.getElementById('email').value;
-			for (let i=0;i<userCart.length;i++){
-				movieDate= moment(new Date(userCart[i].date+" "+userCart[i].time)).format('YYYY-MM-DD HH-mm-ss');
-				let request= new XMLHttpRequest();
-				let form = new FormData();
-				form.append('email',email);
-				form.append('movie',userCart[i].movie);
-				form.append('quantity',userCart[i].tickets.length);
-				form.append('purchaseDate',purchaseDate);
-				form.append('movieDate',movieDate);
-				form.append('tickets',JSON.stringify(userCart[i].tickets));
-				form.append('uniqueID',userCart[i].uniqueID);
-				form.append('cinema',userCart[i].cinema);
-				request.open("POST", "./php/purchasetickets.php",true);
-				request.send(form);
-			}
-		}
-
-		// WHERE return_column= [UNIQUE_ID, SeatNumber]
-		function sendData(table_name, condition, value, ID, tickets){
-				let ajax = new XMLHttpRequest();
-				let datainput =  new FormData();
-				let method = "POST";
-				let url = "./php/dataCheckout.php";
-				let asynchronous = true;
-				var uniqID;
-				var userSelection= JSON.parse(localStorage.getItem('userSelection'));
-				// Add data into packet
-
-				//ID=ID.slice(3,ID.length-1);
-				datainput.append("table_name", table_name);
-				datainput.append("condition", condition);
-				datainput.append("TIMESTAMP", userSelection.time);
-				//datainput.append("DATE",);
-				datainput.append("ID",ID);
-				datainput.append("tickets",tickets);
-				//console.log("USERGLOBAL ", userSelection.time);
-				//For posting
-				ajax.open(method, url, asynchronous);	
-				ajax.send(datainput);
-
-
-				ajax.onreadystatechange= function(){
-					if(this.readyState==4 && this.status ==200){
-						try{
-							var data = JSON.parse(this.responseText);
-							console.log(this.responseText);
-						}catch{
-							console.log(this.responseText);
-							console.log("Error occured");
-						}
-				};
-			}
-		}
+	
 	</script>
 	<script type="text/javascript" src='./scripts/globalinit.js'></script>
 	<style>

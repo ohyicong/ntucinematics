@@ -236,6 +236,7 @@
 				<p style='margin-top:10px' id='instruction'>
 					<?php
 						echo "Showing on :".$_SESSION['userSelection']->date."<br>Time :".$_SESSION['userSelection']->time."hrs <br>Venue: ".strtoupper($_SESSION['userSelection']->cinema);
+						echo $_SESSION["uniqueID"];
 					?>
 						
 
@@ -265,7 +266,7 @@
 								if($seats[($x*10)+$y]==0){
 									echo "<td id='".$x.$y."' class='taken'>".$x.$y."</td>";
 								}else{
-									echo "<td id='".$x.$y."' class='available' >".$x.$y."</td>";
+									echo "<td id='".$x.$y."' class='available' >"."<a style='color:black;text-decoration: none;' href='".$_SERVER['PHP_SELF']."?add=".$x.$y."'>".$x.$y."</a></td>";
 								}
 							}
 							
@@ -287,10 +288,10 @@
 							}else{
 								if($seats[($x*10)+$y]==0){
 									echo "<td id='".$x.$y."' class='taken' >".$x.$y."</td>";
-								}if (in_array((string)(($x*10)+$y),$_SESSION['usercart'][$_SESSION['uniqueID']]->tickets)){
-									echo "<td id='".$y."' class='choosen' >"."<a style='color:black;text-decoration: none;' href='".$_SERVER['PHP_SELF']."?remove=".$y."'>".$y."</a></td>";
+								}else if (in_array((string)(($x*10)+$y),$_SESSION['usercart'][$_SESSION['uniqueID']]->tickets)){
+									echo "<td id='".$y."' class='choosen' >"."<a style='color:black;text-decoration: none;' href='".$_SERVER['PHP_SELF']."?remove=".$x.$y."'>".$x.$y."</a></td>";
 								}else{
-									echo "<td id='".$x.$y."' class='available' >".$x.$y."</td>";
+									echo "<td id='".$y."' class='available' >"."<a style='color:black;text-decoration: none;' href='".$_SERVER['PHP_SELF']."?add=".$x.$y."'>".$x.$y."</a></td>";
 								}
 							}
 							
@@ -346,7 +347,7 @@
 				</tr>
 			</table>
 			<center>
-				<input type="button" class="teal-border-button margin"  Value="Checkout" style="width:80%;" onclick="onCheckOut()">
+				<input type="button" class="teal-border-button margin"  Value="Checkout" style="width:80%;" onclick="location.href='./cart.php'">
 			</center>
 			
 			

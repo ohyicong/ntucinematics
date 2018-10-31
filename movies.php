@@ -176,15 +176,7 @@
 				<label style="font-size:15px">English</label>
 			</div>	
 		</div>
-		<div class="one-fifth">
-			<img src="./img/venomsmall.jpg" style="height:100%;width:80%">
-			<div class='movies'>
-				<label style="font-size:20px">Venom</label><br>
-				<label style="font-size:15px">(PG13)</label><br>
-				<label style="font-size:15px">115 Mins</label><br>
-				<label style="font-size:15px">English</label>
-			</div>
-		</div>
+		
 		
 	</span>
 	<footer>
