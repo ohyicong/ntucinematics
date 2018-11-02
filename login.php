@@ -94,7 +94,7 @@
 			<label>Password</label><br>
 			<input id = "password" type="password" style="width:100%;height:25px;" class="teal-input" required><br><br>
 			<input type="button" value="Login" class="teal-button" onclick="onlogin()" style="margin-top:5px;width:100%"><br>
-			<a href="./register.html"><input type="button" value="Register" class="teal-border-button" style="margin-top:10px;width:100%"></a>
+			<a href="./register.php"><input type="button" value="Register" class="teal-border-button" style="margin-top:10px;width:100%"></a>
 		</div>
 		
 	</span>

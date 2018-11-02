@@ -129,6 +129,7 @@
 					array_push($seats,"1");
 				}
 			}
+			
 			echo "<script>obj.seat_status=".json_encode($seats).";console.log('My seats status',obj.seat_status)</script>";
 		}else if(isset($_SESSION['uniqueID'])&&isset($_SESSION['userSelection'])&&isset($_GET['removeall'])){
 			//remove all 
@@ -236,7 +237,7 @@
 				<p style='margin-top:10px' id='instruction'>
 					<?php
 						echo "Showing on :".$_SESSION['userSelection']->date."<br>Time :".$_SESSION['userSelection']->time."hrs <br>Venue: ".strtoupper($_SESSION['userSelection']->cinema);
-						echo $_SESSION["uniqueID"];
+						//echo $_SESSION["uniqueID"];
 					?>
 						
 

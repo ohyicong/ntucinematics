@@ -17,6 +17,9 @@
 	$dbpassword="xxxx";
 	$dbname="ntucinematics";
 	$conn = mysqli_connect($servername, $dbusername, $dbpassword, $dbname);
+	if(isset($_GET["remove"])){
+		unset($_SESSION['usercart'][$_GET["remove"]]);
+	}
 	if(isset($_SESSION["usercart"])){
 		foreach ($_SESSION["usercart"] as $key => $value) {	
 			if(count($value->tickets)==0){
@@ -24,10 +27,12 @@
 				echo "My console:".var_dump($value);
 			}
 		}
+
 	}
-	if(isset($_GET["remove"])){
-		unset($_SESSION['usercart'][$_GET["remove"]]);
-	}
+	if(count($_SESSION["usercart"])<=0){
+		echo count($_SESSION["usercart"]);
+		echo "<script> location.href='./index.php';</script>";
+	}	
 ?>
 <head>
 	<title>Movies</title>
@@ -43,12 +48,7 @@
 		}
 		function onInit(){
 			totalTickets=0;
-			console.log(userCart);
-			if(userCart==''||userCart=='null'||userCart==null||userCart.length==0){
-				//alert('No items in cart.... You will be redirected');
-				//window.location.href="./index.php"	
-			}
-			//Check if accoun details exist
+			//Check if account details exist
 			autofill();
 		}
 		function onPurchase(){

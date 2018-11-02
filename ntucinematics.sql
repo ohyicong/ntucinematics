@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 31, 2018 at 06:27 AM
+-- Generation Time: Nov 02, 2018 at 12:14 PM
 -- Server version: 10.1.34-MariaDB
 -- PHP Version: 7.2.8
 
@@ -51,7 +51,7 @@ INSERT INTO `cinema` (`cinemaID`, `cinemaName`) VALUES
 CREATE TABLE `current_movies` (
   `MOVIE_ID` text NOT NULL,
   `MOVIE_NAME` text NOT NULL,
-  `MOVIE_TYPE` varchar(40) NOT NULL
+  `MOVIE_TYPE` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -126,15 +126,13 @@ CREATE TABLE `purchase_history` (
 --
 
 INSERT INTO `purchase_history` (`purchaseID`, `userID`, `movieID`, `quantity`, `purchaseDate`, `movieDate`, `seatNumber`, `cinemaID`, `uniqueID`) VALUES
-(1, '0aa73acded4fe0b62e573718e5f57d0a88bca0b8', '001', 4, '2018-10-29 20:23:00', '2018-10-30 05:30:00', '  0 , 1 , 2 , 3  ', '00001', '001001001002'),
-(2, '0aa73acded4fe0b62e573718e5f57d0a88bca0b8', '001', 5, '2018-10-29 20:24:00', '2018-10-30 05:30:00', '  4 , 5 , 6 , 7 , 8  ', '00001', '001001001002'),
-(3, '0aa73acded4fe0b62e573718e5f57d0a88bca0b8', '001', 4, '2018-10-29 20:38:00', '2018-10-30 05:30:00', '  18 , 27 , 28 , 29  ', '00001', '001001001002'),
 (4, '0aa73acded4fe0b62e573718e5f57d0a88bca0b8', '001', 3, '2018-10-29 21:49:00', '2018-11-01 05:00:00', '  0 , 1 , 2  ', '001', '001001003001'),
 (5, '0aa73acded4fe0b62e573718e5f57d0a88bca0b8', '001', 2, '2018-10-29 22:04:00', '2018-11-02 05:00:00', '  3 , 4  ', '001', '001001003001'),
-(6, '0aa73acded4fe0b62e573718e5f57d0a88bca0b8', '001', 0, '2018-10-30 21:53:00', '2018-10-31 05:00:00', '  ', '001', '001001001001'),
 (7, '0aa73acded4fe0b62e573718e5f57d0a88bca0b8', '002', 3, '2018-10-30 21:53:00', '2018-10-31 05:15:00', '  0 , 1 , 12  ', '002', '002002003001'),
 (8, '0aa73acded4fe0b62e573718e5f57d0a88bca0b8', '002', 1, '2018-10-30 22:12:00', '2018-10-31 05:15:00', '  2  ', '002', '002002003001'),
-(9, '0aa73acded4fe0b62e573718e5f57d0a88bca0b8', '001', 4, '2018-10-30 22:12:00', '2018-10-31 11:00:00', '  12 , 13 , 5 , 14  ', '001', '001001003001');
+(9, '0aa73acded4fe0b62e573718e5f57d0a88bca0b8', '001', 4, '2018-10-30 22:12:00', '2018-10-31 11:00:00', '  12 , 13 , 5 , 14  ', '001', '001001003001'),
+(10, '0aa73acded4fe0b62e573718e5f57d0a88bca0b8', '001', 2, '2018-11-02 01:24:00', '2018-11-02 11:00:00', '  0 , 1  ', '001', '001001001001'),
+(11, '0aa73acded4fe0b62e573718e5f57d0a88bca0b8', '001', 1, '2018-11-02 01:25:00', '2018-11-02 11:00:00', '  2  ', '001', '001001001001');
 
 -- --------------------------------------------------------
 
@@ -178,7 +176,11 @@ INSERT INTO `unique_seats` (`UNIQUE_ID`, `SEAT_NO`, `DATETIME`) VALUES
 ('001001003001', '12', '2018-10-31 19:00:00'),
 ('001001003001', '13', '2018-10-31 19:00:00'),
 ('001001003001', '5', '2018-10-31 19:00:00'),
-('001001003001', '14', '2018-10-31 19:00:00');
+('001001003001', '14', '2018-10-31 19:00:00'),
+('001001004001', '0', '2018-11-04 19:00:00'),
+('001001001001', '0', '2018-11-02 19:00:00'),
+('001001001001', '1', '2018-11-02 19:00:00'),
+('001001001001', '2', '2018-11-02 19:00:00');
 
 -- --------------------------------------------------------
 
@@ -204,7 +206,8 @@ CREATE TABLE `user_accounts` (
 --
 
 INSERT INTO `user_accounts` (`userid`, `name`, `password`, `email`, `cardno`, `address`, `ccv`, `registerdate`, `cardtype`, `postalcode`) VALUES
-('0aa73acded4fe0b62e573718e5f57d0a88bca0b8', 'yicong', '123123', 'ohyicong123@hotmail.com', '1234512345123451', 'Ang mo kio ave 10', '123', '2018-10-30 15:23:01', 'Mastercard', '123456');
+('0aa73acded4fe0b62e573718e5f57d0a88bca0b8', 'yicong', '123123', 'ohyicong123@hotmail.com', '1234512345123451', 'Ang mo kio ave 10', '123', '2018-10-30 15:23:01', 'Mastercard', '123456'),
+('622c8d9e3cd9eb1b4d443a86f0cb0b6074be7b59', 'aaron', '123123', 'aaron@hotmail.com', '1234512345123451', 'harbourfront', '123', '2018-11-01 14:07:59', 'Mastercard', '123456');
 
 --
 -- Indexes for dumped tables
@@ -224,7 +227,7 @@ ALTER TABLE `purchase_history`
 -- AUTO_INCREMENT for table `purchase_history`
 --
 ALTER TABLE `purchase_history`
-  MODIFY `purchaseID` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `purchaseID` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

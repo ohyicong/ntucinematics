@@ -26,7 +26,7 @@
 		$insert="insert into `purchase_history`(`userID`, `movieID`, `quantity`, `purchaseDate`, `movieDate`, `seatNumber`,`cinemaID`,`uniqueID`) values ('".sha1($_POST['email'])."','".substr($uniqueID,0,3)."',".count($item->tickets).",'".date("Y-m-d h:i")."','".$item->date." ".$item->time."','".preg_replace('/[\"\[\]]/'," ",json_encode($item->tickets))."','".substr($uniqueID,3,3)."','".$uniqueID."')";
 			$conn->query($insert);
 		$purchaseString=$purchaseString.$item->movie." (".$item->cinema."), ".$item->date." at ".$item->date." hrs \r\n";
-		echo $insert;
+		//echo $insert;
 	}
 	//$to      = "ohyicong@hotmail.com";
 	//$message = 'Dear '.$_POST['name'].",\r\n".$purchaseString."\r\n\r\n Kind Regards,\r\nNTUCinematics";
@@ -34,7 +34,7 @@
 	//    'Reply-To: f32ee@localhost' . "\r\n" .
 	//    'X-Mailer: PHP/' . phpversion();
 
-	//mail($to, "NTUCinematics: Payment confirmation", $message, $headers,'-ff32ee@localhost');
+	//mail($to, "NTUCinematics: Payment confirmation", $message, $headers,'-f38im@localhost');
 	//echo ("mail sent to : ".$to);
 	$_SESSION['usercart'] = array();
 ?>
@@ -47,7 +47,7 @@
 		oldTime=new Date();
 		const countdown= setInterval(function(){
 			newTime = new Date();
-			redirect.innerHTML="You will be redicted in...."+(5-parseInt((newTime-oldTime)/1000));
+			redirect.innerHTML="You will be redirected in...."+(5-parseInt((newTime-oldTime)/1000));
 			if((newTime-oldTime)>=5000){
 				clearInterval(countdown);
 				location.href="./index.php";

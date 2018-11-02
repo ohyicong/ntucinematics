@@ -93,15 +93,77 @@
 			<input id='booknow'type="button" class="teal-button" value="Book Now" onclick="onBookNow()">	
 		</div>
 	</div>
-	<span class="one-third" style="height:250px;padding-top:10px;padding-right:10px">
-		<img src="./img/nuggets.jpg" style="height:200px;width:100%;margin:auto;">
-	</span>
-	<span class="one-third" style="height:250px;padding-top:10px;">
-		<img src="./img/mirai.jpg" style="height:200px;width:100%;margin:auto;">
-	</span>
-	<span class="one-third" style="height:250px;padding-top:10px;padding-left:10px">
-		<img src="./img/moviepromo.jpg" style="height:200px;width:100%;margin:auto;">
-	</span>
+	<div style="text-align: center; width:100%; height:400px">
+	<?php
+		$servername="localhost";
+		$dbusername="myuser";
+		$dbpassword="xxxx";
+		$dbname="ntucinematics";
+		$conn = mysqli_connect($servername, $dbusername, $dbpassword, $dbname);
+
+		// TOP 3 MOST POPULAR
+		$queryTop3="select current_movies.MOVIE_NAME,current_movies.MOVIE_TYPE,count(purchase_history.quantity) as POP from purchase_history, current_movies where purchase_history.movieID=current_movies.MOVIE_ID group by current_movies.MOVIE_NAME order by POP desc;";
+
+		$resultTop3 = mysqli_query($conn, $queryTop3);
+		while($row = mysqli_fetch_assoc($resultTop3)){
+			$dataTop3[]=$row['MOVIE_NAME'];
+		}
+
+		if (isset($_SESSION["useraccount"])){
+			$useraccount= json_decode($_SESSION["useraccount"])[0];
+			$userid=$useraccount->userid;
+			/* Query 1 - Select the movies from current movies that are - SUBQUERY 1
+				(subQuery 1.1 = same movietype as purchase history (where movie id from current movies is the same as purchase history))  ~ANDDDD~
+				(subQuery 1.2 = movie id that are not in purchase history (where movie id from current movies is the same as purchase history)) */
+			$queryUser = "SELECT MOVIE_NAME FROM current_movies WHERE MOVIE_TYPE IN (SELECT MOVIE_TYPE FROM current_movies WHERE MOVIE_ID IN (SELECT MOVIEID FROM purchase_history WHERE userID = '" . $userid . "')) AND MOVIE_ID NOT IN (SELECT MOVIEID FROM purchase_history WHERE userID = '" . $userid . "')";
+			
+			$resultUser = mysqli_query($conn, $queryUser);
+
+			while($row = mysqli_fetch_assoc($resultUser)){
+					$dataUser[]=$row['MOVIE_NAME'];
+				}
+
+			if(@$resultUser->num_rows > 0){
+				echo "<h1 style='text-align: left'> You may like these movies too!</h1>";
+				echo "<span id='recommendation' class='full' style='height:250px; position:relative; z-index:-2px;'>";
+				for($i=0; $i<sizeof($dataUser); $i++){
+					$link= str_replace(' ', '', $dataUser[$i]);
+					echo "<div class='one-fifth' style='z-index:3px; margin-right:20px'>
+							<a id='imglink' href='./" . $link . ".php' style='height:80%; width:80%;'>
+								<img src='./img/" . $dataUser[$i] . ".jpg' style='height:100%;width:100%;'>
+							</a>
+						</div>";
+				}
+				echo "</span>";
+			}else{
+				echo "<h1 style='text-align: left'> You may like these movies too!</h1>";
+				for($i=0; $i<sizeof($dataTop3); $i++){
+					$link= str_replace(' ', '', $dataTop3[$i]);
+					echo "<div class='one-fifth' style='z-index:3px;margin-right:20px'>
+							<a id='imglink' href='./" . $link . ".php' style='height:80%; width:80%;'>
+								<img src='./img/" . $dataTop3[$i] . ".jpg' style='height:100%;width:100%;'>
+							</a>
+						</div>";
+				}
+				echo "</span>";
+			}
+		}else{
+				for($i=0; $i<sizeof($dataTop3); $i++){
+					$link= str_replace(' ', '', $dataTop3[$i]);
+					echo "<h1 style='text-align: left'> You may like these movies too!</h1>";
+					for($i=0; $i<sizeof($dataTop3); $i++){
+						$link= str_replace(' ', '', $dataTop3[$i]);
+						echo "<div class='one-fifth' style='z-index:3px; margin-right:20px'>
+								<a id='imglink' href='./" . $link . ".php' style='height:80%; width:80%;'>
+									<img src='./img/" . $dataTop3[$i] . ".jpg' style='height:100%;width:100%;'>
+								</a>
+							</div>";
+					}
+					echo "</span>";
+				}
+		}
+	?>
+	</div>
 	<footer>
 		<center>
 			<label style="border-right:1px solid black;margin-right:10px">
