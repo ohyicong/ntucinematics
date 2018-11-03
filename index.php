@@ -124,26 +124,26 @@
 				}
 			//Based on customer purchase
 			if(@$resultUser->num_rows > 0){
-				echo "<div class='full' style='width:100%; height:500px'>";
+				echo "<div class='full' style='width:100%; height:400px'>";
 				echo "<h1 style='text-align: left;margin-bottom:5px;' class='teal'> Recommended For You</h1><hr style='margin-bottom:10px;'>";
-				echo "<div id='recommendation' class='full' style='height:250px; position:relative; z-index:-2px;'>";
+				echo "<div id='recommendation' class='full' style='position:relative; z-index:-2px;'>";
 				for($i=0; $i<sizeof($dataUser); $i++){
 					$link= str_replace(' ', '', $dataUser[$i]);
-					echo "<div class='one-fifth' style='z-index:3px; margin-right:20px'>
-							<a id='imglink' href='./" . strtolower($link). ".php' style='height:80%; width:80%;'>
-								<img src='./img/" . $dataUser[$i] . ".jpg' style='height:100%;width:100%;'>
+					echo "<div class='one-fifth' style='margin-right:20px'>
+							<a id='imglink' href='./" . strtolower($link). ".php' >
+								<img src='./img/" . $dataUser[$i] . ".jpg' style='height:284px;width:100%;'>
 							</a>
 						</div>";
 				}
 				echo "</div></div>";
 			}
-			echo "<div class='full' style='width:100%; height:500px'>";
+			echo "<div class='full' style='width:100%; height:400px'>";
 			echo "<h1 style='text-align: left;margin-bottom:5px;' class='teal'>Most Popular</h1><hr style='margin-bottom:10px;'>";
 			for($i=0; $i<sizeof($dataTop3); $i++){
 				$link= str_replace(' ', '', $dataTop3[$i]);
-				echo "<div class='one-fifth' style='z-index:3px;margin-right:20px'>
-						<a id='imglink' href='./" . strtolower($link) . ".php' style='height:80%; width:80%;'>
-							<img src='./img/" . $dataTop3[$i] . ".jpg' style='height:100%;width:100%;'>
+				echo "<div class='one-fifth' style='margin-right:20px'>
+						<a id='imglink' href='./" . strtolower($link) . ".php'>
+							<img src='./img/" . $dataTop3[$i] . ".jpg' style='height:284px;width:100%;'>
 						</a>
 					</div>";
 			}
@@ -151,15 +151,15 @@
 			
 		}else{
 			//Default
-			echo "<div style='text-align: center; width:100%; height:500px'>";
+			echo "<div style='text-align: center; width:100%; height:400px'>";
 				for($i=0; $i<sizeof($dataTop3); $i++){
 					$link= str_replace(' ', '', $dataTop3[$i]);
 					echo "<h1 style='text-align: left;margin-bottom:5px' class='teal'> Most Popular</h1><hr style='margin-bottom:10px;'>";
 					for($i=0; $i<sizeof($dataTop3); $i++){
 						$link= str_replace(' ', '', $dataTop3[$i]);
-						echo "<div class='one-fifth' style='z-index:3px; margin-right:20px'>
-								<a id='imglink' href='./" .strtolower($link). ".php' style='height:80%; width:80%;'>
-									<img src='./img/" . $dataTop3[$i] . ".jpg' style='height:100%;width:100%;'>
+						echo "<div class='one-fifth' style='margin-right:20px'>
+								<a id='imglink' href='./" .strtolower($link). ".php'>
+									<img src='./img/" . $dataTop3[$i] . ".jpg' style='height:284px;width:100%;'>
 								</a>
 							</div>";
 					}
