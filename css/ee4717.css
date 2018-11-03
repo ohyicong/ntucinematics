@@ -79,7 +79,9 @@ img{display:inline-block;float: left;}
 .grey-button:hover{box-shadow:0 0 0 0.5pt #b3b3b3;border:solid #b3b3b3 0.5px; background-color:#008080; color:white; border-radius:5px;padding:10px;box-sizing: border-box;}
 .red-button{text-align:center;border:solid #B91D47 0.5px; background-color:#B91D47; color:white; border-radius:5px;padding:10px;box-sizing: border-box;}
 .red-button:hover{box-shadow:0 0 0 0.5pt #941738;border:solid #941738 0.5px; background-color:#941738; color:white; border-radius:5px;padding:10px;box-sizing: border-box;}
-
+.teal{color:#008080;}
+.grey{color:#b3b3b3;}
+.red{color:#B91D47;}
 .margin{margin:10px;}
 .margin-bottom{margin:10px;}
 .margin-right{margin-right:10px;}

@@ -64,9 +64,9 @@
 			</span>			
 		</nav>
 	</div>
-	<div class="two-third" style="width:55%;margin-right:0.5%;height:800px;border:solid #008080 2px;border-radius:5px">
+	<div class="two-third" style="width:55%;margin-right:0.5%;height:700px;border:solid #008080 2px;border-radius:5px">
 		<h2 style="margin-left:2%;margin-top:10px;color:#008080;position:relative">Most Popular Movie</h2>
-		<span class="full" style="height:250px;position:relative;z-index:-2px;" >
+		<span class="full" style="height:200px;position:relative;z-index:-2px;" >
 			<?php  
 				$query="select current_movies.MOVIE_NAME,current_movies.MOVIE_TYPE,count(purchase_history.quantity) as POP from purchase_history, current_movies where purchase_history.movieID=current_movies.MOVIE_ID group by current_movies.MOVIE_NAME order by POP desc;";
 				$result=$conn->query($query);
@@ -91,7 +91,7 @@
 			</option>
 		</select>
 		<?php if($_SESSION["salesOptions"]==0){ ?>
-		<span class="full" style="height:400px;position:relative;z-index:-2px;" >
+		<span class="full" style="height:500px;position:relative;z-index:-2px;overflow-y:auto;" >
 			<table cellpadding="10px" style="padding:10px;margin-left:2%;width:96%">
 				<tr>
 					<th>No</th>
@@ -100,16 +100,16 @@
 					<th>Subtotal</th>
 				</tr>
 				<?php  
-					$query="select SUM(purchase_history.quantity) as TOTAL, current_movies.MOVIE_NAME as MOVIE_NAME  from purchase_history,current_movies where purchase_history.movieID=current_movies.MOVIE_ID";
+					$query="select SUM(purchase_history.quantity) as TOTAL, current_movies.MOVIE_NAME as MOVIE_NAME  from purchase_history,current_movies where purchase_history.movieID=current_movies.MOVIE_ID group by current_movies.MOVIE_NAME";
 					$results=$conn->query($query);
 					$countTotal=0;
 					foreach ($results as $key => $value) {
 						$countTotal+=intval($value["TOTAL"]);
 						echo "<tr>";
-						echo "<td>".$key."</td>";
-						echo "<td>".$value["MOVIE_NAME"]."</td>";
-						echo "<td>".$value["TOTAL"]."</td>";
-						echo "<td> $".number_format(intval($value["TOTAL"])*12,2,'.','')."</td>";
+						echo "<td style='width:10%'>".$key."</td>";
+						echo "<td style='width:50%'>".$value["MOVIE_NAME"]."</td>";
+						echo "<td style='width:20%'>".$value["TOTAL"]."</td>";
+						echo "<td style='width:20%'> $".number_format(intval($value["TOTAL"])*12,2,'.','')."</td>";
 						echo "</tr>";
 					}
 					echo "<tr><td></td><td></td><td>Total</td><td>$".number_format(intval($countTotal)*12,2,'.','')."</td></tr>";
@@ -117,7 +117,7 @@
 			</table>
 		</span>
 		<?php }else {?>
-		<span class="full" style="height:400px;position:relative;z-index:-2px;" >
+		<span class="full" style="height:500px;position:relative;z-index:-2px;overflow-y:auto;" >
 			<table cellpadding="10px" style="padding:10px;margin-left:2%;width:96%">
 				<tr>
 					<th>No</th>
@@ -126,16 +126,16 @@
 					<th>Subtotal</th>
 				</tr>
 				<?php  
-					$query="select SUM(purchase_history.quantity) as TOTAL, loc_address.CINEMA as CINEMA  from purchase_history,loc_address where purchase_history.uniqueID=loc_address.UNIQUE_ID";
+					$query="select SUM(purchase_history.quantity) as TOTAL, loc_address.CINEMA as CINEMA  from purchase_history,loc_address where purchase_history.uniqueID=loc_address.UNIQUE_ID group by loc_address.CINEMA";
 					$results=$conn->query($query);
 					$countTotal=0;
 					foreach ($results as $key => $value) {
 						$countTotal+=intval($value["TOTAL"]);
 						echo "<tr>";
-						echo "<td>".$key."</td>";
-						echo "<td>".$value["CINEMA"]."</td>";
-						echo "<td>".$value["TOTAL"]."</td>";
-						echo "<td> $".number_format(intval($value["TOTAL"])*12,2,'.','')."</td>";
+						echo "<td style='width:10%'>".$key."</td>";
+						echo "<td style='width:50%'>".$value["CINEMA"]."</td>";
+						echo "<td style='width:20%'>".$value["TOTAL"]."</td>";
+						echo "<td style='width:20%'> $".number_format(intval($value["TOTAL"])*12,2,'.','')."</td>";
 						echo "</tr>";
 					}
 					echo "<tr><td></td><td></td><td>Total</td><td>$".number_format(intval($countTotal)*12,2,'.','')."</td></tr>";
@@ -145,29 +145,28 @@
 		<?php }?>
 			
 	</div>
-	<div class="one-third" style="width:44.33%;height:800px;border:solid #008080 2px;border-radius:5px">
+	<div class="one-third" style="width:44.33%;height:700px;border:solid #008080 2px;border-radius:5px">
 		<center>
-			<h2 style="margin:0px;margin-top:10px;color:#008080;position:relative;">Seats Alert
+			<h2 style="margin:0px;margin-top:10px;color:#008080;position:relative;">Trending
 			</h2>
 		</center>
 			<table cellpadding="15px" style="padding:10px;width:100%">
 				<tr>
 					<th>Movie</th>
 					<th>Cinema</th>
-					<th>DateTime</th>
+					<th>Time</th>
 					<th>Seats</th>
 				</tr>
 				<?php 
-					$query="select count(*) as TOTAL, loc_address.MOVIE_NAME,loc_address.CINEMA,unique_seats.DATETIME FROM unique_seats, loc_address where unique_seats.UNIQUE_ID=loc_address.UNIQUE_ID and unique_seats.DATETIME>'".date("Y-m-d")."'";
+					$query="select count(*) as TOTAL, loc_address.MOVIE_NAME,loc_address.CINEMA,unique_seats.DATETIME,loc_address.TIMESTAMP FROM unique_seats, loc_address where unique_seats.UNIQUE_ID=loc_address.UNIQUE_ID and unique_seats.DATETIME>'".date("Y-m-d")."' and unique_seats.DATETIME<'".date('Y-m-d', strtotime(date("Y-m-d"). ' + 1 days'))."'";
 					$result=$conn->query($query);
-					
 					$count=1;
 					foreach ($result as $key => $value) {
 						if($value["TOTAL"]>2){
 							echo "<tr>";
 							echo "<td>".$value["MOVIE_NAME"]."</td>";
 							echo "<td>".$value["CINEMA"]."</td>";
-							echo "<td>".$value["DATETIME"]."</td>";
+							echo "<td>".$value["TIMESTAMP"]."</td>";
 							echo "<td>".$value["TOTAL"]."/30</td>";
 							echo "</tr>";
 						}

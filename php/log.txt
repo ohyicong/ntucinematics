@@ -1,1 +1,0 @@
-select * from loc_address where MOVIE_ID='005'and CINEMA_ID='003' and timestamp='14:30'

@@ -119,6 +119,7 @@ function getData(index, table_name, condition, value, return_column=["",""], ele
 									element_value=days[day];
 								}
 							}
+							
 							indexNum++;
 							temp_name=date_object.toISOString().slice(0,10);
 							//element_value=element_value;

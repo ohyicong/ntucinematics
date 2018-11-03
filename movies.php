@@ -102,7 +102,7 @@
 	</div>
 	<span id="nowShowing" class="full" style="height:700px; overflow-y:none;" >
 		<div class="one-fifth">
-			<a href="./crazyrichasian.php"><img src="./img/crazyrichasianssmall.jpg" style="height:284px;width:80%;margin-top: 10px;"></a>
+			<a href="./crazyrichasians.php"><img src="./img/crazyrichasianssmall.jpg" style="height:284px;width:80%;margin-top: 10px;"></a>
 			<div class='movies'>
 				<label style="font-size:20px">Crazy Rich Asian</label><br>
 				<label style="font-size:15px">(PG)</label><br>

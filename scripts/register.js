@@ -1,48 +1,3 @@
-function sendData(table_name, array){
-		var ajax = new XMLHttpRequest();
-		let datainput =  new FormData();
-		var method = "POST";
-		var url = "./php/register.php";
-		var asynchronous = true;
-		// Add data into packet
-		name=array[0];
-		password=array[1];
-		email=array[2];
-		address=array[3];
-		cardno=array[4];
-		ccv=array[5];
-		cardtype=array[6];
-		postalcode=array[7];
-
-		datainput.append("table_name", table_name);
-		datainput.append("name", name);
-		datainput.append("password", password);
-		datainput.append("email", email);
-		datainput.append("address", address);
-		datainput.append("cardno", cardno);
-		datainput.append("ccv", ccv);
-		datainput.append("cardtype", cardtype);
-		datainput.append("postalcode", postalcode);
-
-		//For posting
-		ajax.open(method, url, asynchronous);	
-		ajax.send(datainput);
-
-
-		ajax.onreadystatechange= function(){
-			if(this.readyState==4 && this.status ==200){
-				try{
-					var data = JSON.parse(this.responseText);
-					console.log(this.responseText);
-				}catch{
-					console.log(this.responseText);
-					console.log("Error occured");
-				}
-		};
-	}
-}
-
-
 function onRegister(){
 	console.log('final input check: ');
 	var name = checkname();
@@ -60,23 +15,24 @@ function onRegister(){
 	if(checkinput.includes(false)){
 		
 	} else{
-		sendData('user_accounts', checkinput);
-		window.location.href = './login.php';
-		alert('Registration Successful!');
+		document.getElementById("registerForm").submit();
+		console.log(document.getElementById("registerForm"));
 	}
 }
 
 function checkname() {
-	var regex=/^[A-Za-z]{2,}$/;
+	var regex=/^[A-Za-z]{6,}$/;
 	ele=document.getElementById('name');
 	console.log(ele.value);
 	if(regex.test(ele.value)){
 		//alert('succeed');
 		ele.style.border='1px solid #00B3B3';
+		document.getElementById('nameWarning').style.display='none';
 		return ele.value;
 	}else{
 		//alert('Name Error! Must be more than 2 characters');
 		ele.style.border='1px solid #B91D47';
+		document.getElementById('nameWarning').style.display='inline';
 		return false;
 	}
 }
@@ -88,10 +44,12 @@ function checkemail(){
 	if(regex.test(ele.value)){
 		//alert('succeed');
 		ele.style.border='1px solid #00B3B3';
+		document.getElementById('emailWarning').style.display='none';
 		return ele.value;
 	}else{
 		//alert('Email Invalid. Please enter email again.');
 		ele.style.border='1px solid #B91D47';
+		document.getElementById('emailWarning').style.display='inline';
 		return false;
 	}
 }
@@ -101,10 +59,12 @@ function checkpassword(){
 	ele=document.getElementById('password');
 	console.log(ele.value);
 	if(regex.test(ele.value)){
+		document.getElementById('passwordWarning').style.display='none';
 		ele.style.border='1px solid #00B3B3';
 		return ele.value;
 	}else{
 		ele.style.border='1px solid #B91D47';
+		document.getElementById('passwordWarning').style.display='inline';
 		//alert('Error! Password must be at least 6 alpha-numeric characters');
 		return false;
 	}
@@ -120,16 +80,22 @@ function checkpassword2(){
 		if(ele1.value==ele2.value){
 			ele1.style.border='1px solid #00B3B3';
 			ele2.style.border='1px solid #00B3B3';
+			document.getElementById('passwordWarning').style.display='none';
+			document.getElementById('retypepasswordWarning').style.display='none';
 			return ele1.value;			
 		}else{
 			//alert('Password mismatched!');
+			document.getElementById('passwordWarning').style.display='inline';
+			document.getElementById('retypepasswordWarning').style.display='inline';
 			ele1.style.border='1px solid #B91D47';
 			ele2.style.border='1px solid #B91D47';
 			return false;
 		}
 	}else{
 		ele1.style.border='1px solid #B91D47';
-		ele2.style.border='1px solid #B91D47';
+		ele2.style.border='1px solid #B91D47';	
+		document.getElementById('passwordWarning').style.display='inline';
+		document.getElementById('retypepasswordWarning').style.display='inline';
 		//alert('Error! Password must be at least 6 alpha-numeric characters');
 		return false;
 	}
@@ -140,9 +106,11 @@ function checkaddress(){
 	ele=document.getElementById('address');
 	console.log(ele.value);
 	if(regex.test(ele.value)){
+		document.getElementById('addressWarning').style.display='none';
 		ele.style.border='1px solid #00B3B3';
 		return ele.value;
 	}else{
+		document.getElementById('addressWarning').style.display='inline';
 		ele.style.border='1px solid #B91D47';
 		//alert('Address needs to be a minimum of 5 characters');
 		return false;
@@ -154,10 +122,12 @@ function checkcardno(){
 	ele=document.getElementById('cardno');
 	console.log(ele.value);
 	if(regex.test(ele.value)){
+		document.getElementById('cardnoWarning').style.display='none';
 		ele.style.border='1px solid #b3b3b3';
 		return ele.value;
 	}else{
 		ele.style.border='1px solid #B91D47';
+		document.getElementById('cardnoWarning').style.display='inline';
 		//alert('Incorrect Card Number. Card Numbers must be 16 digits');
 		return false;
 	}	
@@ -168,10 +138,12 @@ function checkccv(){
 	ele=document.getElementById('ccv');
 	console.log(ele.value);
 	if(regex.test(ele.value)){
+		document.getElementById('ccvWarning').style.display='none';
 		ele.style.border='1px solid #b3b3b3';
 		return ele.value;
 	}else{
 		ele.style.border='1px solid #B91D47';
+		document.getElementById('ccvWarning').style.display='inline';
 		//alert('Incorrect CCV. CCV Numbers must be 3 digits');
 		return false;
 	}	
@@ -180,10 +152,12 @@ function checkcardtype(){
 	ele=document.getElementById('cardtype');
 	console.log(ele.value);
 	if(ele.value==""){
+		document.getElementById('cardtypeWarning').style.display='inline';
 		ele.style.border='1px solid #B91D47';
 		//alert('Select card type');
 		return false;
 	}else {
+		document.getElementById('cardtypeWarning').style.display='none';
 		ele.style.border='1px solid #b3b3b3';
 		return ele.value;
 	}
@@ -195,9 +169,11 @@ function checkpostalcode(){
 	ele=document.getElementById('postalcode');
 	console.log(ele.value);
 	if(regex.test(ele.value)){
+		document.getElementById('postalcodeWarning').style.display='none';
 		ele.style.border='1px solid #b3b3b3';
 		return ele.value;
 	}else{
+		document.getElementById('postalcodeWarning').style.display='inline';
 		ele.style.border='1px solid #B91D47';
 		//alert('Incorrect Postalcode. Must have 6 digits');
 		return false;

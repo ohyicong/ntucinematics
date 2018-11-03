@@ -1,1 +1,0 @@
-INSERT INTO user_accounts(userid ,name, password, email, cardno, address, ccv, cardtype,postalcode) VALUES ('622c8d9e3cd9eb1b4d443a86f0cb0b6074be7b59','aaron','123123','aaron@hotmail.com','1234512345123451','harbourfront','123','Mastercard','123456')

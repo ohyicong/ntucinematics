@@ -40,15 +40,12 @@
 			for(let i=0;i<7;i++){
 				var element = document.getElementById(cinemas[x]+(i+1));
 				var date = addDays(i);
-				console.log("mydate",date);
-				console.log("myday",date.getDay());
-				
 				//Generate timing tables
 				if(i==0){
 					element.innerHTML='Today<br>'+ date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()
 					//Update user's selection
 					userSelection[String(cinemas[x])].date=date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()
-					userSelection[String(cinemas[x])].day= date.getDay();
+					userSelection[String(cinemas[x])].day= date.getDay()+1;
 					userSelection[String(cinemas[x])].cinema=String(cinemas[x]);
 					//User's selection end
 				}else{
@@ -61,10 +58,10 @@
 	}	
 	function selectedDay(element){
 		let selectedCinema = element.id.slice(0,element.id.length-1);
-		let date = addDays(element.id.slice(element.id.length-1,element.id.length))
+		let date = addDays(parseInt(element.id.slice(element.id.length-1,element.id.length))-1);
 		//Update user's selection
 		userSelection[selectedCinema].date=date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
-		userSelection[selectedCinema].day= date.getDay();
+		userSelection[selectedCinema].day= date.getDay()+1;
 		userSelection[selectedCinema].cinema=selectedCinema;
 		//User's selection end
 		for(let i=1;i<8;i++){
@@ -75,13 +72,14 @@
 		element.classList.add('showtimetd');
 	}
 	function selectedTime(cinema,ele,uniqueID){
-		let date = new Date();
 		userSelection[cinema].time=ele.innerHTML;
 		console.log(userSelection[cinema]);
-		reconstructUniqueID=uniqueID.slice(0,8)+date.getDay()+uniqueID.slice(9);
+		reconstructUniqueID=uniqueID.slice(0,8)+(userSelection[cinema].day)+uniqueID.slice(9);
+		console.log(reconstructUniqueID);
 		window.location.href="./checkout.php?uniqueID="+reconstructUniqueID+"&userSelection="+JSON.stringify(userSelection[cinema]);
 	}
 	function addDays(days){
+		console.log("Adding days",days);
 		const date = new Date();
 		date.setDate(date.getDate() + parseInt(days));
 		return date;
@@ -204,6 +202,10 @@
 					for($i=0;$i<@sizeof($val);$i++){
 						echo "<td class='showtimetd' onclick='selectedTime(\"JURONG\",this,\"".$val[$i]['UNIQUE_ID']."\")'>".$val[$i]['TIMESTAMP']."</td>";
 					}
+					if(@count($val)<=0){
+						echo "<td class='showtimetd' colspan='7'>No timing</td>";
+					}
+					
 				?>
 			</tr>
 		</table>
@@ -234,6 +236,11 @@
 					for($i=0;$i<@sizeof($val);$i++){
 						echo "<td class='showtimetd' onclick='selectedTime(\"YISHUN\",this,\"".$val[$i]['UNIQUE_ID']."\")'>".$val[$i]['TIMESTAMP']."</td>";
 					}
+					if(@count($val)<=0){
+						echo "<td class='showtimetd' colspan='7'>No timing</td>";
+					}
+					
+
 				?>
 			</tr>
 		</table>
@@ -264,6 +271,10 @@
 					for($i=0;$i<@sizeof($val);$i++){
 						echo "<td class='showtimetd' onclick='selectedTime(\"HABOURFRONT\",this,\"".$val[$i]['UNIQUE_ID']."\")'>".$val[$i]['TIMESTAMP']."</td>";
 					}
+					if(@count($val)<=0){
+						echo "<td class='showtimetd' colspan='7'>No timing</td>";
+					}
+					
 				?>
 			</tr>
 		</table>
