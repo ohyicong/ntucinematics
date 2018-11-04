@@ -1,1 +1,1 @@
-SELECT * FROM user_accounts WHERE (password, email) = ('123123' , 'ohyicong123@hotmail.com')
+SELECT * FROM user_accounts WHERE (password, email) = ('admin' , 'admin')

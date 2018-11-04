@@ -107,21 +107,21 @@ function getData(index, table_name, condition, value, return_column=["",""], ele
 				for (element in data){
 					//if value not repeated
 					if(temp_value.includes(data[element][key_list[0]])==false) {				
-						var date_object=setDate(indexNum);
 						var temp_name=data[element][key_list[1]];
 						var element_value=data[element][key_list[0]];
+						var current_date=new Date();
+						var today=current_date.getDay();
 						//if "Select Date" Container get current and next date
 						if(output_container=="SelectDate"){
-							var current_date=new Date();
-							var days=['007','001','002','003','004','005','006'];
-							for (var day=0; day<date_object.length;day++){
-								if(current_date.getDay()==day){
+							temp_name=setDate(indexNum)[0];
+							daystring=setDate(indexNum)[1];
+							indexNum++;
+							var days=['','001','002','003','004','005','006','007'];
+							for (var day=1; day<=days.length;day++){
+								if((daystring+1)==day){
 									element_value=days[day];
 								}
 							}
-							
-							indexNum++;
-							temp_name=date_object.toISOString().slice(0,10);
 							//element_value=element_value;
 						}
 
@@ -222,8 +222,50 @@ function setDate(index){
 	var current_date = new Date();
 	var new_date = new Date();
 	new_date.setDate((current_date.getDate())+index);
-	//new_date = new_date.toISOString().slice(0,10);
-	return new_date
+	var date = new_date.getDate();
+	var month=new_date.getMonth();
+	if (date<10){
+		date='0'+date;
+	} else if (month<10){
+		month='0'+month;
+	}
+	switch (new_date.getDay()) {
+    case 0:
+        day = "Sunday";
+        date_string=(new_date.getYear()+1900)+'-'+month+'-'+date+', '+day;
+		console.log('date string',date_string);
+		return [date_string,new_date.getDay()];
+    case 1:
+        day = "Monday";
+        date_string=(new_date.getYear()+1900)+'-'+month+'-'+date+', '+day;
+		console.log('date string',date_string);
+		return [date_string,new_date.getDay()];
+    case 2:
+        day = "Tuesday";
+        date_string=(new_date.getYear()+1900)+'-'+month+'-'+date+', '+day;
+		console.log('date string',date_string);
+		return [date_string,new_date.getDay()];
+    case 3:
+        day = "Wednesday";
+        date_string=(new_date.getYear()+1900)+'-'+month+'-'+date+', '+day;
+		console.log('date string',date_string);
+		return [date_string,new_date.getDay()];
+    case 4:
+        day = "Thursday";
+        date_string=(new_date.getYear()+1900)+'-'+month+'-'+date+', '+day;
+		console.log('date string',date_string);
+		return [date_string,new_date.getDay()];
+    case 5:
+        day = "Friday";
+        date_string=(new_date.getYear()+1900)+'-'+month+'-'+date+', '+day;
+		console.log('date string',date_string);
+		return [date_string,new_date.getDay()];
+    case 6:
+        day = "Saturday";
+        date_string=(new_date.getYear()+1900)+'-'+month+'-'+date+', '+day;
+		console.log('date string',date_string);
+		return [date_string,new_date.getDay()];
+	}
 }
 function updateUserSelection(index,value){
 	if(index==1){

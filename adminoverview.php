@@ -39,6 +39,7 @@
 			<img src="./img/logo.jpg" style="width:80%;height:100%;">
 		</header>
 		<nav style="text-align:right;padding-right:0px">
+			<a href="./index.php" class="menu">Home</a>
 			<a href="./adminoverview.php" class="menu">Overview</a>
 			<a href="./admintools.php" class="menu">Tools</a>
 			<span class="account-box" style="float:right;">

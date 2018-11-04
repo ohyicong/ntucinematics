@@ -63,20 +63,27 @@ function sendData(table_name, array, dataIn) {
 
 
 function onlogin(){
-	var email = checkemail();
-	var password= checkpassword();
-	//Check if there are still any mistakes before sending to DB
-	var checkinput= [password, email];
-	if(checkinput.includes(false)){
-		alert('Try Again! Please check if your information is keyed correctly.');
-	} else{
-			sendData('user_accounts', checkinput).then(function(value) { 
-			  console.log("Completed",value);
-			  localStorage.setItem("loginInfo", value);
-			  // expected output: "responseText"
-			  location.href = "./useraccount.php";	
-			});
-		}
+	//Check if is admin
+	var adminEmail=document.getElementById('email').value;
+	var adminPassword=document.getElementById('password').value;
+	if(adminEmail=='admin' && adminPassword=='admin'){
+		location.href = "./adminoverview.php";	
+	}else{
+		var email = checkemail();
+		var password= checkpassword();
+		//Check if there are still any mistakes before sending to DB
+		var checkinput= [password, email];
+		if(checkinput.includes(false)){
+			alert('Try Again! Please check if your information is keyed correctly.');
+		} else{
+				sendData('user_accounts', checkinput).then(function(value) { 
+				  console.log("Completed",value);
+				  localStorage.setItem("loginInfo", value);
+				  // expected output: "responseText"
+				  location.href = "./useraccount.php";	
+				});
+			}
+	}
 }
 
 
