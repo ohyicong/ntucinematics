@@ -49,14 +49,16 @@ function onClick(index,table_name, condition, element,return_column,element_tag,
 			}else{
 				getData(index, table_name, condition, element.value, return_column, element_tag ,output_container); // onload Main Web Server Call
 			}
-			//=====================================================================//
-			if (index==3){	
-				console.log("DropdownBox", element);
-			}
+			//=====================================================================//	
+			selectedIndex=element.selectedIndex;
+			element=element.options;
+			console.log("selection", element[selectedIndex].textContent);
+			updateUserSelection(index, element[selectedIndex].textContent);
+			/*else{
 			//Prep and save selection
 			console.log('selection',element[String(element.value).slice(2)].textContent);
 			updateUserSelection(index, element[String(element.value).slice(2)].textContent);
-			console.log("DropdownBox", element);
+			}*/
 		}
 		console.log("Check element id",element.id);
 
@@ -122,7 +124,6 @@ function getData(index, table_name, condition, value, return_column=["",""], ele
 									element_value=days[day];
 								}
 							}
-							//element_value=element_value;
 						}
 
 						//if "Select Time" Container get time from time attribute in container 'obj' 
@@ -131,6 +132,7 @@ function getData(index, table_name, condition, value, return_column=["",""], ele
 						}
 
 						if(temp_name!=null){
+
 							//create the element in html
 							add_element(element_tag, element_value, temp_name, output_container);
 							//add to the 'done' list
@@ -233,37 +235,30 @@ function setDate(index){
     case 0:
         day = "Sunday";
         date_string=(new_date.getYear()+1900)+'-'+month+'-'+date+', '+day;
-		console.log('date string',date_string);
 		return [date_string,new_date.getDay()];
     case 1:
         day = "Monday";
         date_string=(new_date.getYear()+1900)+'-'+month+'-'+date+', '+day;
-		console.log('date string',date_string);
 		return [date_string,new_date.getDay()];
     case 2:
         day = "Tuesday";
         date_string=(new_date.getYear()+1900)+'-'+month+'-'+date+', '+day;
-		console.log('date string',date_string);
 		return [date_string,new_date.getDay()];
     case 3:
         day = "Wednesday";
         date_string=(new_date.getYear()+1900)+'-'+month+'-'+date+', '+day;
-		console.log('date string',date_string);
 		return [date_string,new_date.getDay()];
     case 4:
         day = "Thursday";
         date_string=(new_date.getYear()+1900)+'-'+month+'-'+date+', '+day;
-		console.log('date string',date_string);
 		return [date_string,new_date.getDay()];
     case 5:
         day = "Friday";
         date_string=(new_date.getYear()+1900)+'-'+month+'-'+date+', '+day;
-		console.log('date string',date_string);
 		return [date_string,new_date.getDay()];
     case 6:
         day = "Saturday";
         date_string=(new_date.getYear()+1900)+'-'+month+'-'+date+', '+day;
-		console.log('date string',date_string);
 		return [date_string,new_date.getDay()];
 	}
 }
@@ -273,6 +268,7 @@ function updateUserSelection(index,value){
 		userSelectionGlobal['movieImage']="./img/"+value+".jpg";
 
 	}else if(index==2){
+		console.log('cinema value ', value);
 		userSelectionGlobal['cinema']=value;
 	}else if (index==3){
 		userSelectionGlobal['date']=value;
@@ -300,12 +296,17 @@ function resetUserSelection(index){
 }
 
 function storeSend(){
+	console.log(userSelectionGlobal.time);
+	console.log(userSelectionGlobal.day);
+	console.log(userSelectionGlobal.cinema);
+	console.log(userSelectionGlobal.movie);
+	
 	if(userSelectionGlobal.time!="" && userSelectionGlobal.day!="" && userSelectionGlobal.cinema!="" && userSelectionGlobal.movie!=""|| userSelectionGlobal.day==0){
 		//console.log("UNIQUE_ID CHECK", obj.getUniqueID());
 		window.open("./checkout.php?uniqueID="+obj.getUniqueID()+"&userSelection="+JSON.stringify(userSelectionGlobal));
 		//window.open('./checkout.php');
 	}else{
-		alert("Incomplete Selection");
+		alert("Incomplete Selection, try again");
 	}
 }
 
