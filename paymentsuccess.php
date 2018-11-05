@@ -13,29 +13,31 @@
 		echo "<script>const useraccount=null</script>";
 	}
 	$servername="localhost";
-	$dbusername="myuser";
-	$dbpassword="xxxx";
-	$dbname="ntucinematics";
+	$dbusername="f38im";
+	$dbpassword="f38im";
+	$dbname="f38im";
 	$conn = mysqli_connect($servername, $dbusername, $dbpassword, $dbname);
 	$purchaseString="";
 	foreach ($_SESSION['usercart'] as $uniqueID => $item) {
+		
 		foreach ($item->tickets as $keyTicket => $ticket) {
 			$insert="insert into `unique_seats` (`UNIQUE_ID`, `SEAT_NO`, `DATETIME`) values ('".$uniqueID."','".$ticket."','".$item->date." ".$item->time."')";
+			echo var_dump($item->time);
 			$conn->query($insert);
 		}
+		
 		$insert="insert into `purchase_history`(`userID`, `movieID`, `quantity`, `purchaseDate`, `movieDate`, `seatNumber`,`cinemaID`,`uniqueID`) values ('".sha1($_POST['email'])."','".substr($uniqueID,0,3)."',".count($item->tickets).",'".date("Y-m-d h:i")."','".$item->date." ".$item->time."','".preg_replace('/[\"\[\]]/'," ",json_encode($item->tickets))."','".substr($uniqueID,3,3)."','".$uniqueID."')";
-			$conn->query($insert);
-		$purchaseString=$purchaseString.$item->movie." (".$item->cinema."), ".$item->date." at ".$item->date." hrs \r\n";
-		//echo $insert;
+		$conn->query($insert);
+		$purchaseString=$purchaseString.$item->movie." (".$item->cinema."), ".$item->date." at ".$item->time." hrs \r\n"."Tickets:".json_encode($item->tickets)."\r\n";
 	}
-	//$to      = "ohyicong@hotmail.com";
-	//$message = 'Dear '.$_POST['name'].",\r\n".$purchaseString."\r\n\r\n Kind Regards,\r\nNTUCinematics";
-	//$headers = 'From: f32ee@localhost' . "\r\n" .
-	//    'Reply-To: f32ee@localhost' . "\r\n" .
-	//    'X-Mailer: PHP/' . phpversion();
+	$to      = "f38im@localhost";
+	$message = 'Dear '.strtoupper($_POST['name']).",\r\n".$purchaseString."\r\n\r\nKind Regards,\r\nNTUCinematics";
+	$headers = 'From: f38im@localhost' . "\r\n" .
+	    'Reply-To: f38im@localhost' . "\r\n" .
+	    'X-Mailer: PHP/' . phpversion();
 
-	//mail($to, "NTUCinematics: Payment confirmation", $message, $headers,'-f38im@localhost');
-	//echo ("mail sent to : ".$to);
+	mail($to, "NTUCinematics: Payment confirmation", $message, $headers,'-f38im@localhost');
+	echo ("mail sent to : ".$to);
 	$_SESSION['usercart'] = array();
 ?>
 <head>
@@ -64,7 +66,7 @@
 			<img src="./img/payment-success.png"><br>
 			<label style="font-size:20px">E-ticket has been sent to:</label><br>
 			<label style="font-size:15px"><?php echo $_POST['email']; ?></label><br><br>
-			<a href="./index.html" id='redirect' style="font-size:15px">You will be redicted in....5</a>
+			<a href="./index.php" id='redirect' style="font-size:15px">You will be redicted in....5</a>
 		</center>	
 	</div>
 	
