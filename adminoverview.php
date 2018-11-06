@@ -39,33 +39,22 @@
 			<img src="./img/logo.jpg" style="width:80%;height:100%;">
 		</header>
 		<nav style="text-align:right;padding-right:0px">
-			<a href="./index.php" class="menu">Home</a>
 			<a href="./adminoverview.php" class="menu">Overview</a>
 			<a href="./admintools.php" class="menu">Tools</a>
 			<span class="account-box" style="float:right;">
 				<?php
-					if (isset($_SESSION["useraccount"])){
-						$useraccount= json_decode($_SESSION["useraccount"])[0];
-						echo "	<span id='account' class='menu' style='padding-right:0px;'>
-									<a>".strtoupper($useraccount->name)."</a>
-								</span>
-								<span id='account-option' class='account-option' style='width:100%;text-align: center;''>
-									<a href='./logout.php'>Logout</a>
-								</span>	";		
-					}else{
-						echo"	<span id='account' class='menu' style='padding-right:0px'> 
-									Account
-								</span>
-								<span id='account-option' class='account-option' style='width:100%;text-align: center;''>
-									<a href='./login.php'>Login</a>
-									<a href='./register.php'>Register</a>
-								</span>	";
-					}
+					echo"	<span id='account' class='menu' style='padding-right:0px'> 
+								Admin
+							</span>
+							<span id='account-option' class='account-option' style='width:100%;text-align: center;''>
+								<a href='./index.php'>Logout</a>
+							</span>	";
+				
 				?>
 			</span>			
 		</nav>
 	</div>
-	<div class="two-third" style="width:55%;margin-right:0.5%;height:700px;border:solid #008080 2px;border-radius:5px">
+	<div class="two-third" style="width:55%;margin-right:0.5%;height:700px;border:solid #008080 4px;border-radius:5px">
 		<h2 style="margin-left:2%;margin-top:10px;color:#008080;position:relative">Most Popular Movie</h2>
 		<span class="full" style="height:200px;position:relative;z-index:-2px;" >
 			<?php  
@@ -73,9 +62,10 @@
 				$result=$conn->query($query);
 				$count=0;
 				foreach ($result as $key => $value) {
+					$count=$count+1;
 					if($count<4){
 						echo "<div class='one-fifth' style='z-index:3px;'>";
-						echo "<img src='./img/".$value["MOVIE_NAME"].".jpg' style='margin-left:10%;height:80%;width:80%;''>";
+						echo "<img src='./img/".$value["MOVIE_NAME"].".jpg' style='margin-left:10%;height:160px;width:80%;''>";
 						echo "</div>";
 					}
 				}
@@ -101,7 +91,7 @@
 					<th>Subtotal</th>
 				</tr>
 				<?php  
-					$query="select SUM(purchase_history.quantity) as TOTAL, current_movies.MOVIE_NAME as MOVIE_NAME  from purchase_history,current_movies where purchase_history.movieID=current_movies.MOVIE_ID group by current_movies.MOVIE_NAME";
+					$query="select SUM(purchase_history.quantity) as TOTAL, current_movies.MOVIE_NAME as MOVIE_NAME  from purchase_history,current_movies where purchase_history.movieID=current_movies.MOVIE_ID group by current_movies.MOVIE_NAME LIMIT 3";
 					$results=$conn->query($query);
 					$countTotal=0;
 					foreach ($results as $key => $value) {
@@ -146,12 +136,11 @@
 		<?php }?>
 			
 	</div>
-	<div class="one-third" style="width:44.33%;height:700px;border:solid #008080 2px;border-radius:5px">
-		<center>
-			<h2 style="margin:0px;margin-top:10px;color:#008080;position:relative;">Trending
+	<div class="one-third" style="padding:0px;margin:0px;width:44.33%;height:700px;border:solid #008080 4px;border-radius:5px;box-sizing: border-box;">
+		<center >
+			<h2 style="margin:0px;padding-top:10px;padding-bottom:10px;color:white;background-color: #008080;position:relative;">Trending
 			</h2>
-		</center>
-			<table cellpadding="15px" style="padding:10px;width:100%">
+			<table cellpadding="15px" style="margin:0px;padding:10px;width:99%">
 				<tr>
 					<th>Movie</th>
 					<th>Cinema</th>
@@ -159,24 +148,26 @@
 					<th>Seats</th>
 				</tr>
 				<?php 
-					$query="select count(*) as TOTAL, loc_address.MOVIE_NAME,loc_address.CINEMA,unique_seats.DATETIME,loc_address.TIMESTAMP FROM unique_seats, loc_address where unique_seats.UNIQUE_ID=loc_address.UNIQUE_ID and unique_seats.DATETIME>'".date("Y-m-d")."' and unique_seats.DATETIME<'".date('Y-m-d', strtotime(date("Y-m-d"). ' + 1 days'))."'";
+					$query="select count(*) as TOTAL, loc_address.MOVIE_NAME,loc_address.CINEMA,unique_seats.DATETIME,loc_address.TIMESTAMP FROM unique_seats, loc_address where unique_seats.UNIQUE_ID=loc_address.UNIQUE_ID and unique_seats.DATETIME>'".date("Y-m-d")."' and unique_seats.DATETIME<'".date('Y-m-d', strtotime(date("Y-m-d"). ' + 1 days'))."' and TOTAL>10 group by loc_address.UNIQUE_ID ASC LIMIT 8";
 					$result=$conn->query($query);
-					$count=1;
-					foreach ($result as $key => $value) {
-						if($value["TOTAL"]>2){
-							echo "<tr>";
-							echo "<td>".$value["MOVIE_NAME"]."</td>";
-							echo "<td>".$value["CINEMA"]."</td>";
-							echo "<td>".$value["TIMESTAMP"]."</td>";
-							echo "<td>".$value["TOTAL"]."/30</td>";
-							echo "</tr>";
-						}
-					}	
+					if($result){
+						foreach ($result as $key => $value) {
+							if($value["TOTAL"]>2){
+								echo "<tr>";
+								echo "<td>".$value["MOVIE_NAME"]."</td>";
+								echo "<td>".$value["CINEMA"]."</td>";
+								echo "<td>".$value["TIMESTAMP"]."</td>";
+								echo "<td>".$value["TOTAL"]."/30</td>";
+								echo "</tr>";
+							}
+						}	
+					}
+					
 					
 					
 				?>
 			</table>
-		
+		</center>
 	</div>
 </body>
 <footer>

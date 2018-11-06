@@ -91,29 +91,19 @@
 			<a href="./admintools.php" class="menu">Tools</a>
 			<span class="account-box" style="float:right;">
 				<?php
-					if (isset($_SESSION["useraccount"])){
-						$useraccount= json_decode($_SESSION["useraccount"])[0];
-						echo "	<span id='account' class='menu' style='padding-right:0px;'>
-									<a>".strtoupper($useraccount->name)."</a>
-								</span>
-								<span id='account-option' class='account-option' style='width:100%;text-align: center;''>
-									<a href='./logout.php'>Logout</a>
-								</span>	";		
-					}else{
-						echo"	<span id='account' class='menu' style='padding-right:0px'> 
-									Account
-								</span>
-								<span id='account-option' class='account-option' style='width:100%;text-align: center;''>
-									<a href='./login.php'>Login</a>
-									<a href='./register.php'>Register</a>
-								</span>	";
-					}
+					echo"	<span id='account' class='menu' style='padding-right:0px'> 
+								Admin
+							</span>
+							<span id='account-option' class='account-option' style='width:100%;text-align: center;''>
+								<a href='./index.php'>Logout</a>
+							</span>	";
+				
 				?>
 			</span>			
 		</nav>
 	</div>
-	<div class="two-third" style="width:66.16%;margin-right:0.5%;height:600px;border:solid #008080 2px;border-radius:5px">
-		<h1 style="margin-left:25px;margin-top:10px;color:#008080;position:relative">Add Movie Timing</h1>
+	<div class="two-third" style="width:66.16%;margin-right:0.5%;height:600px;border:solid #008080 4px;border-radius:5px">
+		<h2 style="background-color:#008080;padding-left:25px;padding-top:10px;padding-bottom:10px;margin:0px;color:white;position:relative">Add Movie Timing</h2>
 			<table cellpadding="20px" border="0">
 				<tr>
 					<td>
@@ -178,10 +168,10 @@
 				</form>
 			</table>
 	</div>
-	<div class="one-third" style="height:600px;border:solid #008080 2px;border-radius:5px">
+	<div class="one-third" style="height:600px;border:solid #008080 4px;border-radius:5px">
 		<center>
-			<h1 style="margin:0px;margin-top:10px;color:#008080;position:relative;text-decoration:underline;">Available Timings
-			</h1>
+			<h2 style="background-color:#008080;padding-left:25px;padding-top:10px;padding-bottom:10px;margin:0px;color:white;position:relative;">Available Timings
+			</h2>
 		</center>
 			<table cellpadding="15px" style="padding:10px;width:100%">
 				<?php 

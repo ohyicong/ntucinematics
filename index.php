@@ -101,7 +101,7 @@
 		$conn = mysqli_connect($servername, $dbusername, $dbpassword, $dbname);
 
 		// TOP 3 MOST POPULAR
-		$queryTop3="select current_movies.MOVIE_NAME,current_movies.MOVIE_TYPE,count(purchase_history.quantity) as POP from purchase_history, current_movies where purchase_history.movieID=current_movies.MOVIE_ID group by current_movies.MOVIE_NAME order by POP desc;";
+		$queryTop3="select current_movies.MOVIE_NAME,current_movies.MOVIE_TYPE,count(purchase_history.quantity) as POP from purchase_history, current_movies where purchase_history.movieID=current_movies.MOVIE_ID group by current_movies.MOVIE_NAME order by POP desc LIMIT 3;";
 
 		$resultTop3 = mysqli_query($conn, $queryTop3);
 		while($row = mysqli_fetch_assoc($resultTop3)){
@@ -115,7 +115,7 @@
 			/* Query 1 - Select the movies from current movies that are - SUBQUERY 1
 				(subQuery 1.1 = same movietype as purchase history (where movie id from current movies is the same as purchase history))  ~ANDDDD~
 				(subQuery 1.2 = movie id that are not in purchase history (where movie id from current movies is the same as purchase history)) */
-			$queryUser = "SELECT MOVIE_NAME FROM current_movies WHERE MOVIE_TYPE IN (SELECT MOVIE_TYPE FROM current_movies WHERE MOVIE_ID IN (SELECT MOVIEID FROM purchase_history WHERE userID = '" . $userid . "')) AND MOVIE_ID NOT IN (SELECT MOVIEID FROM purchase_history WHERE userID = '" . $userid . "')";
+			$queryUser = "SELECT MOVIE_NAME FROM current_movies WHERE MOVIE_TYPE IN (SELECT MOVIE_TYPE FROM current_movies WHERE MOVIE_ID IN (SELECT MOVIEID FROM purchase_history WHERE userID = '" . $userid . "')) AND MOVIE_ID NOT IN (SELECT MOVIEID FROM purchase_history WHERE userID = '" . $userid . "') LIMIT 3";
 			
 			$resultUser = mysqli_query($conn, $queryUser);
 
@@ -129,9 +129,9 @@
 				echo "<div id='recommendation' class='full' style='position:relative; z-index:-2px;'>";
 				for($i=0; $i<sizeof($dataUser); $i++){
 					$link= str_replace(' ', '', $dataUser[$i]);
-					echo "<div class='one-fifth' style='margin-right:20px'>
+					echo "<div class='one-fifth' >
 							<a id='imglink' href='./" . strtolower($link). ".php' >
-								<img src='./img/" . $dataUser[$i] . ".jpg' style='height:284px;width:100%;'>
+								<img src='./img/" . $dataUser[$i] . ".jpg' style='height:300px;width:90%;'>
 							</a>
 						</div>";
 				}
@@ -141,9 +141,9 @@
 			echo "<h1 style='text-align: left;margin-bottom:5px;' class='teal'>Most Popular</h1><hr style='margin-bottom:10px;'>";
 			for($i=0; $i<sizeof($dataTop3); $i++){
 				$link= str_replace(' ', '', $dataTop3[$i]);
-				echo "<div class='one-fifth' style='margin-right:20px'>
+				echo "<div class='one-fifth'>
 						<a id='imglink' href='./" . strtolower($link) . ".php'>
-							<img src='./img/" . $dataTop3[$i] . ".jpg' style='height:284px;width:100%;'>
+							<img src='./img/" . $dataTop3[$i] . ".jpg' style='height:300px;width:90%;'>
 						</a>
 					</div>";
 			}
@@ -157,9 +157,9 @@
 					echo "<h1 style='text-align: left;margin-bottom:5px' class='teal'> Most Popular</h1><hr style='margin-bottom:10px;'>";
 					for($i=0; $i<sizeof($dataTop3); $i++){
 						$link= str_replace(' ', '', $dataTop3[$i]);
-						echo "<div class='one-fifth' style='margin-right:20px'>
+						echo "<div class='one-fifth'>
 								<a id='imglink' href='./" .strtolower($link). ".php'>
-									<img src='./img/" . $dataTop3[$i] . ".jpg' style='height:284px;width:100%;'>
+									<img src='./img/" . $dataTop3[$i] . ".jpg' style='height:300px;width:90%;'>
 								</a>
 							</div>";
 					}

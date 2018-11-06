@@ -13,9 +13,9 @@
 		echo "<script>const useraccount=null</script>";
 	}
 	$servername="localhost";
-	$dbusername="f38im";
-	$dbpassword="f38im";
-	$dbname="f38im";
+	$dbusername="myuser";
+	$dbpassword="xxxx";
+	$dbname="ntucinematics";
 	$conn = mysqli_connect($servername, $dbusername, $dbpassword, $dbname);
 	$purchaseString="";
 	foreach ($_SESSION['usercart'] as $uniqueID => $item) {
@@ -30,15 +30,8 @@
 		$conn->query($insert);
 		$purchaseString=$purchaseString.$item->movie." (".$item->cinema."), ".$item->date." at ".$item->time." hrs \r\n"."Tickets:".json_encode($item->tickets)."\r\n";
 	}
-	$to      = "f38im@localhost";
-	$message = 'Dear '.strtoupper($_POST['name']).",\r\n".$purchaseString."\r\n\r\nKind Regards,\r\nNTUCinematics";
-	$headers = 'From: f38im@localhost' . "\r\n" .
-	    'Reply-To: f38im@localhost' . "\r\n" .
-	    'X-Mailer: PHP/' . phpversion();
-
-	mail($to, "NTUCinematics: Payment confirmation", $message, $headers,'-f38im@localhost');
-	echo ("mail sent to : ".$to);
 	$_SESSION['usercart'] = array();
+	
 ?>
 <head>
 	<title>Movies</title>

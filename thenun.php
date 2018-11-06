@@ -191,7 +191,7 @@
 					English with Chinese subtitles
 				</td>
 				<?php
-					$query="select timestamp from loc_address where movie_id='006' && cinema_id='001' && day='001' order by timestamp asc";
+					$query="select * from loc_address where movie_id='006' && cinema_id='001' && day='001' order by timestamp asc";
 					$val=null;
 					$result=$conn->query($query);
 					while($row = mysqli_fetch_assoc($result)){
@@ -225,7 +225,7 @@
 					English only (No Subtitle)
 				</td>
 				<?php
-					$query="select timestamp from loc_address where movie_id='006' && cinema_id='002' && day='001' order by timestamp asc";
+					$query="select * from loc_address where movie_id='006' && cinema_id='002' && day='001' order by timestamp asc";
 					$val=null;
 					$result=$conn->query($query);
 					while($row = mysqli_fetch_assoc($result)){
@@ -259,7 +259,7 @@
 					English only (No Subtitle)
 				</td>
 				<?php
-					$query="select timestamp from loc_address where movie_id='006' && cinema_id='003' && day='001' order by timestamp asc";
+					$query="select * from loc_address where movie_id='006' && cinema_id='003' && day='001' order by timestamp asc";
 					$result=$conn->query($query);
 					$val=null;
 					while($row = mysqli_fetch_assoc($result)){
